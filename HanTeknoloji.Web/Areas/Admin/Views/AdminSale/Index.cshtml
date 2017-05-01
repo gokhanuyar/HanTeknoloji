@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
+@section css{
+    <link href="~/Areas/Admin/Content/sweetalert.css" rel="stylesheet" />
+    <link href="~/Areas/Admin/Content/custom/sale-page.css" rel="stylesheet" />
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h2 class="page-header">Ürün Satış Ekranı</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        @Html.Partial("/Areas/Admin/Views/Shared/Partial/MessagesPart.cshtml")
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Ürün Satış Formu
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    @Html.Partial("Partial/SaleForm")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Areas/Admin/Scripts/sweetalert.min.js"></script>
+    <script src="~/Areas/Admin/Scripts/custom/sale-operations.js"></script>
+}

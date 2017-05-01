@@ -1,0 +1,45 @@
+﻿@using HanTeknoloji.Web.Areas.Admin.Models.Types.Enums;
+@using HanTeknoloji.Web.Areas.Admin.Models.Types.Messages;
+
+@if (ViewBag.IslemDurum == EnumIslemDurum.ValidationHata)
+{
+    <div class="alert alert-danger">
+        @FormMessages.ValidationError
+    </div>
+}
+else if (ViewBag.IslemDurum == EnumIslemDurum.Basarili)
+{
+    <div class="alert alert-success">
+        @FormMessages.Success
+    </div>
+}
+else if (ViewBag.IslemDurum == EnumIslemDurum.ParolaYanlis)
+{
+    <div class="alert alert-danger">
+        @FormMessages.UserLoginError
+    </div>
+}
+else if (ViewBag.IslemDurum == EnumIslemDurum.AdminMevcut)
+{
+    <div class="alert alert-danger">
+        @FormMessages.AddAdminError
+    </div>
+}
+else if (ViewBag.IslemDurum == EnumIslemDurum.BarkodMevcut)
+{
+    <div class="alert alert-danger">
+        @FormMessages.BarcodeError
+    </div>
+}
+else if (ViewBag.IslemDurum == EnumIslemDurum.StokYetersiz)
+{
+    <div class="alert alert-danger">
+        @FormMessages.ProductQuantity
+    </div>
+}
+else if (ViewBag.IslemDurum == EnumIslemDurum.UrunYok)
+{
+    <div class="alert alert-danger">
+        @FormMessages.NoProduct
+    </div>
+}

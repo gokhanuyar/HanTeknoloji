@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "EditProduct";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Ürün Düzenleme</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        @Html.Partial("/Areas/Admin/Views/Shared/Partial/MessagesPart.cshtml")
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Ürün Düzenleme Formu
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        @using (Html.BeginForm("Edit", "AdminProduct", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+                        {
+                            @Html.Partial("Partial/ProductForm")
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Areas/Admin/Scripts/add-product.js"></script>
+}
+
