@@ -13,6 +13,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
 {
     public class AdminProductController : AdminBaseController
     {
+        //
         public ActionResult Index(int? id, int? page, string searchString)
         {
             if (String.IsNullOrEmpty(searchString) && page == null && id == null)
