@@ -67,10 +67,10 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                 TradeMark = rptrademark.Find(product.TradeMarkID).Name,
                                 ProductModel = product.ProductModelID == 0 ? "" : rpproductmodel.Find(product.ProductModelID).Name,
                                 Color = rpcolor.Find(product.ColorID).Name,
-                                UnitPrice = product.UnitPrice,
+                                UnitPrice = product.UnitSalePrice,
                                 Count = product.Count,
                                 SaleCount = 1,
-                                TotalPrice = product.UnitPrice
+                                TotalPrice = product.UnitSalePrice
                             };
                             model.ProductList.Add(pro);
                             model.TotalSalePrice += pro.TotalPrice;

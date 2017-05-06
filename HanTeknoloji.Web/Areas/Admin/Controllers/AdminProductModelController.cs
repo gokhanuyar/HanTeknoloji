@@ -86,7 +86,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 ProductModel entity = new ProductModel
                 {
                     Name = model.Name,
-                    TradeMarkID = model.TradeMarkID
+                    TradeMarkID = model.TradeMarkID,
+                    BarcodeValue = model.BarcodeValue
                 };
                 rpproductmodel.Add(entity);
                 ViewBag.IslemDurum = EnumIslemDurum.Basarili;
@@ -108,7 +109,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             {
                 ID = entity.ID,
                 Name = entity.Name,
-                TradeMarkID = entity.TradeMarkID
+                TradeMarkID = entity.TradeMarkID,
+                BarcodeValue = entity.BarcodeValue
             };
             GetAllTradeMarks();
             return View(model);
@@ -122,6 +124,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 ProductModel entity = rpproductmodel.Find(model.ID);
                 entity.Name = model.Name;
                 entity.TradeMarkID = model.TradeMarkID;
+                entity.BarcodeValue = model.BarcodeValue;
                 entity.UpdateDate = DateTime.Now;
                 rpproductmodel.SaveChanges();
                 ViewBag.IslemDurum = EnumIslemDurum.Basarili;
