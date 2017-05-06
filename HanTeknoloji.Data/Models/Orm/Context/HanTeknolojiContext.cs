@@ -27,5 +27,6 @@ namespace HanTeknoloji.Data.Models.Orm.Context
         public DbSet<TradeMark> TradeMark { get; set; }
         public DbSet<Color> Color { get; set; }
         public DbSet<Sale> Sale { get; set; }
+        public DbSet<AdminUser> AdminUser { get; set; }
     }
 }

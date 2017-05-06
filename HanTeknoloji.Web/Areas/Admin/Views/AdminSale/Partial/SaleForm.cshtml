@@ -54,7 +54,7 @@
                         </tr>
                     </thead>
                     <tbody class="table-body">
-                        @if (Model != null)
+                        @if (Model.ProductList.Count != 0)
                         {
                             foreach (var item in Model.ProductList)
                             {
@@ -90,5 +90,4 @@
     </div>
     <!-- /.panel -->
 </div>
-
 

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
 
-namespace HanTeknoloji.Data.Models.Orm.Entity
+namespace HanTeknoloji.Web.Areas.Admin.Models.VM
 {
-    public class Category : BaseEntity
+    public class CategoryVM : BaseVM
     {
         public string CategoryName { get; set; }
 

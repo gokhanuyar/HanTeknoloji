@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace HanTeknoloji.Web.Areas.Admin.Controllers
 {
+    [Authorize]
     public class AdminProductModelController : AdminBaseController
     {
         public ActionResult Index(int? id, int? page, string searchString)
@@ -30,7 +31,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     model = rpproductmodel.GetAll().OrderByDescending(x => x.AddDate).Select(x => new ProductModelVM
                     {
                         ID = x.ID,
-                        Name = x.Name
+                        Name = x.Name,
+                        BarcodeValue = x.BarcodeValue
                     }).ToList();
                 }
                 else

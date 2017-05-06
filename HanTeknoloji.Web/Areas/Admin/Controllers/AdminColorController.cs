@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace HanTeknoloji.Web.Areas.Admin.Controllers
 {
+    [Authorize]
     public class AdminColorController : AdminBaseController
     {
         public ActionResult Index(int? page)

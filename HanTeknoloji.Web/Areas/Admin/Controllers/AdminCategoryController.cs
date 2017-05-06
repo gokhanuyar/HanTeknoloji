@@ -11,32 +11,32 @@ using System.Web.Mvc;
 namespace HanTeknoloji.Web.Areas.Admin.Controllers
 {
     [Authorize]
-    public class AdminTradeMarkController : AdminBaseController
+    public class AdminCategoryController : AdminBaseController
     {
         public ActionResult Index(int? page, string searchString)
         {
             int _page = page ?? 1;
 
-            List<TradeMarkVM> model;
+            List<CategoryVM> model;
             if (string.IsNullOrEmpty(searchString))
             {
-                model = rptrademark.GetAll().OrderByDescending(x => x.AddDate).Select(x => new TradeMarkVM
+                model = rpcategory.GetAll().OrderByDescending(x => x.AddDate).Select(x => new CategoryVM
                 {
                     ID = x.ID,
-                    Name = x.Name,
+                    CategoryName = x.CategoryName,
                     BarcodeValue = x.BarcodeValue
                 }).ToList();
             }
             else
             {
                 string search = searchString.ToLower();
-                model = rptrademark.GetListWithQuery(x => x.Name.ToLower().Contains(search)).OrderByDescending(x => x.AddDate).Select(x => new TradeMarkVM
+                model = rpcategory.GetListWithQuery(x => x.CategoryName.ToLower().Contains(search)).OrderByDescending(x => x.AddDate).Select(x => new CategoryVM
                 {
                     ID = x.ID,
-                    Name = x.Name
+                    CategoryName = x.CategoryName
                 }).ToList();
             }
-            IPagedList<TradeMarkVM> list = model.ToPagedList(_page, 15);
+            IPagedList<CategoryVM> list = model.ToPagedList(_page, 15);
             return View(list);
         }
 
@@ -50,12 +50,11 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                TradeMark entity = new TradeMark
+                Category entity = new Category
                 {
-                    Name = model.Name,
-                    BarcodeValue = model.BarcodeValue
+                    CategoryName = model.Name
                 };
-                rptrademark.Add(entity);
+                rpcategory.Add(entity);
                 ViewBag.IslemDurum = EnumIslemDurum.Basarili;
 
             }
@@ -69,26 +68,25 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
 
         public ActionResult Edit(int id)
         {
-            var entity = rptrademark.Find(id);
-            TradeMarkVM model = new TradeMarkVM
+            var entity = rpcategory.Find(id);
+            CategoryVM model = new CategoryVM
             {
                 ID = entity.ID,
-                Name = entity.Name,
+                CategoryName = entity.CategoryName,
                 BarcodeValue = entity.BarcodeValue
             };
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Edit(TradeMarkVM model)
+        public ActionResult Edit(CategoryVM model)
         {
             if (ModelState.IsValid)
             {
-                TradeMark entity = rptrademark.Find(model.ID);
-                entity.Name = model.Name;
-                entity.BarcodeValue = model.BarcodeValue;
+                Category entity = rpcategory.Find(model.ID);
+                entity.CategoryName = model.CategoryName;
                 entity.UpdateDate = DateTime.Now;
-                rptrademark.SaveChanges();
+                rpcategory.SaveChanges();
                 ViewBag.IslemDurum = EnumIslemDurum.Basarili;
             }
             else
@@ -100,7 +98,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
 
         public ActionResult Delete(int id)
         {
-            rptrademark.Delete(id);
+            rpcategory.Delete(id);
             return RedirectToAction("Index");
         }
     }

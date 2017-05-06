@@ -8,7 +8,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
 {
     public class ProductVM : BaseVM
     {
-        [Display(Name = "Seri Numarası"),Required(ErrorMessage ="Ürün seri numarası boş geçilemez.")]
+        [Display(Name = "Seri Numarası")]
         public string SerialNumber { get; set; }
 
         [Display(Name = "Kategori"), Required(ErrorMessage = "Lütfen kategori seçiniz.")]
@@ -41,11 +41,20 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         [Display(Name = "Birim Fiyat"), Required(ErrorMessage = "Birim fiyat boş geçilemez.")]
         public decimal UnitPrice { get; set; }
 
+        [Display(Name = "Satış Fiyatı"), Required(ErrorMessage = "Satış fiyatı boş geçilemez.")]
+        public decimal UnitSalePrice { get; set; }
+
         [Display(Name = "Adet"), Required(ErrorMessage = "Lütfen ürün adeti giriniz.")]
         public int Count { get; set; }
 
         [Display(Name = "Ödeme Şekli"), Required(ErrorMessage = "Ödeme şekli alanı boş geçilemez.")]
         public string Payment { get; set; }
+
+        [Display(Name ="KDV"),Required(ErrorMessage ="KDV alanı boş geçilemez")]
+        public decimal KDV { get; set; }
+
+        [Display(Name = "IMEI")]
+        public string IMEI { get; set; }
 
         public int SaleCount { get; set; }
         public decimal TotalPrice { get; set; }

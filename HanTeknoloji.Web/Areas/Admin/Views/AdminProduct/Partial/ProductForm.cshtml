@@ -7,6 +7,12 @@
         @Html.ValidationMessageFor(x => x.SerialNumber)
     </div>
 
+    <div class="form-group imei-box">
+        @Html.LabelFor(x => x.IMEI)
+        @Html.TextBoxFor(x => x.IMEI, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.IMEI)
+    </div>
+
     <div class="form-group">
         @Html.LabelFor(x => x.CategoryID)
         @Html.DropDownListFor(x => x.CategoryID, (IList<SelectListItem>)ViewData["category"], "Kategori Seçiniz", new { @class = "form-control" })
@@ -44,16 +50,22 @@
         @Html.ValidationMessageFor(x => x.Supplier)
     </div>
 
-    @*<div class="form-group">
-        @Html.LabelFor(x => x.Color)
-        @Html.TextBoxFor(x => x.Color, new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.Color)
-    </div>*@
-
     <div class="form-group">
         @Html.LabelFor(x => x.UnitPrice)
         @Html.TextBoxFor(x => x.UnitPrice, new { @class = "form-control" })
         @Html.ValidationMessageFor(x => x.UnitPrice)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.KDV)
+        @Html.TextBoxFor(x => x.KDV, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.KDV)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.UnitSalePrice)
+        @Html.TextBoxFor(x => x.UnitSalePrice, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.UnitSalePrice)
     </div>
 
     <div class="form-group">

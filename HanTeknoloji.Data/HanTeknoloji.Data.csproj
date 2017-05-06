@@ -53,6 +53,7 @@
     <Compile Include="Models\Orm\Context\HanTeknolojiContext.cs" />
     <Compile Include="Models\Orm\Entity\BaseEntity.cs" />
     <Compile Include="Models\Orm\Entity\Category.cs" />
+    <Compile Include="Models\Orm\Entity\AdminUser.cs" />
     <Compile Include="Models\Orm\Entity\Color.cs" />
     <Compile Include="Models\Orm\Entity\Product.cs" />
     <Compile Include="Models\Orm\Entity\ProductModel.cs" />

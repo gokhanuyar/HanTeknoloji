@@ -11,9 +11,9 @@ using System.Web.Mvc;
 
 namespace HanTeknoloji.Web.Areas.Admin.Controllers
 {
+    [Authorize]
     public class AdminProductController : AdminBaseController
     {
-        //
         public ActionResult Index(int? id, int? page, string searchString)
         {
             if (String.IsNullOrEmpty(searchString) && page == null && id == null)
@@ -89,6 +89,14 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (model.SerialNumber == null)
+                {
+                    string category = rpcategory.Find(model.CategoryID).BarcodeValue;
+                    string trademark = rptrademark.Find(model.TradeMarkID).BarcodeValue;
+                    string proModel = rpproductmodel.Find(model.ProductModelID).BarcodeValue;
+                    string color = rpcolor.Find(model.ColorID).BarcodeValue;
+                    model.SerialNumber = category + trademark + proModel + color;
+                }
                 Product entity = new Product()
                 {
                     SerialNumber = model.SerialNumber,
@@ -97,9 +105,12 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     Supplier = model.Supplier,
                     ColorID = model.ColorID,
                     UnitPrice = model.UnitPrice,
+                    UnitSalePrice = model.UnitSalePrice,
                     Count = model.Count,
                     CategoryID = model.CategoryID,
                     Payment = model.Payment,
+                    KDV = model.KDV,
+                    IMEI = model.IMEI
                 };
                 rpproduct.Add(entity);
                 ViewBag.IslemDurum = EnumIslemDurum.Basarili;
@@ -128,6 +139,9 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 Count = entity.Count,
                 CategoryID = entity.CategoryID,
                 Payment = entity.Payment,
+                KDV = entity.KDV,
+                IMEI = entity.IMEI,
+                UnitSalePrice = entity.UnitSalePrice,
             };
             GetDropdownItems(entity.TradeMarkID);
             return View(model);
@@ -148,6 +162,9 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 entity.Count = model.Count;
                 entity.CategoryID = model.CategoryID;
                 entity.Payment = model.Payment;
+                entity.KDV = model.KDV;
+                entity.IMEI = model.IMEI;
+                entity.UnitSalePrice = model.UnitSalePrice;
                 entity.UpdateDate = DateTime.Now;
                 rpproduct.SaveChanges();
                 ViewBag.IslemDurum = EnumIslemDurum.Basarili;

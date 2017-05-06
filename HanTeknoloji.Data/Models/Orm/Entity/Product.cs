@@ -20,10 +20,16 @@ namespace HanTeknoloji.Data.Models.Orm.Entity
 
         public decimal UnitPrice { get; set; }
 
+        public decimal UnitSalePrice { get; set; }
+
         public int Count { get; set; }
 
         public string Payment { get; set; }
 
         public int CategoryID { get; set; }
+
+        public decimal KDV { get; set; }
+
+        public string IMEI { get; set; }
     }
 }

@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace HanTeknoloji.Web.Areas.Admin.Controllers
 {
+    [Authorize]
     public class AdminSaleController : AdminBaseController
     {
         public ActionResult Index()
@@ -78,14 +79,20 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     }
                     else
                     {
-                        model = (CartVM)Session["Sepet"];
+                        if (Session["Sepet"] != null)
+                        {
+                            model = (CartVM)Session["Sepet"];
+                        }
                         ViewBag.IslemDurum = EnumIslemDurum.StokYetersiz;
                         return View(model);
                     }
                 }
                 else
                 {
-                    model = (CartVM)Session["Sepet"];
+                    if (Session["Sepet"] != null)
+                    {
+                        model = (CartVM)Session["Sepet"];
+                    }
                     ViewBag.IslemDurum = EnumIslemDurum.UrunYok;
                     return View(model);
                 }
@@ -165,7 +172,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 };
                 rpsale.Add(entity);
             }
-            Session.Remove("yourSessionName");
+            Session.Remove("Sepet");
             return RedirectToAction("Index");
         }
     }
