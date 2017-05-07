@@ -161,6 +161,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         public ActionResult AddSale(SaleVM model)
         {
             var sepet = (CartVM)Session["Sepet"];
+            int userId = UserID();
             foreach (var item in sepet.ProductList)
             {
                 Sale entity = new Sale()
@@ -168,11 +169,30 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     ProductID = item.ID,
                     PaymentType = model.PaymentType,
                     Price = item.TotalPrice,
-                    Quantity = item.SaleCount
+                    Quantity = item.SaleCount,
+                    UserID = userId
                 };
                 rpsale.Add(entity);
             }
             Session.Remove("Sepet");
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult AddServiceSale(ServiceSaleVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                int userId = UserID();
+                ServiceSale entity = new ServiceSale()
+                {
+                    PaymentType = model.PaymentType,
+                    Price = model.Price,
+                    UserID = userId
+                };
+                rpservicesale.Add(entity);
+            }
+            ViewBag.IslemDurum = EnumIslemDurum.Basarili;
             return RedirectToAction("Index");
         }
     }

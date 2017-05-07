@@ -18,6 +18,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         public GenericRepository<Color> rpcolor;
         public GenericRepository<Sale> rpsale;
         public GenericRepository<AdminUser> rpadminuser;
+        public GenericRepository<ServiceSale> rpservicesale;
+        public GenericRepository<Supplier> rpsupplier;
 
         public AdminBaseController()
         {
@@ -28,6 +30,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             rpcolor = new GenericRepository<Color>();
             rpsale = new GenericRepository<Sale>();
             rpadminuser = new GenericRepository<AdminUser>();
+            rpservicesale = new GenericRepository<ServiceSale>();
+            rpsupplier = new GenericRepository<Supplier>();
         }
 
         protected override void Dispose(bool disposing)
@@ -39,6 +43,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             rpcolor.Dispose();
             rpsale.Dispose();
             rpadminuser.Dispose();
+            rpservicesale.Dispose();
+            rpsupplier.Dispose();
         }
 
         public string UserEmail()
@@ -46,6 +52,13 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             IEnumerable<Claim> claims = ((ClaimsIdentity)User.Identity).Claims;
             string UserEmail = claims.First(x => x.Type == ClaimTypes.Name).Value;
             return UserEmail;
+        }
+
+        public int UserID()
+        {
+            IEnumerable<Claim> claims = ((ClaimsIdentity)User.Identity).Claims;
+            int UserID = Convert.ToInt32(claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            return UserID;
         }
 
         public int FirstTrademarkID()

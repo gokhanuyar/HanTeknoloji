@@ -354,6 +354,7 @@
     <Content Include="Areas\Admin\Views\AdminCategory\Add.cshtml" />
     <Content Include="Areas\Admin\Views\AdminCategory\Partial\CategoryForm.cshtml" />
     <Content Include="Areas\Admin\Views\AdminCategory\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminSale\Partial\ServiceSaleForm.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\gridmvc.js" />
     <Content Include="Scripts\gridmvc.lang.ru.js" />
@@ -375,6 +376,7 @@
     <Compile Include="Areas\Admin\Controllers\AdminProductController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminProductModelController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminSaleController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminSupplierController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminTradeMarkController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminColorController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminLoginController.cs" />
@@ -395,6 +397,8 @@
     <Compile Include="Areas\Admin\Models\VM\ProductModelVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\ProductVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\SaleVM.cs" />
+    <Compile Include="Areas\Admin\Models\VM\ServiceSaleVM.cs" />
+    <Compile Include="Areas\Admin\Models\VM\SupplierVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\TradeMarkVM.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -421,6 +425,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Views\AdminBase\" />
+    <Folder Include="Areas\Admin\Views\AdminSupplier\" />
     <Folder Include="Areas\Admin\Views\Login\" />
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
