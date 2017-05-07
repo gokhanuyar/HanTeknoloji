@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace HanTeknoloji.Web.Areas.Admin.Controllers
 {
+    [Authorize]
     public class AdminSupplierController : AdminBaseController
     {
         public ActionResult Index(int? page, string searchString)
@@ -23,9 +24,12 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 {
                     ID = x.ID,
                     CompanyName = x.CompanyName,
-                    Phone = x.Phone,
-                    City = x.City,
-                    Region = x.Region
+                    Phone = x.Phone ?? "-",
+                    Fax = x.Fax ?? "-",
+                    WebSite = x.WebSite ?? "-",
+                    City = rpcity.Find(x.CityID).Name,
+                    Region = rpregion.Find(x.RegionID).Name,
+                    Address = x.Address ?? "-"
                 }).ToList();
             }
             else
@@ -35,9 +39,12 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 {
                     ID = x.ID,
                     CompanyName = x.CompanyName,
-                    Phone = x.Phone,
-                    City = x.City,
-                    Region = x.Region
+                    Phone = x.Phone ?? "-",
+                    Fax = x.Fax ?? "-",
+                    WebSite = x.WebSite ?? "-",
+                    City = rpcity.Find(x.CityID).Name,
+                    Region = rpregion.Find(x.RegionID).Name,
+                    Address = x.Address ?? "-"
                 }).ToList();
             }
             IPagedList<SupplierVM> list = model.ToPagedList(_page, 15);
@@ -46,7 +53,36 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
 
         public ActionResult Add()
         {
+            GetAllCitiesforAdding();
             return View();
+        }
+
+        private void GetAllCitiesforAdding()
+        {
+            ViewData["city"] = rpcity.GetAll().Select(x => new SelectListItem()
+            {
+                Value = x.ID.ToString(),
+                Text = x.Name
+            }).ToList();
+            ViewData["region"] = rpregion.GetListWithQuery(x => x.CityID == 1).Select(x => new SelectListItem()
+            {
+                Value = x.ID.ToString(),
+                Text = x.Name
+            }).ToList();
+        }
+
+        private void GetAllCitiesforEditing(int cityId)
+        {
+            ViewData["city"] = rpcity.GetListWithQuery(x => x.ID == cityId).Select(x => new SelectListItem()
+            {
+                Value = x.ID.ToString(),
+                Text = x.Name
+            }).ToList();
+            ViewData["region"] = rpregion.GetListWithQuery(x => x.CityID == cityId).Select(x => new SelectListItem()
+            {
+                Value = x.ID.ToString(),
+                Text = x.Name
+            }).ToList();
         }
 
         [HttpPost]
@@ -61,8 +97,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     Phone = model.Phone,
                     Fax = model.Fax,
                     WebSite = model.WebSite,
-                    City = model.City,
-                    Region = model.Region
+                    CityID = model.CityID,
+                    RegionID = model.RegionID
                 };
                 rpsupplier.Add(entity);
                 ViewBag.IslemDurum = EnumIslemDurum.Basarili;
@@ -73,6 +109,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 ViewBag.IslemDurum = EnumIslemDurum.ValidationHata;
             }
             ModelState.Clear();
+            GetAllCitiesforAdding();
             return View();
         }
 
@@ -87,9 +124,10 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 Phone = entity.Phone,
                 Fax = entity.Fax,
                 WebSite = entity.WebSite,
-                City = entity.City,
-                Region = entity.Region
+                CityID = entity.CityID,
+                RegionID = entity.RegionID
             };
+            GetAllCitiesforEditing(entity.CityID);
             return View(model);
         }
 
@@ -104,8 +142,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 entity.Phone = model.Phone;
                 entity.Fax = model.Fax;
                 entity.WebSite = model.WebSite;
-                entity.City = model.City;
-                entity.Region = model.Region;
+                entity.CityID = model.CityID;
+                entity.RegionID = model.RegionID;
 
                 entity.UpdateDate = DateTime.Now;
                 rpsupplier.SaveChanges();
@@ -115,6 +153,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             {
                 ViewBag.IslemDurum = EnumIslemDurum.ValidationHata;
             }
+            GetAllCitiesforEditing(model.CityID);
             return View(model);
         }
 
@@ -122,6 +161,16 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         {
             rpsupplier.Delete(id);
             return RedirectToAction("Index");
+        }
+
+        public JsonResult GetRegionsByID(int id)
+        {
+            var list = rpregion.GetListWithQuery(x => x.CityID == id).Select(x => new RegionVM()
+            {
+                ID = x.ID,
+                Name = x.Name
+            }).ToList();
+            return Json(list, JsonRequestBehavior.AllowGet);
         }
     }
 }

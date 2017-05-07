@@ -43,3 +43,9 @@ else if (ViewBag.IslemDurum == EnumIslemDurum.UrunYok)
         @FormMessages.NoProduct
     </div>
 }
+else if (ViewBag.IslemDurum == EnumIslemDurum.YanlısTCNo)
+{
+    <div class="alert alert-danger">
+        @FormMessages.TCNo
+    </div>
+}

@@ -30,6 +30,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         public string ProductModel { get; set; }
 
         [Display(Name = "Tedarikçi"), Required(ErrorMessage = "Tedarikçi alanı boş geçilemez.")]
+        public int SupplierID { get; set; }
         public string Supplier { get; set; }
 
         [Display(Name = "Renk"), Required(ErrorMessage = "Renk alanı boş geçilemez.")]

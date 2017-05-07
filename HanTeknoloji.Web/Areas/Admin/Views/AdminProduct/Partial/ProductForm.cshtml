@@ -37,17 +37,10 @@
         @Html.ValidationMessageFor(x => x.ColorID)
     </div>
 
-    @*<div class="form-group">
-        <label>Model</label>
-        <select id="model" name="ProductModelID" class="form-control">
-            <option value="0">Önce Marka Seçiniz</option>
-        </select>
-    </div>*@
-
     <div class="form-group">
-        @Html.LabelFor(x => x.Supplier)
-        @Html.TextBoxFor(x => x.Supplier, new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.Supplier)
+        @Html.LabelFor(x => x.SupplierID)
+        @Html.DropDownListFor(x => x.SupplierID, (IList<SelectListItem>)ViewData["supplier"], new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.SupplierID)
     </div>
 
     <div class="form-group">

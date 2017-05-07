@@ -14,7 +14,7 @@ namespace HanTeknoloji.Data.Models.Orm.Entity
 
         public int ProductModelID { get; set; }        
 
-        public string Supplier { get; set; }
+        public int SupplierID { get; set; }
 
         public int ColorID { get; set; }
 

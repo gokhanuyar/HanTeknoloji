@@ -13,6 +13,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.Types.Enums
         AdminMevcut = 4,
         BarkodMevcut = 5,
         StokYetersiz = 6,
-        UrunYok = 7
+        UrunYok = 7,
+        YanlısTCNo = 8
     }
 }

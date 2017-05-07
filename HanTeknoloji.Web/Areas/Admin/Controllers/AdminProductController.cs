@@ -38,6 +38,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                         ProductModel = x.ProductModelID == 0 ? "Yok" : rpproductmodel.Find(x.ProductModelID).Name,
                         Payment = x.Payment,
                         UnitPrice = x.UnitPrice,
+                        UnitSalePrice = x.UnitSalePrice,
+                        Supplier = rpsupplier.Find(x.SupplierID).CompanyName
                     }).ToList();
                 }
                 else
@@ -50,7 +52,9 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                         TradeMark = rptrademark.Find(x.TradeMarkID).Name,
                         ProductModel = x.ProductModelID == 0 ? "Yok" : rpproductmodel.Find(x.ProductModelID).Name,
                         UnitPrice = x.UnitPrice,
-                        Payment = x.Payment
+                        UnitSalePrice = x.UnitSalePrice,
+                        Payment = x.Payment,
+                        Supplier = rpsupplier.Find(x.SupplierID).CompanyName
                     }).ToList();
                 }
             }
@@ -65,7 +69,9 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     TradeMark = rptrademark.Find(x.TradeMarkID).Name,
                     ProductModel = x.ProductModelID == 0 ? "Yok" : rpproductmodel.Find(x.ProductModelID).Name,
                     UnitPrice = x.UnitPrice,
-                    Payment = x.Payment
+                    UnitSalePrice = x.UnitSalePrice,
+                    Payment = x.Payment,
+                    Supplier = rpsupplier.Find(x.SupplierID).CompanyName
                 }).ToList();
             }
             if (!String.IsNullOrEmpty(searchString))
@@ -102,7 +108,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     SerialNumber = model.SerialNumber,
                     TradeMarkID = model.TradeMarkID,
                     ProductModelID = model.ProductModelID,
-                    Supplier = model.Supplier,
+                    SupplierID = model.SupplierID,
                     ColorID = model.ColorID,
                     UnitPrice = model.UnitPrice,
                     UnitSalePrice = model.UnitSalePrice,
@@ -133,7 +139,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 SerialNumber = entity.SerialNumber,
                 TradeMarkID = entity.TradeMarkID,
                 ProductModelID = entity.ProductModelID,
-                Supplier = entity.Supplier,
+                SupplierID = entity.SupplierID,
                 ColorID = entity.ColorID,
                 UnitPrice = entity.UnitPrice,
                 Count = entity.Count,
@@ -156,7 +162,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 entity.SerialNumber = model.SerialNumber;
                 entity.TradeMarkID = model.TradeMarkID;
                 entity.ProductModelID = model.ProductModelID;
-                entity.Supplier = model.Supplier;
+                entity.SupplierID = model.SupplierID;
                 entity.ColorID = model.ColorID;
                 entity.UnitPrice = model.UnitPrice;
                 entity.Count = model.Count;
@@ -206,6 +212,12 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             ViewData["color"] = rpcolor.GetAll().Select(x => new SelectListItem()
             {
                 Text = x.Name,
+                Value = x.ID.ToString()
+            }).ToList();
+
+            ViewData["supplier"] = rpsupplier.GetAll().Select(x => new SelectListItem()
+            {
+                Text = x.CompanyName,
                 Value = x.ID.ToString()
             }).ToList();
 

@@ -1,16 +1,12 @@
 ﻿
 @{
-    ViewBag.Title = "AddProduct";
+    ViewBag.Title = "Edit";
     Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
-}
-
-@section css{
-    <link href="~/Areas/Admin/Content/custom/add-product.css" rel="stylesheet" />
 }
 
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Ürün Ekleme</h1>
+        <h1 class="page-header">Müşteri Düzenleme</h1>
     </div>
 </div>
 
@@ -19,14 +15,14 @@
         @Html.Partial("/Areas/Admin/Views/Shared/Partial/MessagesPart.cshtml")
         <div class="panel panel-default">
             <div class="panel-heading">
-                Ürün Ekleme Formu
+                Müşteri Düzenleme Formu
             </div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-12">
-                        @using (Html.BeginForm("Add", "AdminProduct", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+                        @using (Html.BeginForm("Edit", "AdminCustomer", FormMethod.Post, new { @enctype = "multipart/form-data" }))
                         {
-                            @Html.Partial("Partial/ProductForm")
+                            @Html.Partial("Partial/CustomerForm")
                         }
                     </div>
                 </div>
@@ -35,6 +31,6 @@
     </div>
 </div>
 @section scripts{
-    <script src="~/Areas/Admin/Scripts/custom/add-product.js"></script>
+    <script src="~/Areas/Admin/Scripts/custom/region.js"></script>
 }
 

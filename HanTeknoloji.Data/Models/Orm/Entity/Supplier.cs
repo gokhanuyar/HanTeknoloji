@@ -18,8 +18,8 @@ namespace HanTeknoloji.Data.Models.Orm.Entity
 
         public string WebSite { get; set; }
 
-        public string City { get; set; }
+        public int CityID { get; set; }
 
-        public string Region { get; set; }
+        public int RegionID { get; set; }
     }
 }

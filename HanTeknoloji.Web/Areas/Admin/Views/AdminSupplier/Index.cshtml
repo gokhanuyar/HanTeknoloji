@@ -4,23 +4,28 @@
     Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
 }
 
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
 @using PagedList;
 @using PagedList.Mvc;
 @using GridMvc.Html;
 
-@model IPagedList<TradeMarkVM>
+@model IPagedList<SupplierVM>
 @section css{
     <link href="~/Content/Gridmvc.css" rel="stylesheet" />
 }
 
 @section scripts{
     <script src="~/Scripts/gridmvc.js"></script>
-    <script src="~/Areas/Admin/Scripts/custom/product-list.js"></script>
 }
 
 <div class="row">
-    <div class="col-lg-12">
-        <h3 class="page-header">Marka Listesi</h3>
+    <div class="col-lg-6">
+        <h3 class="page-header">Tedarikçi Listesi</h3>
     </div>
 </div>
 
@@ -38,19 +43,24 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="dataTable_wrapper">
-                    @Html.Grid(Model).Named("TradeMark").Columns(col =>
+                    @Html.Grid(Model).Named("Supplier").Columns(col =>
                {
-                   col.Add(x => x.Name).Titled("Marka Adı");
-                   col.Add(x => x.BarcodeValue).Titled("Barkod Değeri");
+                   col.Add(x => x.CompanyName).Titled("Şirket Adı");
+                   col.Add(x => x.Phone).Titled("Telefon Numarası");
+                   col.Add(x => x.Fax).Titled("Fax Numarası");
+                   col.Add(x => x.WebSite).Titled("Web Sitesi");
+                   col.Add(x => x.City).Titled("İl");
+                   col.Add(x => x.Region).Titled("İlçe");
+                   col.Add(x => x.Address).Titled("Adres");
                    col.Add().Encoded(false).Sanitized(false).RenderValueAs(html =>
                    {
-                       string htmlelement = "<a href='/Admin/AdminTradeMark/Edit/" + html.ID.ToString() + "' class='fa fa-pencil'></a>";
+                       string htmlelement = "<a href='/Admin/AdminSupplier/Edit/" + html.ID.ToString() + "' class='fa fa-pencil'></a>";
                        return MvcHtmlString.Create(htmlelement);
 
                    }).Titled("Düzelt");
                    col.Add().Encoded(false).Sanitized(false).RenderValueAs(html =>
                    {
-                       string htmlelement = "<a class='btn btn-danger btn-circle' href='/Admin/AdminTradeMark/Delete/" + html.ID.ToString() + "'><i class='fa fa-remove'></i></a>";
+                       string htmlelement = "<a class='btn btn-danger btn-circle' href='/Admin/AdminSupplier/Delete/" + html.ID.ToString() + "'><i class='fa fa-remove'></i></a>";
                        return MvcHtmlString.Create(htmlelement);
 
                    }).Titled("Sil");
@@ -60,5 +70,9 @@
         </div>
     </div>
 </div>
-@Html.PagedListPager(Model, page => Url.Action("Index", "AdminTradeMark", new { page = page, id = ViewBag.Statuid }))
+@Html.PagedListPager(Model, page => Url.Action("Index", "AdminSupplier", new { page = page, id = ViewBag.Statuid }))
+
+
+
+
 

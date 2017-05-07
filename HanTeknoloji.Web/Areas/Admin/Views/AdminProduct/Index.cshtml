@@ -19,7 +19,7 @@
 }
 
 <div class="row">
-    <div class="col-lg-6">
+    <div class="col-lg-12">
         <h3 class="page-header">Ürün Listesi</h3>
     </div>
 </div>
@@ -49,8 +49,10 @@
                    col.Add(x => x.TradeMark).Titled("Marka");
                    col.Add(x => x.ProductModel).Titled("Model");
                    col.Add(x => x.Count).Titled("Adet");
-                   col.Add(x => x.UnitPrice).Titled("Birim Fiyat");
+                   col.Add(x => x.UnitPrice).Titled("Alış Fiyatı (TL)");
+                   col.Add(x => x.UnitSalePrice).Titled("Satış Fiyatı (TL)");
                    col.Add(x => x.Payment).Titled("Ödeme Şekli");
+                   col.Add(x => x.Supplier).Titled("Tedarikçi");
                    col.Add().Encoded(false).Sanitized(false).RenderValueAs(html =>
                    {
                        string htmlelement = "<a href='/Admin/AdminProduct/Edit/" + html.ID.ToString() + "' class='fa fa-pencil'></a>";
