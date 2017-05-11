@@ -75,5 +75,6 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             int id = rptrademark.First().ID;
             return id;
         }
+        
     }
 }

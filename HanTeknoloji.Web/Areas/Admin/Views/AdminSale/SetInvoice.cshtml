@@ -1,0 +1,25 @@
+﻿
+@{
+    Layout = null;
+}
+
+@model InvoiceVM
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>SetInvoice</title>
+    <link href="~/Areas/Admin/Content/custom/invoice-page-A4.css" rel="stylesheet" />
+    <link href="~/Areas/Admin/Content/custom/invoice-page.css" rel="stylesheet" />
+</head>
+<body>
+    <div>
+        <div class="page">
+            <div class="musteri-adres">@Model.Address<br />@Model.Region/@Model.City</div>
+            <div class="tax-office">@Model.TaxOffice</div>
+            <div class="tax-number">@Model.TaxNumber</div>
+        </div>
+    </div>
+</body>
+</html>

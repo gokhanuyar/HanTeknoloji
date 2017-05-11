@@ -10,5 +10,9 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         public decimal Price { get; set; }
 
         public string PaymentType { get; set; }
+
+        public int CustomerID { get; set; }
+
+        public int Invoice { get; set; }
     }
 }

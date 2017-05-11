@@ -20,11 +20,6 @@
     float: right;
 }
 
-#payment-dropdown {
-    width: 15%;
-    margin-right: 10px;
-}
-
 .product-total-price {
     max-width: 75px;
 }
@@ -35,4 +30,8 @@
 
 .wrapper {
     margin-top: 30px;
+}
+
+#myModal {
+    margin-top: 200px;
 }

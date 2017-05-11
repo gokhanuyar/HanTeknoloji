@@ -20,7 +20,17 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             {
                 model = (CartVM)Session["Sepet"];
             }
+            GetCustomers();
             return View(model);
+        }
+
+        private void GetCustomers()
+        {
+            ViewData["customer"] = rpcustomer.GetAll().Select(x => new SelectListItem
+            {
+                Text = x.Name + " Tel:" + x.Phone,
+                Value = x.ID.ToString()
+            }).ToList();
         }
 
         [HttpPost]
@@ -84,6 +94,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                             model = (CartVM)Session["Sepet"];
                         }
                         ViewBag.IslemDurum = EnumIslemDurum.StokYetersiz;
+                        GetCustomers();
                         return View(model);
                     }
                 }
@@ -94,10 +105,11 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                         model = (CartVM)Session["Sepet"];
                     }
                     ViewBag.IslemDurum = EnumIslemDurum.UrunYok;
+                    GetCustomers();
                     return View(model);
                 }
             }
-
+            GetCustomers();
             return View(model);
         }
 
@@ -161,21 +173,42 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         public ActionResult AddSale(SaleVM model)
         {
             var sepet = (CartVM)Session["Sepet"];
-            int userId = UserID();
-            foreach (var item in sepet.ProductList)
+            if (sepet != null)
             {
-                Sale entity = new Sale()
+                int userId = UserID();
+                foreach (var item in sepet.ProductList)
                 {
-                    ProductID = item.ID,
-                    PaymentType = model.PaymentType,
-                    Price = item.TotalPrice,
-                    Quantity = item.SaleCount,
-                    UserID = userId
-                };
-                rpsale.Add(entity);
+                    Sale entity = new Sale()
+                    {
+                        ProductID = item.ID,
+                        PaymentType = model.PaymentType,
+                        Price = item.TotalPrice,
+                        Quantity = item.SaleCount,
+                        UserID = userId,
+                        CustomerID = model.CustomerID
+                    };
+                    rpsale.Add(entity);
+                }
+                if (model.Invoice == 1)
+                {
+                    return RedirectToAction("SetInvoice", model);
+                }
+                Session.Remove("Sepet");
             }
-            Session.Remove("Sepet");
             return RedirectToAction("Index");
+        }
+
+        public ActionResult SetInvoice(SaleVM saleVM)
+        {
+            var sepet = (CartVM)Session["Sepet"];
+            var customer = rpcustomer.Find(saleVM.CustomerID);
+            InvoiceVM model = new InvoiceVM();
+            model.Address = customer.Address;
+            model.City = rpcity.Find(customer.CityID).Name;
+            model.Region = rpregion.Find(customer.RegionID).Name;
+            model.TaxOffice = customer.TaxOffice;
+            model.TaxNumber = customer.TaxNumber;
+            return View(model);
         }
 
         [HttpPost]
@@ -195,5 +228,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             ViewBag.IslemDurum = EnumIslemDurum.Basarili;
             return RedirectToAction("Index");
         }
+
+
     }
 }
