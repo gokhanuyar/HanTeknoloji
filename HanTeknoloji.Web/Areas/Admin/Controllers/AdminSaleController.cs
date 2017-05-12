@@ -62,6 +62,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                     item.Count = product.Count;
                                     varMi = true;
                                     model.TotalSalePrice += item.UnitPrice;
+                                    model.TotalSalePriceKdv += item.KdvPrice;
+                                    model.TotalSalePriceKdv = Math.Round(model.TotalSalePriceKdv, 2);
                                     break;
                                 }
                             }
@@ -80,10 +82,13 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                 UnitPrice = product.UnitSalePrice,
                                 Count = product.Count,
                                 SaleCount = 1,
-                                TotalPrice = product.UnitSalePrice
+                                TotalPrice = product.UnitSalePrice,
+                                KDV = product.KDV
                             };
                             model.ProductList.Add(pro);
                             model.TotalSalePrice += pro.TotalPrice;
+                            model.TotalSalePriceKdv += pro.KdvPrice;
+                            model.TotalSalePriceKdv = Math.Round(model.TotalSalePriceKdv, 2);
                         }
                         Session["Sepet"] = model;
                     }
@@ -119,6 +124,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             var sepet = (CartVM)Session["Sepet"];
             var selectedItem = sepet.ProductList.FirstOrDefault(x => x.ID == id);
             sepet.TotalSalePrice -= selectedItem.TotalPrice;
+            sepet.TotalSalePriceKdv -= selectedItem.KdvPrice;
+            sepet.TotalSalePriceKdv = Math.Round(sepet.TotalSalePriceKdv, 2);
 
             product.Count += selectedItem.SaleCount;
             rpproduct.SaveChanges();
@@ -142,10 +149,14 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             selectedItem.TotalPrice = selectedItem.UnitPrice * quantity;
             selectedItem.Count = product.Count;
             sepet.TotalSalePrice = 0;
+            sepet.TotalSalePriceKdv = 0;
             foreach (var item in sepet.ProductList)
             {
                 sepet.TotalSalePrice += item.TotalPrice;
+                sepet.TotalSalePriceKdv += item.KdvPrice;
             }
+            sepet.TotalSalePriceKdv = Math.Round(sepet.TotalSalePriceKdv, 2);
+
             Session["Sepet"] = sepet;
             return RedirectToAction("Index");
         }
@@ -158,8 +169,15 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 var selectedItem = sepet.ProductList.FirstOrDefault(x => x.ID == model.ID);
 
                 sepet.TotalSalePrice -= selectedItem.TotalPrice;
+                sepet.TotalSalePriceKdv -= selectedItem.KdvPrice;
+
                 selectedItem.TotalPrice = model.Price;
+                selectedItem.KdvPrice = model.Price;
+
                 sepet.TotalSalePrice += selectedItem.TotalPrice;
+                sepet.TotalSalePriceKdv += selectedItem.KdvPrice;
+                sepet.TotalSalePriceKdv = Math.Round(sepet.TotalSalePriceKdv, 2);
+
                 return Json("succ");
             }
             else
@@ -182,7 +200,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     {
                         ProductID = item.ID,
                         PaymentType = model.PaymentType,
-                        Price = item.TotalPrice,
+                        Price = item.TotalPrice * item.KDV,
                         Quantity = item.SaleCount,
                         UserID = userId,
                         CustomerID = model.CustomerID
@@ -208,6 +226,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             model.Region = rpregion.Find(customer.RegionID).Name;
             model.TaxOffice = customer.TaxOffice;
             model.TaxNumber = customer.TaxNumber;
+            model.ProductList = sepet.ProductList;
+
             return View(model);
         }
 
@@ -228,7 +248,5 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             ViewBag.IslemDurum = EnumIslemDurum.Basarili;
             return RedirectToAction("Index");
         }
-
-
     }
 }

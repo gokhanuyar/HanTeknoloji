@@ -9,6 +9,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
     {
         public decimal TotalSalePrice { get; set; }
 
+        public decimal TotalSalePriceKdv { get; set; }
+
         public List<ProductVM> ProductList { get; set; }
     }
 }

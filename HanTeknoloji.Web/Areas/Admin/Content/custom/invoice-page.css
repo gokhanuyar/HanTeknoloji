@@ -3,4 +3,46 @@
     position: absolute;
     top: 255px;
     width: 190px;
+    left: 33%;
+}
+
+.tax-office {
+    position: absolute;
+    top: 385px;
+    left: 33%;
+}
+
+.tax-number {
+    position: absolute;
+    top: 385px;
+    left: 43%;
+}
+
+.product-list {
+    position: absolute;
+    top: 435px;
+    left: 36%;
+}
+
+.product-row {
+    display: flex;
+}
+
+.product-price {
+    left: 228%;
+    position: relative;
+}
+
+.product-unit-price {
+    position: relative;
+    left: 198%;
+}
+
+.product-count {
+    position: relative;
+    left: 162%;
+}
+
+li p{
+    margin:10px 0;
 }

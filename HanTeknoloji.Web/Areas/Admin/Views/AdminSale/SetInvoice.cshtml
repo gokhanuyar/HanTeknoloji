@@ -19,6 +19,17 @@
             <div class="musteri-adres">@Model.Address<br />@Model.Region/@Model.City</div>
             <div class="tax-office">@Model.TaxOffice</div>
             <div class="tax-number">@Model.TaxNumber</div>
+            <ul class="product-list">
+                @foreach (var item in Model.ProductList)
+                {
+                    <li class="product-row">
+                        <p>@item.FullProductName</p>
+                        <p class="product-count">@item.SaleCount</p>
+                        <p class="product-unit-price">@item.UnitPrice</p>
+                        <p class="product-price">@item.TotalPrice</p>
+                    </li>
+                }
+            </ul>
         </div>
     </div>
 </body>

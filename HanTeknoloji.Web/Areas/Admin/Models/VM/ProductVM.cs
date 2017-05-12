@@ -51,7 +51,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         [Display(Name = "Ödeme Şekli"), Required(ErrorMessage = "Ödeme şekli alanı boş geçilemez.")]
         public string Payment { get; set; }
 
-        [Display(Name ="KDV"),Required(ErrorMessage ="KDV alanı boş geçilemez")]
+        [Display(Name = "KDV"), Required(ErrorMessage = "KDV alanı boş geçilemez")]
         public decimal KDV { get; set; }
 
         [Display(Name = "IMEI")]
@@ -59,5 +59,25 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
 
         public int SaleCount { get; set; }
         public decimal TotalPrice { get; set; }
+
+        public string FullProductName
+        {
+            get
+            {
+                return TradeMark + " " + ProductModel;
+            }
+        }
+        private decimal kdvPrice;
+        public decimal KdvPrice
+        {
+            get
+            {
+                return kdvPrice = TotalPrice + (TotalPrice * KDV);
+            }
+            set
+            {
+                this.kdvPrice = value;
+            }
+        }
     }
 }

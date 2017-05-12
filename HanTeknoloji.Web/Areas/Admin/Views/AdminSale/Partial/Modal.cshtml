@@ -10,7 +10,7 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    @using (Html.BeginForm("AddSale", "AdminSale", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+                    @using (Html.BeginForm("AddSale", "AdminSale", FormMethod.Post, new { @enctype = "multipart/form-data", id = "sale-form" }))
                     {
                         <div class="col-lg-12">
                             <div class="form-group" style="display:grid;">
@@ -33,7 +33,7 @@
                                 <h4 id="payment-title">Müşteri :</h4>
                                 @Html.DropDownList("CustomerID", (IList<SelectListItem>)ViewData["customer"], "Müşteri Seçiniz", new { @class = "form-control" })
                             </div>
-                            <button class="btn btn-success float-right" type="submit">Satışı Bitir</button>
+                            <button class="btn btn-success float-right" type="button" id="sale-button">Satışı Bitir</button>
                         </div>
                     }
                 </div>

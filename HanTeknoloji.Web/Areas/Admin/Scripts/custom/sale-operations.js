@@ -47,7 +47,7 @@ $(".total-input").change(function () {
         url: "/Admin/AdminSale/ChangeProductSalePrice",
         data: data,
         success: function (result) {
-            if(result=="succ"){
+            if (result == "succ") {
                 window.location.href = "/Admin/AdminSale/Index"
             }
             else {
@@ -74,3 +74,26 @@ function QuantityPlus(id) {
         url: "/AlphaCart/ChangeQuantity/" + id + "/" + lastQuantity,
     });
 }
+
+$("#sale-button").click(function () {
+    var payment = $("select[name='PaymentType']").val();
+    var invoice = $("select[name='Invoice']").val();
+    var customer = $("#CustomerID").val();
+    if (customer == "" && invoice == 1) {
+        sweetAlert("Uyarı", "Faturalı satışlar için müşteri seçmek zorundasınız!", "warning");
+    }
+    else {
+        $("#sale-form").submit();
+    }
+})
+
+$("#service-sale-button").click(function () {
+    var price = $.trim($("#service-sale-price").val());
+    console.log(price)
+    if (price == "") {
+        sweetAlert("Uyarı", "Lütfen fiyat değeri giriniz!", "warning");
+    }
+    else {
+        $("#service-sale-form").submit();
+    }
+});
