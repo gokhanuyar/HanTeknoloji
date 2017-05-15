@@ -58,12 +58,10 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                 if (item.SerialNumber == BarcodeNumber)
                                 {
                                     item.SaleCount++;
-                                    item.TotalPrice += item.UnitPrice;
                                     item.Count = product.Count;
                                     varMi = true;
-                                    model.TotalSalePrice += item.UnitPrice;
-                                    model.TotalSalePriceKdv += item.KdvPrice;
-                                    model.TotalSalePriceKdv = Math.Round(model.TotalSalePriceKdv, 2);
+                                    item.KdvPrice = Math.Round((product.UnitSalePrice * product.KDV) * item.SaleCount, 2);
+                                    model.TotalSalePrice += item.TotalPrice / item.SaleCount;
                                     break;
                                 }
                             }
@@ -79,16 +77,14 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                 TradeMark = rptrademark.Find(product.TradeMarkID).Name,
                                 ProductModel = product.ProductModelID == 0 ? "" : rpproductmodel.Find(product.ProductModelID).Name,
                                 Color = rpcolor.Find(product.ColorID).Name,
-                                UnitPrice = product.UnitSalePrice,
+                                UnitSalePrice = product.UnitSalePrice,
                                 Count = product.Count,
                                 SaleCount = 1,
-                                TotalPrice = product.UnitSalePrice,
-                                KDV = product.KDV
+                                KDV = product.KDV,
+                                KdvPrice = Math.Round((product.UnitSalePrice * product.KDV), 2)
                             };
                             model.ProductList.Add(pro);
                             model.TotalSalePrice += pro.TotalPrice;
-                            model.TotalSalePriceKdv += pro.KdvPrice;
-                            model.TotalSalePriceKdv = Math.Round(model.TotalSalePriceKdv, 2);
                         }
                         Session["Sepet"] = model;
                     }
@@ -146,16 +142,13 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             rpproduct.SaveChanges();
 
             selectedItem.SaleCount = quantity;
-            selectedItem.TotalPrice = selectedItem.UnitPrice * quantity;
-            selectedItem.Count = product.Count;
+            selectedItem.KdvPrice = Math.Round((selectedItem.UnitSalePrice * selectedItem.KDV) * selectedItem.SaleCount, 2);
+            selectedItem.TotalPrice = 0;
             sepet.TotalSalePrice = 0;
-            sepet.TotalSalePriceKdv = 0;
             foreach (var item in sepet.ProductList)
             {
                 sepet.TotalSalePrice += item.TotalPrice;
-                sepet.TotalSalePriceKdv += item.KdvPrice;
             }
-            sepet.TotalSalePriceKdv = Math.Round(sepet.TotalSalePriceKdv, 2);
 
             Session["Sepet"] = sepet;
             return RedirectToAction("Index");
@@ -169,15 +162,9 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 var selectedItem = sepet.ProductList.FirstOrDefault(x => x.ID == model.ID);
 
                 sepet.TotalSalePrice -= selectedItem.TotalPrice;
-                sepet.TotalSalePriceKdv -= selectedItem.KdvPrice;
-
                 selectedItem.TotalPrice = model.Price;
-                selectedItem.KdvPrice = model.Price;
-
                 sepet.TotalSalePrice += selectedItem.TotalPrice;
-                sepet.TotalSalePriceKdv += selectedItem.KdvPrice;
-                sepet.TotalSalePriceKdv = Math.Round(sepet.TotalSalePriceKdv, 2);
-
+                selectedItem.KdvPrice = selectedItem.TotalPrice * selectedItem.KDV;
                 return Json("succ");
             }
             else

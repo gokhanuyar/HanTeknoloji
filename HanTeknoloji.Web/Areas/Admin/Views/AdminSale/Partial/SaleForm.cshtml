@@ -15,10 +15,7 @@
 </div>
 <div class="col-lg-7 col-lg-offset-1" id="sale-price">
     <div class="col-lg-12">
-        <h2 class="float-right">Toplam Fiyat: @Model.TotalSalePrice TL</h2>        
-    </div>
-    <div class="col-lg-12">
-        <h2 class="float-right">Toplam Fiyat (KDV): @Model.TotalSalePriceKdv TL</h2>
+        <h2 class="float-right">Toplam Satış Fiyatı: @Model.TotalSalePrice TL</h2>        
     </div>
     <div class="col-lg-12">
         <button class="btn btn-success float-right" type="button" data-toggle="modal" data-target="#myModal">Satış Formu</button>
@@ -42,7 +39,8 @@
                             <th>Ürün Adı</th>
                             <th>Renk</th>
                             <th>Adet</th>
-                            <th>Satış Fiyatı (TL)</th>
+                            <th>Birim Fiyatı (TL)</th>
+                            <th>KDV (TL)</th>
                             <th>Toplam (TL)</th>
                             <th>Sil</th>
                         </tr>
@@ -64,8 +62,8 @@
                                         <input type="hidden" value="@item.SaleCount" id="hidden_@item.ID" />
                                     </td>
 
-                                    <td>@item.UnitPrice</td>
-
+                                    <td>@item.UnitSalePrice</td>
+                                    <td>@item.KdvPrice</td>
                                     <td class="product-total-price">
                                         <input id="total_@item.ID" class="form-control total-input" type="text" value="@item.TotalPrice" required />
                                     </td>

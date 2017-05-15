@@ -58,7 +58,19 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         public string IMEI { get; set; }
 
         public int SaleCount { get; set; }
-        public decimal TotalPrice { get; set; }
+
+        private decimal totalPrice;
+        public decimal TotalPrice
+        {
+            get
+            {
+                return totalPrice != 0 ? totalPrice : Math.Round((UnitSalePrice + (UnitSalePrice * KDV)) * SaleCount, 2);
+            }
+            set
+            {
+                this.totalPrice = value;
+            }
+        }
 
         public string FullProductName
         {
@@ -67,17 +79,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
                 return TradeMark + " " + ProductModel;
             }
         }
-        private decimal kdvPrice;
-        public decimal KdvPrice
-        {
-            get
-            {
-                return kdvPrice = TotalPrice + (TotalPrice * KDV);
-            }
-            set
-            {
-                this.kdvPrice = value;
-            }
-        }
+
+        public decimal KdvPrice { get; set; }
     }
 }
