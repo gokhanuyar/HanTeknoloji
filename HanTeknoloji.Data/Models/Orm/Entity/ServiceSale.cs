@@ -12,6 +12,8 @@ namespace HanTeknoloji.Data.Models.Orm.Entity
 
         public decimal Price { get; set; }
 
+        public string Note { get; set; }
+
         public int UserID { get; set; }
     }
 }

@@ -59,12 +59,14 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
 
         public int SaleCount { get; set; }
 
+        //public decimal TotalPrice { get; set; }
+
         private decimal totalPrice;
         public decimal TotalPrice
         {
             get
             {
-                return totalPrice != 0 ? totalPrice : Math.Round((UnitSalePrice + (UnitSalePrice * KDV)) * SaleCount, 2);
+                return totalPrice != 0 ? totalPrice : Math.Round(UnitSalePrice + KdvPrice, 2);
             }
             set
             {

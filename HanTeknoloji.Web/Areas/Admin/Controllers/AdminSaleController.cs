@@ -60,7 +60,9 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                     item.SaleCount++;
                                     item.Count = product.Count;
                                     varMi = true;
-                                    item.KdvPrice = Math.Round((product.UnitSalePrice * product.KDV) * item.SaleCount, 2);
+                                    item.UnitSalePrice = item.UnitPrice * item.SaleCount;
+                                    item.KdvPrice = Math.Round(item.UnitSalePrice * item.KDV, 4);
+                                    item.TotalPrice = 0;
                                     model.TotalSalePrice += item.TotalPrice / item.SaleCount;
                                     break;
                                 }
@@ -78,10 +80,11 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                 ProductModel = product.ProductModelID == 0 ? "" : rpproductmodel.Find(product.ProductModelID).Name,
                                 Color = rpcolor.Find(product.ColorID).Name,
                                 UnitSalePrice = product.UnitSalePrice,
+                                UnitPrice = product.UnitSalePrice,
                                 Count = product.Count,
                                 SaleCount = 1,
                                 KDV = product.KDV,
-                                KdvPrice = Math.Round((product.UnitSalePrice * product.KDV), 2)
+                                KdvPrice = Math.Round((product.UnitSalePrice * product.KDV), 4)
                             };
                             model.ProductList.Add(pro);
                             model.TotalSalePrice += pro.TotalPrice;
@@ -120,8 +123,6 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             var sepet = (CartVM)Session["Sepet"];
             var selectedItem = sepet.ProductList.FirstOrDefault(x => x.ID == id);
             sepet.TotalSalePrice -= selectedItem.TotalPrice;
-            sepet.TotalSalePriceKdv -= selectedItem.KdvPrice;
-            sepet.TotalSalePriceKdv = Math.Round(sepet.TotalSalePriceKdv, 2);
 
             product.Count += selectedItem.SaleCount;
             rpproduct.SaveChanges();
@@ -141,8 +142,10 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             product.Count = oldCount - quantity;
             rpproduct.SaveChanges();
 
+            selectedItem.Count = product.Count;
             selectedItem.SaleCount = quantity;
-            selectedItem.KdvPrice = Math.Round((selectedItem.UnitSalePrice * selectedItem.KDV) * selectedItem.SaleCount, 2);
+            selectedItem.UnitSalePrice = selectedItem.UnitPrice * selectedItem.SaleCount;
+            selectedItem.KdvPrice = Math.Round(selectedItem.UnitSalePrice * selectedItem.KDV, 4);
             selectedItem.TotalPrice = 0;
             sepet.TotalSalePrice = 0;
             foreach (var item in sepet.ProductList)
@@ -163,8 +166,10 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
 
                 sepet.TotalSalePrice -= selectedItem.TotalPrice;
                 selectedItem.TotalPrice = model.Price;
+                selectedItem.UnitPrice = Math.Round((model.Price / (selectedItem.KDV + 1)) / selectedItem.SaleCount, 4);
+                selectedItem.UnitSalePrice = selectedItem.UnitPrice * selectedItem.SaleCount;
                 sepet.TotalSalePrice += selectedItem.TotalPrice;
-                selectedItem.KdvPrice = selectedItem.TotalPrice * selectedItem.KDV;
+                selectedItem.KdvPrice = Math.Round(selectedItem.TotalPrice - selectedItem.UnitSalePrice, 4);
                 return Json("succ");
             }
             else
@@ -228,7 +233,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 {
                     PaymentType = model.PaymentType,
                     Price = model.Price,
-                    UserID = userId
+                    UserID = userId,
+                    Note = model.Note
                 };
                 rpservicesale.Add(entity);
             }

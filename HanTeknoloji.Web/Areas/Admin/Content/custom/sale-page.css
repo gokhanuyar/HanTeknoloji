@@ -35,3 +35,7 @@
 #myModal {
     margin-top: 200px;
 }
+
+textarea {
+    resize: none;
+}

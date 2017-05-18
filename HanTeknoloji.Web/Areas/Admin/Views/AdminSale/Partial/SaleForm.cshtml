@@ -39,6 +39,7 @@
                             <th>Ürün Adı</th>
                             <th>Renk</th>
                             <th>Adet</th>
+                            <th>Adet Fiyat (TL)</th>
                             <th>Birim Fiyatı (TL)</th>
                             <th>KDV (TL)</th>
                             <th>Toplam (TL)</th>
@@ -61,6 +62,7 @@
                                         <input type="number" class="form-control quantity-input" min="1" max="@max" value="@item.SaleCount" id="count_@item.ID" />
                                         <input type="hidden" value="@item.SaleCount" id="hidden_@item.ID" />
                                     </td>
+                                    <td>@item.UnitPrice</td>
 
                                     <td>@item.UnitSalePrice</td>
                                     <td>@item.KdvPrice</td>
@@ -72,7 +74,6 @@
                                 </tr>
                             }
                         }
-
                     </tbody>
                 </table>
             </div>
