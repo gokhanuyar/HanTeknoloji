@@ -210,6 +210,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
 
         public ActionResult SetInvoice(SaleVM saleVM)
         {
+            var date = DateTime.Now;
             var sepet = (CartVM)Session["Sepet"];
             var customer = rpcustomer.Find(saleVM.CustomerID);
             InvoiceVM model = new InvoiceVM();
@@ -219,6 +220,9 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             model.TaxOffice = customer.TaxOffice;
             model.TaxNumber = customer.TaxNumber;
             model.ProductList = sepet.ProductList;
+            
+            model.DateOfArrangement = String.Format("{0:d/M/yyyy}", date);
+            model.HourOfArrangement = String.Format("{0:HH:mm}", date);
 
             return View(model);
         }

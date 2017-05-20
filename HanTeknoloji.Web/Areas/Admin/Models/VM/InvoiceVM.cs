@@ -22,5 +22,15 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         public List<ProductVM> ProductList { get; set; }
 
         public decimal TotalPrice { get; set; }
+
+        public string DateOfArrangement { get; set; }
+
+        public string HourOfArrangement { get; set; }
+
+        public List<string> KDV { get; set; }
+
+        public decimal TotalSalePrice { get { return (ProductList ?? new List<ProductVM>()).Sum(x => x.TotalPrice); } }
+
+        public decimal TotalUnitPrice { get { return (ProductList ?? new List<ProductVM>()).Sum(x => x.UnitSalePrice); } }
     }
 }
