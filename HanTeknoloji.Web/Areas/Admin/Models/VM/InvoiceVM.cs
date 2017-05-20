@@ -7,6 +7,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
 {
     public class InvoiceVM
     {
+        public string CustomerName { get; set; }
+
         public string Address { get; set; }
 
         public string City { get; set; }
@@ -27,9 +29,15 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
 
         public string HourOfArrangement { get; set; }
 
-        public List<string> KDV { get; set; }
+        public List<string> KDVStringList { get; set; }
 
-        public decimal TotalSalePrice { get { return (ProductList ?? new List<ProductVM>()).Sum(x => x.TotalPrice); } }
+        public List<decimal> KDVList { get; set; }
+
+        public decimal TotalSalePrice { get; set; }
+
+        public string PriceString { get; set; }
+
+        public string TakerName { get; set; }
 
         public decimal TotalUnitPrice { get { return (ProductList ?? new List<ProductVM>()).Sum(x => x.UnitSalePrice); } }
     }

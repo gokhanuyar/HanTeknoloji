@@ -276,6 +276,7 @@
     <Content Include="Areas\Admin\Scripts\custom\region.js" />
     <Content Include="Areas\Admin\Scripts\custom\sale-operations.js" />
     <Content Include="Areas\Admin\Scripts\custom\product-list.js" />
+    <Content Include="Areas\Admin\Scripts\printer.js" />
     <Content Include="Areas\Admin\Scripts\sweetalert.min.js" />
     <Content Include="Content\Gridmvc.css" />
     <Content Include="Content\PagedList.css" />
@@ -369,6 +370,7 @@
     <Content Include="Areas\Admin\Views\AdminCustomer\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\AdminSale\Partial\Modal.cshtml" />
     <Content Include="Areas\Admin\Views\AdminSale\SetInvoice.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\Index.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\gridmvc.js" />
     <Content Include="Scripts\gridmvc.lang.ru.js" />
@@ -396,6 +398,7 @@
     <Compile Include="Areas\Admin\Controllers\AdminColorController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminLoginController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminUserController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ReportController.cs" />
     <Compile Include="Areas\Admin\Models\Barcode\BarCode39.cs" />
     <Compile Include="Areas\Admin\Models\Barcode\barcodecs.cs" />
     <Compile Include="Areas\Admin\Models\Types\Enums\EnumIslemDurum.cs" />

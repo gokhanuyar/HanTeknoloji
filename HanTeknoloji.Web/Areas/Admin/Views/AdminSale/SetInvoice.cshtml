@@ -14,16 +14,14 @@
     <link href="~/Areas/Admin/Content/custom/invoice-page.css" rel="stylesheet" />
 </head>
 <body>
-    <div>
+    <div>        
         <div class="page">
-            <div class="musteri-adres">@Model.Address<br />@Model.Region/@Model.City</div>
+            <div class="musteri-adres">@Model.CustomerName<br /> @Model.Address<br />@Model.Region/@Model.City</div>
             <div class="tax-office">@Model.TaxOffice</div>
             <div class="tax-number">@Model.TaxNumber</div>
             <div class="date">@Model.DateOfArrangement</div>
             <div class="hour">@Model.HourOfArrangement</div>
             <div class="date2">@Model.DateOfArrangement</div>
-            <div class="total-unit-price">@string.Format("{0:0.00}", Model.TotalUnitPrice)</div>
-            <div class="total-sale-price">@string.Format("{0:0.00}", Model.TotalSalePrice)</div>
 
             <ul class="product-list">
                 @foreach (var item in Model.ProductList)
@@ -32,11 +30,37 @@
                         <p>@item.FullProductName</p>
                         <p class="product-count">@item.SaleCount</p>
                         <p class="product-unit-price">@string.Format("{0:0.0000}", item.UnitPrice)</p>
-                        <p class="product-price">@string.Format("{0:0.0000}", item.UnitPrice)</p>
+                        <p class="product-price">@string.Format("{0:0.0000}", item.UnitSalePrice)</p>
                     </li>
                 }
             </ul>
+
+            @*<div class="total-unit-price">@string.Format("{0:0.00}", Model.TotalUnitPrice)</div>*@
+            <ul class="kdv-list">
+                @for (int i = 0; i < Model.KDVList.Count; i++)
+                {
+                    <li class="kdv-row">
+                        <p>@Model.KDVStringList[i]</p>
+                        <p class="kdv-price">@Model.KDVList[i]</p>
+                    </li>
+                }
+            </ul>
+
+            <div class="price-string">@Model.PriceString</div>
+            <div class="taker-name"><b>@Model.TakerName</b></div>
+
         </div>
     </div>
+    <button class="print">YAZDIR</button>
 </body>
 </html>
+
+<script src="~/Areas/Admin/Content/vendor/jquery/jquery.min.js"></script>
+<script src="~/Areas/Admin/Scripts/printer.js"></script>
+<script>
+    $(".print").click(function () {
+        $(".page").print();
+    });
+</script>
+
+

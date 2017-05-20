@@ -24,6 +24,26 @@
     left: 3.5cm;
 }
 
+.kdv-list {
+    position: absolute;
+    left: 12.4cm;
+    top: 850px;
+    margin: 0;
+}
+
+.kdv-price {
+    position: absolute;
+    left: 210px;
+}
+
+.kdv-row {
+    display: flex;
+}
+
+    .kdv-row p {
+        margin: 5px 0;
+    }
+
 .product-row {
     display: flex;
 }
@@ -39,12 +59,12 @@
 }
 
 .product-count {
-    position: relative;
-    left: 260px;
+    position: absolute;
+    left: 395px;
 }
 
-li p {
-    margin: 10px 0;
+.product-row p {
+    margin: 7px 0;
 }
 
 .date {
@@ -65,14 +85,34 @@ li p {
     top: 390px;
 }
 
-.total-unit-price{
-    position:absolute;
-    left:18cm;
-    top:887px;
+.total-unit-price {
+    position: absolute;
+    left: 18cm;
+    top: 845px;
 }
 
-.total-sale-price{
-    position:absolute;
-    left:18cm;
-    top:925px;
+.total-sale-price {
+    position: absolute;
+    left: 18cm;
+    top: 925px;
+}
+
+.price-string {
+    position: absolute;
+    top: 26.1cm;
+    left: 5cm;
+}
+
+.taker-name {
+    position: absolute;
+    top: 28cm;
+    left: 5cm;
+}
+
+.print {
+    font-size: 25px;
+    height: 50px;
+    position: absolute;
+    top: 1161px;
+    left: 8cm;
 }

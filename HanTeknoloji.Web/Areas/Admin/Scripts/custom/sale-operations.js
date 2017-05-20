@@ -79,11 +79,25 @@ $("#sale-button").click(function () {
     var payment = $("select[name='PaymentType']").val();
     var invoice = $("select[name='Invoice']").val();
     var customer = $("#CustomerID").val();
+    var priceString = $.trim($("input[name='PriceString']").val());
     if (customer == "" && invoice == 1) {
         sweetAlert("Uyarı", "Faturalı satışlar için müşteri seçmek zorundasınız!", "warning");
     }
+    else if (priceString == "" && invoice == 1) {
+        sweetAlert("Uyarı", "Satış fiyatını yazılı olarak giriniz!", "warning");
+    }
     else {
         $("#sale-form").submit();
+    }
+});
+
+$("select[name='Invoice']").change(function () {
+    var value = this.value;
+    if (value == 1) {
+        $(".display-input").fadeIn();
+    }
+    else {
+        $(".display-input").fadeOut();
     }
 })
 

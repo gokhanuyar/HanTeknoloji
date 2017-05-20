@@ -14,5 +14,11 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         public int CustomerID { get; set; }
 
         public int Invoice { get; set; }
+
+        public string PriceString { get; set; }
+
+        public string Name { get; set; }
+
+        public DateTime InvoiceDate { get; set; }
     }
 }

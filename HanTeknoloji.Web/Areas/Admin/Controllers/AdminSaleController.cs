@@ -200,7 +200,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     rpsale.Add(entity);
                 }
                 if (model.Invoice == 1)
-                {
+                {                    
                     return RedirectToAction("SetInvoice", model);
                 }
                 Session.Remove("Sepet");
@@ -210,20 +210,41 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
 
         public ActionResult SetInvoice(SaleVM saleVM)
         {
-            var date = DateTime.Now;
+            var date = saleVM.InvoiceDate.Year == 0001 ? DateTime.Now : saleVM.InvoiceDate;
             var sepet = (CartVM)Session["Sepet"];
             var customer = rpcustomer.Find(saleVM.CustomerID);
             InvoiceVM model = new InvoiceVM();
+            model.CustomerName = customer.Name;
             model.Address = customer.Address;
             model.City = rpcity.Find(customer.CityID).Name;
             model.Region = rpregion.Find(customer.RegionID).Name;
             model.TaxOffice = customer.TaxOffice;
             model.TaxNumber = customer.TaxNumber;
             model.ProductList = sepet.ProductList;
-            
+            model.TotalSalePrice = sepet.TotalSalePrice;
+            model.PriceString = saleVM.PriceString;
+            model.TakerName = saleVM.Name;
+
             model.DateOfArrangement = String.Format("{0:d/M/yyyy}", date);
             model.HourOfArrangement = String.Format("{0:HH:mm}", date);
 
+            decimal kdv = 0;
+            model.KDVList = new List<decimal>();
+            model.KDVStringList = new List<string>();
+            model.KDVList.Add(model.TotalUnitPrice);
+            model.KDVStringList.Add("TOPLAM");
+            foreach (var item in model.ProductList)
+            {
+                if (item.KDV != kdv)
+                {
+                    model.KDVList.Add(Math.Round(model.ProductList.Where(x => x.KDV == item.KDV).Sum(x => x.KdvPrice), 2));
+                    model.KDVStringList.Add("KDV %" + Convert.ToInt32(item.KDV * 100));
+                }
+                kdv = item.KDV;
+            }
+            model.KDVList.Add(model.TotalSalePrice);
+            model.KDVStringList.Add("G.TOPLAM");
+            Session.Remove("Sepet");
             return View(model);
         }
 
