@@ -44,7 +44,7 @@ namespace HanTeknoloji.Business.Manager
         {
             return _dbcontext.Where(lambda).Where(x => x.IsDeleted == false).ToList();
         }
-
+        
         public void Delete(int id)
         {
             var entity = db.Set<T>().Find(id);

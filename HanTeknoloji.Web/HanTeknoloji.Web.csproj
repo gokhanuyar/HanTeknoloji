@@ -370,7 +370,7 @@
     <Content Include="Areas\Admin\Views\AdminCustomer\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\AdminSale\Partial\Modal.cshtml" />
     <Content Include="Areas\Admin\Views\AdminSale\SetInvoice.cshtml" />
-    <Content Include="Areas\Admin\Views\Report\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminReport\Product.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\gridmvc.js" />
     <Content Include="Scripts\gridmvc.lang.ru.js" />
@@ -398,7 +398,7 @@
     <Compile Include="Areas\Admin\Controllers\AdminColorController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminLoginController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminUserController.cs" />
-    <Compile Include="Areas\Admin\Controllers\ReportController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminReportController.cs" />
     <Compile Include="Areas\Admin\Models\Barcode\BarCode39.cs" />
     <Compile Include="Areas\Admin\Models\Barcode\barcodecs.cs" />
     <Compile Include="Areas\Admin\Models\Types\Enums\EnumIslemDurum.cs" />
@@ -417,6 +417,7 @@
     <Compile Include="Areas\Admin\Models\VM\ProductModelVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\ProductVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\RegionVM.cs" />
+    <Compile Include="Areas\Admin\Models\VM\ReportVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\SaleVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\ServiceSaleVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\SupplierVM.cs" />
@@ -446,7 +447,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Views\AdminBase\" />
-    <Folder Include="Areas\Admin\Views\Login\" />
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
   </ItemGroup>

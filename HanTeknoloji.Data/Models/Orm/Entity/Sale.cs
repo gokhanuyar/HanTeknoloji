@@ -19,5 +19,9 @@ namespace HanTeknoloji.Data.Models.Orm.Entity
         public int UserID { get; set; }
 
         public int CustomerID { get; set; }
+
+        public DateTime InvoiceDate { get; set; }
+
+        public decimal KdvPrice { get; set; }
     }
 }

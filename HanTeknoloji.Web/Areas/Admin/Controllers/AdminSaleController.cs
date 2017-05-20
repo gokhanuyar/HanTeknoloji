@@ -186,21 +186,24 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             if (sepet != null)
             {
                 int userId = UserID();
+                model.InvoiceDate = model.InvoiceDate.Year == 0001 ? DateTime.Now : model.InvoiceDate;
                 foreach (var item in sepet.ProductList)
                 {
                     Sale entity = new Sale()
                     {
                         ProductID = item.ID,
                         PaymentType = model.PaymentType,
-                        Price = item.TotalPrice * item.KDV,
+                        Price = item.TotalPrice,
                         Quantity = item.SaleCount,
                         UserID = userId,
-                        CustomerID = model.CustomerID
+                        CustomerID = model.CustomerID,
+                        InvoiceDate = model.InvoiceDate,
+                        KdvPrice = item.KdvPrice
                     };
                     rpsale.Add(entity);
                 }
                 if (model.Invoice == 1)
-                {                    
+                {
                     return RedirectToAction("SetInvoice", model);
                 }
                 Session.Remove("Sepet");
@@ -210,7 +213,6 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
 
         public ActionResult SetInvoice(SaleVM saleVM)
         {
-            var date = saleVM.InvoiceDate.Year == 0001 ? DateTime.Now : saleVM.InvoiceDate;
             var sepet = (CartVM)Session["Sepet"];
             var customer = rpcustomer.Find(saleVM.CustomerID);
             InvoiceVM model = new InvoiceVM();
@@ -225,8 +227,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             model.PriceString = saleVM.PriceString;
             model.TakerName = saleVM.Name;
 
-            model.DateOfArrangement = String.Format("{0:d/M/yyyy}", date);
-            model.HourOfArrangement = String.Format("{0:HH:mm}", date);
+            model.DateOfArrangement = String.Format("{0:d/M/yyyy}", saleVM.InvoiceDate);
+            model.HourOfArrangement = String.Format("{0:HH:mm}", saleVM.InvoiceDate);
 
             decimal kdv = 0;
             model.KDVList = new List<decimal>();
