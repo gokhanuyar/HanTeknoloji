@@ -13,7 +13,17 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         public ActionResult Product(int? page, string date)
         {
             int _page = page ?? 1;
-            DateTime _date = string.IsNullOrEmpty(date) ? DateTime.Now : Convert.ToDateTime(date);
+            DateTime _date;
+            if (!string.IsNullOrEmpty(date))
+            {
+                Session["date"] = date;
+                _date = Convert.ToDateTime(date);
+            }
+            else
+            {
+                _date = Session["date"] == null ? DateTime.Now : Convert.ToDateTime(Session["date"]);
+            }
+            //DateTime _date = string.IsNullOrEmpty(beforeDate) ? DateTime.Now : Convert.ToDateTime(beforeDate);
             date = string.IsNullOrEmpty(date) ? "" : date;
             if (date.Length == 7)
             {
@@ -21,7 +31,9 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                 .GetListWithQuery(x => x
                                 .AddDate.Month == _date.Month && x
                                 .AddDate.Year == _date.Year && x
-                                .CustomerID == 0).ToList().Select(x => new ReportVM()
+                                .CustomerID == 0)
+                                .OrderByDescending(x=>x.AddDate)
+                                .ToList().Select(x => new ReportVM()
                                 {
                                     CustomerID = x.CustomerID,
                                     PaymentType = x.PaymentType,
@@ -46,7 +58,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 ViewBag.unitprice = list.Sum(x => x.Product.UnitPrice * x.Quantity);
                 ViewBag.saleprice = list.Sum(x => x.Price);
                 ViewBag.kdv = list.Sum(x => x.KdvPrice);
-                IPagedList<ReportVM> model = list.ToPagedList(_page, 15);
+                IPagedList<ReportVM> model = list.ToPagedList(_page, 3);
                 return View(model);
             }
             else
@@ -56,7 +68,9 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                 .AddDate.Day == _date.Day && x
                                 .AddDate.Month == _date.Month && x
                                 .AddDate.Year == _date.Year && x
-                                .CustomerID == 0).ToList().Select(x => new ReportVM()
+                                .CustomerID == 0)
+                                .OrderByDescending(x => x.AddDate)
+                                .ToList().Select(x => new ReportVM()
                                 {
                                     CustomerID = x.CustomerID,
                                     PaymentType = x.PaymentType,
@@ -81,7 +95,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 ViewBag.unitprice = list.Sum(x => x.Product.UnitPrice * x.Quantity);
                 ViewBag.saleprice = list.Sum(x => x.Price);
                 ViewBag.kdv = list.Sum(x => x.KdvPrice);
-                IPagedList<ReportVM> model = list.ToPagedList(_page, 15);
+                IPagedList<ReportVM> model = list.ToPagedList(_page, 3);
                 return View(model);
             }
         }
