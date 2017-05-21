@@ -32,5 +32,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         public string AdminUserName { get; set; }
 
         public CustomerVM Customer { get; set; }
+
+        public string Note { get; set; }
+        
     }
 }

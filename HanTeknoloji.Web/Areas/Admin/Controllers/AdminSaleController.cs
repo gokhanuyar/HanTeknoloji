@@ -220,8 +220,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             model.Address = customer.Address;
             model.City = rpcity.Find(customer.CityID).Name;
             model.Region = rpregion.Find(customer.RegionID).Name;
-            model.TaxOffice = customer.TaxOffice;
-            model.TaxNumber = customer.TaxNumber;
+            model.TaxOffice = customer.IsPerson ? "" : customer.TaxOffice;
+            model.TaxNumber = customer.IsPerson ? customer.TCNo : customer.TaxNumber;
             model.ProductList = sepet.ProductList;
             model.TotalSalePrice = sepet.TotalSalePrice;
             model.PriceString = saleVM.PriceString;

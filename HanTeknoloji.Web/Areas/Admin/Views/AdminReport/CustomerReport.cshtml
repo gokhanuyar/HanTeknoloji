@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "InvoiceProduct";
+    ViewBag.Title = "CustomerReport";
     Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
 }
 
@@ -10,24 +10,16 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Faturalı Ürün Satış Rapor Sayfası</h1>
+        <h1 class="page-header">Ürün Satış Rapor Sayfası</h1>
     </div>
 </div>
+
 <div class="row">
     <div class="col-lg-2">
         <div class="form-group">
-            <h4>Günlük Satışlar İçin Tarih Seçimi</h4>
-            <form method="post" id="form_date">
-                <input name="date" id="date" type="date" class="form-control" />
-            </form>
-
-        </div>
-    </div>
-    <div class="col-lg-2">
-        <div class="form-group">
-            <h4>Aylık Satışlar İçin Tarih Seçimi</h4>
-            <form method="post" id="form_month">
-                <input name="date" id="month" type="month" class="form-control" />
+            <h4>Müşteri Seçimi</h4>
+            <form method="post" id="form">
+                @Html.DropDownList("id", (IList<SelectListItem>)ViewData["customer"], "Müşteri Seçiniz", new { @class = "form-control" })
             </form>
         </div>
     </div>
@@ -47,7 +39,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <b>@ViewBag.date</b>
+                <b>@ViewBag.customerName</b>
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -62,10 +54,9 @@
                                 <th>Adet</th>
                                 <th>KDV</th>
                                 <th>Satış Toplam</th>
-                                <th>Satış Tarihi</th>
-                                <th>Fatura Tarihi</th>
+                                <th>Tarih</th>
+                                <th>Saat</th>
                                 <th>Personel</th>
-                                <th>Müşteri</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -81,9 +72,8 @@
                                     <td>@item.KdvPrice</td>
                                     <td>@item.Price</td>
                                     <td>@item.SaleDate</td>
-                                    <td>@item.InvoiceDate</td>
+                                    <td>@item.SaleTime</td>
                                     <td>@item.AdminUserName</td>
-                                    <td style="text-align:center"><button onclick="Customer(@item.CustomerID)" class="btn btn-circle btn-info"><i class="glyphicon glyphicon-briefcase"></i></button></td>
                                 </tr>
                                 sayi++;
                             }
@@ -94,10 +84,13 @@
         </div>
     </div>
 </div>
-@Html.PagedListPager(Model, page => Url.Action("InvoiceProductSale", "AdminReport", new { page = page, id = ViewBag.Statuid }))
+@Html.PagedListPager(Model, page => Url.Action("CustomerReport", "AdminReport", new { page = page, id = ViewBag.Statuid }))
 
-@Html.Partial("Partial/CustomerModal")
 @section scripts{
-    <script src="~/Areas/Admin/Scripts/custom/invoice-sale.js"></script>
+    <script>
+        $("#id").change(function () {
+            $("#form").submit();
+            //console.log($(this).val())
+        })
+    </script>
 }
-

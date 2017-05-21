@@ -23,5 +23,7 @@ namespace HanTeknoloji.Data.Models.Orm.Entity
         public string TaxNumber { get; set; }
 
         public string Phone { get; set; }
+
+        public bool IsPerson { get; set; }
     }
 }

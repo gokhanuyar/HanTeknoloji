@@ -103,7 +103,7 @@ $("select[name='Invoice']").change(function () {
 
 $("#service-sale-button").click(function () {
     var price = $.trim($("#service-sale-price").val());
-    console.log(price)
+    
     if (price == "") {
         sweetAlert("Uyarı", "Lütfen fiyat değeri giriniz!", "warning");
     }

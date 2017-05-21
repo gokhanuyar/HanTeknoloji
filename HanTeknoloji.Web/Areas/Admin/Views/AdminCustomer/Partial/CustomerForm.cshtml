@@ -42,5 +42,13 @@
         @Html.TextBoxFor(x => x.TaxNumber, new { @class = "form-control" })
         @Html.ValidationMessageFor(x => x.TaxNumber)
     </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.IsPerson)
+        <select name="IsPerson" class="form-control">
+            <option value="true">Şahıs</option>
+            <option value="false">Şirket</option>
+        </select>
+        @Html.ValidationMessageFor(x => x.IsPerson)
+    </div>
     <input type="submit" class="btn btn-success" name="name" value="Kayıt" />
 </div>

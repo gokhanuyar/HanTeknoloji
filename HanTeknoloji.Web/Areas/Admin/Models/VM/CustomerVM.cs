@@ -31,7 +31,12 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         [Display(Name = "Vergi Numarası")]
         public string TaxNumber { get; set; }
 
-        [Display(Name = "Telefon Numarası")]
+        [Display(Name = "Telefon Numarası"),
+        MaxLength(11, ErrorMessage = " En fazla 11 (onbir) karkater belirtebilirsiniz."),
+        MinLength(10, ErrorMessage = " En az 10 (on) karakter belirtmelisiniz.")]
         public string Phone { get; set; }
+
+        [Display(Name = "Müşteri Tipi")]
+        public bool IsPerson { get; set; }
     }
 }

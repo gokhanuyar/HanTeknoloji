@@ -89,10 +89,12 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 bool tcKontrol = false;
+                model.TCNo = model.TCNo == null ? "" : model.TCNo;
                 if (model.TCNo.Length == 11)
                     tcKontrol = TCNoKontrolu(model.TCNo);
 
-                if (tcKontrol)
+
+                if (tcKontrol || model.TCNo == "")
                 {
                     Customer entity = new Customer
                     {
@@ -103,7 +105,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                         TCNo = model.TCNo,
                         Phone = model.Phone,
                         TaxNumber = model.TaxNumber,
-                        TaxOffice = model.TaxOffice
+                        TaxOffice = model.TaxOffice,
+                        IsPerson = model.IsPerson
                     };
                     rpcustomer.Add(entity);
                     ViewBag.IslemDurum = EnumIslemDurum.Basarili;
@@ -117,9 +120,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             {
                 ViewBag.IslemDurum = EnumIslemDurum.ValidationHata;
             }
-            ModelState.Clear();
             GetAllCitiesforAdding();
-            return View();
+            return View(model);
         }
 
         public ActionResult Edit(int id)
@@ -147,9 +149,10 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 bool tcKontrol = false;
+                model.TCNo = model.TCNo == null ? "" : model.TCNo;
                 if (model.TCNo.Length == 11)
                     tcKontrol = TCNoKontrolu(model.TCNo);
-                if (tcKontrol)
+                if (tcKontrol || model.TCNo == "")
                 {
                     Customer entity = rpcustomer.Find(model.ID);
                     entity.Name = model.Name;
@@ -161,6 +164,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     entity.TaxNumber = model.TaxNumber;
                     entity.TaxOffice = model.TaxOffice;
                     entity.UpdateDate = DateTime.Now;
+                    entity.IsPerson = model.IsPerson;
 
                     rpcustomer.SaveChanges();
                     ViewBag.IslemDurum = EnumIslemDurum.Basarili;
