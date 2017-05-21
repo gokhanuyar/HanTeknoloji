@@ -273,6 +273,7 @@
     <Content Include="Areas\Admin\Content\vendor\raphael\raphael.js" />
     <Content Include="Areas\Admin\Content\vendor\raphael\raphael.min.js" />
     <Content Include="Areas\Admin\Scripts\custom\add-product.js" />
+    <Content Include="Areas\Admin\Scripts\custom\invoice-sale.js" />
     <Content Include="Areas\Admin\Scripts\custom\region.js" />
     <Content Include="Areas\Admin\Scripts\custom\sale-operations.js" />
     <Content Include="Areas\Admin\Scripts\custom\product-list.js" />
@@ -370,7 +371,9 @@
     <Content Include="Areas\Admin\Views\AdminCustomer\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\AdminSale\Partial\Modal.cshtml" />
     <Content Include="Areas\Admin\Views\AdminSale\SetInvoice.cshtml" />
-    <Content Include="Areas\Admin\Views\AdminReport\Product.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminReport\ProductSale.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminReport\InvoiceProductSale.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminReport\Partial\CustomerModal.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\gridmvc.js" />
     <Content Include="Scripts\gridmvc.lang.ru.js" />

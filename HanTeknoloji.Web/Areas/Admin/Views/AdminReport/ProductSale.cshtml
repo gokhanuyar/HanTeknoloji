@@ -38,7 +38,8 @@
         <h4>Satılan Ürün Adedi : @ViewBag.quantity</h4>
         <h4>Alış Birim Fiyat Toplamı : @ViewBag.unitprice</h4>
         <h4>Toplam KDV : @ViewBag.kdv</h4>
-        <h4>Satış Fiyat Toplamı : @ViewBag.saleprice</h4>        
+        <h4>Satış Fiyat Toplamı : @ViewBag.saleprice</h4>
+        <h4>Brüt Kar : @ViewBag.brut</h4>        
     </div>
 </div>
 
@@ -46,7 +47,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Satış Listesi
+                <b>@ViewBag.date</b>
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -91,7 +92,7 @@
         </div>
     </div>
 </div>
-@Html.PagedListPager(Model, page => Url.Action("Product", "AdminReport", new { page = page, id = ViewBag.Statuid }))
+@Html.PagedListPager(Model, page => Url.Action("ProductSale", "AdminReport", new { page = page, id = ViewBag.Statuid }))
 @section scripts{
     <script>
         $("#date").change(function () {
