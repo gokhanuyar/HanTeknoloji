@@ -46,13 +46,14 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(TradeMarkVM model)
+        public ActionResult Add(CategoryVM model)
         {
             if (ModelState.IsValid)
             {
                 Category entity = new Category
                 {
-                    CategoryName = model.Name
+                    CategoryName = model.CategoryName,
+                    BarcodeValue = model.BarcodeValue
                 };
                 rpcategory.Add(entity);
                 ViewBag.IslemDurum = EnumIslemDurum.Basarili;
@@ -85,6 +86,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             {
                 Category entity = rpcategory.Find(model.ID);
                 entity.CategoryName = model.CategoryName;
+                entity.BarcodeValue = model.BarcodeValue;
                 entity.UpdateDate = DateTime.Now;
                 rpcategory.SaveChanges();
                 ViewBag.IslemDurum = EnumIslemDurum.Basarili;

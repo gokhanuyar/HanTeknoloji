@@ -376,6 +376,7 @@
     <Content Include="Areas\Admin\Views\AdminReport\Partial\CustomerModal.cshtml" />
     <Content Include="Areas\Admin\Views\AdminReport\Service.cshtml" />
     <Content Include="Areas\Admin\Views\AdminReport\CustomerReport.cshtml" />
+    <None Include="Properties\PublishProfiles\gokhan.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\gridmvc.js" />
     <Content Include="Scripts\gridmvc.lang.ru.js" />

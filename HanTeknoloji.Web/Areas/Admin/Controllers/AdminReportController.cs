@@ -8,6 +8,7 @@ using PagedList;
 
 namespace HanTeknoloji.Web.Areas.Admin.Controllers
 {
+    [Authorize]
     public class AdminReportController : AdminBaseController
     {
         public ActionResult ProductSale(int? page, string date)
