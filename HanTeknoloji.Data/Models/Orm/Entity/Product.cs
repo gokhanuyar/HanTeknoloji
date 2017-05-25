@@ -31,5 +31,11 @@ namespace HanTeknoloji.Data.Models.Orm.Entity
         public decimal KDV { get; set; }
 
         public string IMEI { get; set; }
+
+        public string BankName { get; set; }
+        public string BankCartName { get; set; }
+        public string CartNumber { get; set; }
+        public DateTime? ExpiryDate { get; set; }
+        public string CheckNumber { get; set; }
     }
 }

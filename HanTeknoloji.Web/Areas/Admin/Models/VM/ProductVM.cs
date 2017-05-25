@@ -59,7 +59,11 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
 
         public int SaleCount { get; set; }
 
-        //public decimal TotalPrice { get; set; }
+        public string BankName { get; set; }
+        public string BankCartName { get; set; }
+        public string CartNumber { get; set; }
+        public DateTime? ExpiryDate { get; set; }
+        public string CheckNumber { get; set; }
 
         private decimal totalPrice;
         public decimal TotalPrice

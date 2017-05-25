@@ -24,3 +24,42 @@ $("#CategoryID").change(function () {
         $(".imei-box").fadeOut();
     }
 });
+
+$("#Payment").change(function () {
+    $(".display-row").hide();
+    var value = this.value;
+    switch (value) {
+        case "Kredi Kartı":
+            $(".credit-card").show();
+            break;
+        case "Havale":
+            $(".transfer").show();
+            break;
+        case "Vadeli":
+            $(".expiry-date").show();
+            break;
+        case "Çek":
+            $(".expiry-date").show();
+            $(".check").show();
+            break;
+    }
+})
+
+$(function () {
+    var value = $("#hidden-payment").val();
+    switch (value) {
+        case "Kredi Kartı":
+            $(".credit-card").show();
+            break;
+        case "Havale":
+            $(".transfer").show();
+            break;
+        case "Vadeli":
+            $(".expiry-date").show();
+            break;
+        case "Çek":
+            $(".expiry-date").show();
+            $(".check").show();
+            break;
+    }
+})

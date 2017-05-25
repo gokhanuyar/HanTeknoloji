@@ -116,7 +116,12 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     CategoryID = model.CategoryID,
                     Payment = model.Payment,
                     KDV = model.KDV,
-                    IMEI = model.IMEI
+                    IMEI = model.IMEI,
+                    BankName = model.BankName,
+                    BankCartName = model.BankCartName,
+                    CartNumber = model.CartNumber,
+                    CheckNumber = model.CheckNumber,
+                    ExpiryDate = model.ExpiryDate
                 };
                 rpproduct.Add(entity);
                 ViewBag.IslemDurum = EnumIslemDurum.Basarili;
@@ -148,6 +153,11 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 KDV = entity.KDV,
                 IMEI = entity.IMEI,
                 UnitSalePrice = entity.UnitSalePrice,
+                BankName = entity.BankName,
+                BankCartName = entity.BankCartName,
+                CartNumber = entity.CartNumber,
+                CheckNumber = entity.CheckNumber,
+                ExpiryDate = entity.ExpiryDate
             };
             GetDropdownItems(entity.TradeMarkID);
             return View(model);
@@ -172,6 +182,11 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 entity.IMEI = model.IMEI;
                 entity.UnitSalePrice = model.UnitSalePrice;
                 entity.UpdateDate = DateTime.Now;
+                entity.BankName = model.BankName;
+                entity.BankCartName = model.BankCartName;
+                entity.CartNumber = model.CartNumber;
+                entity.CheckNumber = model.CheckNumber;
+                entity.ExpiryDate = model.ExpiryDate;
                 rpproduct.SaveChanges();
                 ViewBag.IslemDurum = EnumIslemDurum.Basarili;
             }
