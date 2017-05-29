@@ -50,16 +50,23 @@ $(function () {
     switch (value) {
         case "Kredi Kartı":
             $(".credit-card").show();
+            $("#Payment").val("Kredi Kartı");
             break;
         case "Havale":
             $(".transfer").show();
+            $("#Payment").val("Havale");
             break;
         case "Vadeli":
             $(".expiry-date").show();
+            $("#Payment").val("Vadeli");
             break;
         case "Çek":
             $(".expiry-date").show();
             $(".check").show();
+            $("#Payment").val("Çek");
+            break;
+        default:
+            $("#Payment").val("Nakit");
             break;
     }
 })

@@ -76,15 +76,22 @@ function QuantityPlus(id) {
 }
 
 $("#sale-button").click(function () {
-    var payment = $("select[name='PaymentType']").val();
+    var payment = $("#payment-type").find(":selected").text();
     var invoice = $("select[name='Invoice']").val();
     var customer = $("#CustomerID").val();
     var priceString = $.trim($("input[name='PriceString']").val());
+    var expiryDate = $("input[name='ExpiryDate']").val();
     if (customer == "" && invoice == 1) {
         sweetAlert("Uyarı", "Faturalı satışlar için müşteri seçmek zorundasınız!", "warning");
     }
     else if (priceString == "" && invoice == 1) {
         sweetAlert("Uyarı", "Satış fiyatını yazılı olarak giriniz!", "warning");
+    }
+    else if (payment == "Vadeli" && expiryDate == "") {
+        sweetAlert("Uyarı", "Vade tarihini giriniz!", "warning");
+    }
+    else if (payment == "Vadeli" && customer == "") {
+        sweetAlert("Uyarı", "Vadeli satışlar için müşteri seçiniz!", "warning");
     }
     else {
         $("#sale-form").submit();
@@ -92,18 +99,24 @@ $("#sale-button").click(function () {
 });
 
 $("select[name='Invoice']").change(function () {
-    var value = this.value;
+    var payment = $("#payment-type").find(":selected").text();
+    value = this.value;
     if (value == 1) {
         $(".display-input").fadeIn();
     }
     else {
-        $(".display-input").fadeOut();
+        if (payment == "Vadeli") {
+            $(".optional").fadeOut();
+        }
+        else {
+            $(".display-input").fadeOut();
+        }
     }
 })
 
 $("#service-sale-button").click(function () {
     var price = $.trim($("#service-sale-price").val());
-    
+
     if (price == "") {
         sweetAlert("Uyarı", "Lütfen fiyat değeri giriniz!", "warning");
     }
@@ -111,3 +124,18 @@ $("#service-sale-button").click(function () {
         $("#service-sale-form").submit();
     }
 });
+
+$("select[name='PaymentType']").change(function () {
+    var invoiceValue = $("select[name='Invoice']").val();
+    var value = this.value;
+    if (value == "Vadeli") {
+        $(".expiry-date").fadeIn();
+        $(".display-input-customer").fadeIn();
+    }
+    else {
+        $(".expiry-date").fadeOut();
+        if (invoiceValue != 1) {
+            $(".display-input-customer").fadeOut();
+        }
+    }
+})

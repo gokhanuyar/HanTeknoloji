@@ -62,7 +62,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         public string BankName { get; set; }
         public string BankCartName { get; set; }
         public string CartNumber { get; set; }
-        public DateTime? ExpiryDate { get; set; }
+        //[DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        public string ExpiryDate { get; set; }
         public string CheckNumber { get; set; }
 
         private decimal totalPrice;

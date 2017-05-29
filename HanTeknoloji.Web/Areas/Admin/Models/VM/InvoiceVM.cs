@@ -37,8 +37,6 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
 
         public string PriceString { get; set; }
 
-        public string TakerName { get; set; }
-
         public decimal TotalUnitPrice { get { return (ProductList ?? new List<ProductVM>()).Sum(x => x.UnitSalePrice); } }
     }
 }

@@ -15,10 +15,16 @@
                         <div class="col-lg-12">
                             <div class="form-group" style="display:grid;">
                                 <h4 id="payment-title">Ödeme Şekli :</h4>
-                                <select class="form-control float-right" name="PaymentType" required="required">
+                                <select class="form-control float-right" name="PaymentType" id="payment-type" required="required">
                                     <option value="Nakit">Nakit</option>
                                     <option value="Kredi Kartı">Kredi Kartı</option>
+                                    <option value="Vadeli">Vadeli</option>
                                 </select>
+                            </div>
+
+                            <div class="form-group expiry-date" style="display:grid;display:none;">
+                                <h4 id="payment-title">Vade Tarihi :</h4>
+                                <input type="date" name="ExpiryDate" class="form-control" />
                             </div>
 
                             <div class="form-group" style="display:grid;">
@@ -29,20 +35,16 @@
                                 </select>
                             </div>
 
-                            <div class="form-group display-input" style="display:grid;display:none">
+                            <div class="form-group display-input display-input-customer" style="display:grid;display:none">
                                 <h4 id="payment-title">Müşteri :</h4>
                                 @Html.DropDownList("CustomerID", (IList<SelectListItem>)ViewData["customer"], "Müşteri Seçiniz", new { @class = "form-control" })
                             </div>
 
-                            <div class="form-group display-input" style="display:grid;display:none">
+                            <div class="form-group display-input optional" style="display:grid;display:none">
                                 <h4 id="payment-title">Satış Fiyatı Yazıyla :</h4>
                                 <input type="text" name="PriceString" class="form-control" />
                             </div>
-                            <div class="form-group display-input" style="display:grid;display:none">
-                                <h4 id="payment-title">Faturayı Teslim Alan :</h4>
-                                <input type="text" name="Name" class="form-control" />
-                            </div>
-                            <div class="form-group display-input" style="display:grid;display:none">
+                            <div class="form-group display-input optional" style="display:grid;display:none">
                                 <h4 id="payment-title">Fatura Tarih ve Saati :</h4>
                                 <input type="datetime-local" name="InvoiceDate" class="form-control" />
                             </div>

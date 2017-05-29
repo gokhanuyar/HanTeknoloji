@@ -23,5 +23,7 @@ namespace HanTeknoloji.Data.Models.Orm.Entity
         public DateTime InvoiceDate { get; set; }
 
         public decimal KdvPrice { get; set; }
+
+        public DateTime? ExpiryDate { get; set; }
     }
 }

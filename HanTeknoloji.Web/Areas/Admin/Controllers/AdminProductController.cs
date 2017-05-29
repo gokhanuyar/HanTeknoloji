@@ -93,6 +93,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Add(ProductVM model)
         {
+            DateTime date = Convert.ToDateTime(model.ExpiryDate);
             if (ModelState.IsValid)
             {
                 if (model.SerialNumber == null)
@@ -121,7 +122,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     BankCartName = model.BankCartName,
                     CartNumber = model.CartNumber,
                     CheckNumber = model.CheckNumber,
-                    ExpiryDate = model.ExpiryDate
+                    ExpiryDate = Convert.ToDateTime(model.ExpiryDate)
                 };
                 rpproduct.Add(entity);
                 ViewBag.IslemDurum = EnumIslemDurum.Basarili;
@@ -157,7 +158,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 BankCartName = entity.BankCartName,
                 CartNumber = entity.CartNumber,
                 CheckNumber = entity.CheckNumber,
-                ExpiryDate = entity.ExpiryDate
+                ExpiryDate = string.Format("{0:yyyy-MM-dd}", entity.ExpiryDate)
             };
             GetDropdownItems(entity.TradeMarkID);
             return View(model);
@@ -186,7 +187,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 entity.BankCartName = model.BankCartName;
                 entity.CartNumber = model.CartNumber;
                 entity.CheckNumber = model.CheckNumber;
-                entity.ExpiryDate = model.ExpiryDate;
+                entity.ExpiryDate = Convert.ToDateTime(model.ExpiryDate);
                 rpproduct.SaveChanges();
                 ViewBag.IslemDurum = EnumIslemDurum.Basarili;
             }

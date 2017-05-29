@@ -17,8 +17,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
 
         public string PriceString { get; set; }
 
-        public string Name { get; set; }
-
         public DateTime InvoiceDate { get; set; }
+
+        public DateTime ExpiryDate { get; set; }
     }
 }

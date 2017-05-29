@@ -198,7 +198,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                         UserID = userId,
                         CustomerID = model.CustomerID,
                         InvoiceDate = model.InvoiceDate,
-                        KdvPrice = item.KdvPrice
+                        KdvPrice = item.KdvPrice,
+                        ExpiryDate = model.ExpiryDate
                     };
                     rpsale.Add(entity);
                 }
@@ -221,11 +222,10 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             model.City = rpcity.Find(customer.CityID).Name;
             model.Region = rpregion.Find(customer.RegionID).Name;
             model.TaxOffice = customer.IsPerson ? "" : customer.TaxOffice;
-            model.TaxNumber = customer.IsPerson ? customer.TCNo : customer.TaxNumber;
+            model.TaxNumber = customer.IsPerson ? "T.C. " + customer.TCNo : customer.TaxNumber;
             model.ProductList = sepet.ProductList;
             model.TotalSalePrice = sepet.TotalSalePrice;
             model.PriceString = saleVM.PriceString;
-            model.TakerName = saleVM.Name;
 
             model.DateOfArrangement = String.Format("{0:d/M/yyyy}", saleVM.InvoiceDate);
             model.HourOfArrangement = String.Format("{0:HH:mm}", saleVM.InvoiceDate);
