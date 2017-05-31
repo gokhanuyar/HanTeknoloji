@@ -176,7 +176,6 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             {
                 return Json("fail");
             }
-
         }
 
         [HttpPost]
@@ -187,21 +186,41 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             {
                 int userId = UserID();
                 model.InvoiceDate = model.InvoiceDate.Year == 0001 ? DateTime.Now : model.InvoiceDate;
+                Sale sale = new Sale()
+                {
+                    PaymentType = model.PaymentType,
+                    UserID = userId,
+                    CustomerID = model.CustomerID,
+                    InvoiceDate = model.InvoiceDate,
+                    ExpiryDate = model.ExpiryDate.Year == 0001 ? DateTime.Now : model.ExpiryDate,
+                    TotalPrice = sepet.TotalSalePrice
+                };
+                var list = new List<SaleDetails>();
                 foreach (var item in sepet.ProductList)
                 {
-                    Sale entity = new Sale()
+                    SaleDetails detail = new SaleDetails()
                     {
                         ProductID = item.ID,
-                        PaymentType = model.PaymentType,
-                        Price = item.TotalPrice,
-                        Quantity = item.SaleCount,
-                        UserID = userId,
-                        CustomerID = model.CustomerID,
-                        InvoiceDate = model.InvoiceDate,
                         KdvPrice = item.KdvPrice,
-                        ExpiryDate = model.ExpiryDate
+                        Quantity = item.SaleCount,
+                        Price = item.TotalPrice,
+                        AddDate = DateTime.Now
                     };
-                    rpsale.Add(entity);
+                    list.Add(detail);
+                }
+                sale.SaleDetails = list;
+                rpsale.Add(sale);
+                if (model.PaymentType == "Vadeli")
+                {
+                    CustomerExpiry expiry = new CustomerExpiry()
+                    {
+                        ExpiryDate = model.ExpiryDate,
+                        CustomerID = model.CustomerID,
+                        ExpiryValue = sepet.TotalSalePrice - model.ExpiryValue,
+                        SaleID = sale.ID,
+                        SaleTotalPrice = sepet.TotalSalePrice
+                    };
+                    rpcustomerexpiry.Add(expiry);
                 }
                 if (model.Invoice == 1)
                 {

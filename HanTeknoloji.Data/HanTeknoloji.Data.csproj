@@ -57,10 +57,12 @@
     <Compile Include="Models\Orm\Entity\City.cs" />
     <Compile Include="Models\Orm\Entity\Color.cs" />
     <Compile Include="Models\Orm\Entity\Customer.cs" />
+    <Compile Include="Models\Orm\Entity\CustomerExpiry.cs" />
     <Compile Include="Models\Orm\Entity\Product.cs" />
     <Compile Include="Models\Orm\Entity\ProductModel.cs" />
     <Compile Include="Models\Orm\Entity\Region.cs" />
     <Compile Include="Models\Orm\Entity\Sale.cs" />
+    <Compile Include="Models\Orm\Entity\SaleDetails.cs" />
     <Compile Include="Models\Orm\Entity\ServiceSale.cs" />
     <Compile Include="Models\Orm\Entity\Supplier.cs" />
     <Compile Include="Models\Orm\Entity\TradeMark.cs" />

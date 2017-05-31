@@ -378,6 +378,7 @@
     <Content Include="Areas\Admin\Views\AdminReport\CustomerReport.cshtml" />
     <None Include="Properties\PublishProfiles\gokhan.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
+    <Content Include="Scripts\dateFormat.min.js" />
     <Content Include="Scripts\gridmvc.js" />
     <Content Include="Scripts\gridmvc.lang.ru.js" />
     <Content Include="Scripts\gridmvc.min.js" />
@@ -395,6 +396,7 @@
     <Compile Include="Areas\Admin\Controllers\AdminBaseController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminCategoryController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminCustomerController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminExpiryController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminHomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminProductController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminProductModelController.cs" />
@@ -453,6 +455,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Views\AdminBase\" />
+    <Folder Include="Areas\Admin\Views\AdminExpiry\" />
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
   </ItemGroup>

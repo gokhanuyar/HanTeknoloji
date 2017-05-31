@@ -39,11 +39,11 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                     PaymentType = x.PaymentType,
                                     SaleDate = String.Format("{0:d/M/yyyy}", x.AddDate),
                                     SaleTime = String.Format("{0:HH:mm}", x.AddDate),
-                                    Price = x.Price,
-                                    ProductID = x.ProductID,
-                                    Quantity = x.Quantity,
-                                    UserID = x.UserID,
-                                    KdvPrice = x.KdvPrice
+                                    //Price = x.Price,
+                                    //ProductID = x.ProductID,
+                                    //Quantity = x.Quantity,
+                                    //UserID = x.UserID,
+                                    //KdvPrice = x.KdvPrice
                                 }).ToList();
 
                 list.ForEach(l => l.Product = rpproduct.GetListWithQuery(x => x.ID == l.ProductID).Select(x => new ProductVM()
@@ -77,11 +77,11 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                     PaymentType = x.PaymentType,
                                     SaleDate = String.Format("{0:d/M/yyyy}", x.AddDate),
                                     SaleTime = String.Format("{0:HH:mm}", x.AddDate),
-                                    Price = x.Price,
-                                    ProductID = x.ProductID,
-                                    Quantity = x.Quantity,
-                                    UserID = x.UserID,
-                                    KdvPrice = x.KdvPrice
+                                    //Price = x.Price,
+                                    //ProductID = x.ProductID,
+                                    //Quantity = x.Quantity,
+                                    //UserID = x.UserID,
+                                    //KdvPrice = x.KdvPrice
                                 }).ToList();
 
                 list.ForEach(l => l.Product = rpproduct.GetListWithQuery(x => x.ID == l.ProductID).Select(x => new ProductVM()
@@ -132,11 +132,11 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                     PaymentType = x.PaymentType,
                                     SaleDate = String.Format("{0:d/M/yyyy HH:mm}", x.AddDate),
                                     InvoiceDate = String.Format("{0:d/M/yyyy HH:mm}", x.InvoiceDate),
-                                    Price = x.Price,
-                                    ProductID = x.ProductID,
-                                    Quantity = x.Quantity,
-                                    UserID = x.UserID,
-                                    KdvPrice = x.KdvPrice
+                                    //Price = x.Price,
+                                    //ProductID = x.ProductID,
+                                    //Quantity = x.Quantity,
+                                    //UserID = x.UserID,
+                                    //KdvPrice = x.KdvPrice
                                 }).ToList();
 
                 list.ForEach(l => l.Product = rpproduct.GetListWithQuery(x => x.ID == l.ProductID).Select(x => new ProductVM()
@@ -171,11 +171,11 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                     PaymentType = x.PaymentType,
                                     SaleDate = String.Format("{0:d/M/yyyy HH:mm}", x.AddDate),
                                     InvoiceDate = String.Format("{0:d/M/yyyy HH:mm}", x.InvoiceDate),
-                                    Price = x.Price,
-                                    ProductID = x.ProductID,
-                                    Quantity = x.Quantity,
-                                    UserID = x.UserID,
-                                    KdvPrice = x.KdvPrice
+                                    //Price = x.Price,
+                                    //ProductID = x.ProductID,
+                                    //Quantity = x.Quantity,
+                                    //UserID = x.UserID,
+                                    //KdvPrice = x.KdvPrice
                                 }).ToList();
 
                 list.ForEach(l => l.Product = rpproduct.GetListWithQuery(x => x.ID == l.ProductID).Select(x => new ProductVM()
@@ -298,11 +298,11 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     PaymentType = x.PaymentType,
                     SaleDate = String.Format("{0:d/M/yyyy}", x.AddDate),
                     SaleTime = String.Format("{0:HH:mm}", x.AddDate),
-                    Price = x.Price,
-                    ProductID = x.ProductID,
-                    Quantity = x.Quantity,
-                    UserID = x.UserID,
-                    KdvPrice = x.KdvPrice
+                    //Price = x.Price,
+                    //ProductID = x.ProductID,
+                    //Quantity = x.Quantity,
+                    //UserID = x.UserID,
+                    //KdvPrice = x.KdvPrice
                 }).ToList();
 
                 list.ForEach(l => l.Product = rpproduct.GetListWithQuery(x => x.ID == l.ProductID).Select(x => new ProductVM()

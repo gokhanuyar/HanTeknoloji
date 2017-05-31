@@ -81,20 +81,32 @@ $("#sale-button").click(function () {
     var customer = $("#CustomerID").val();
     var priceString = $.trim($("input[name='PriceString']").val());
     var expiryDate = $("input[name='ExpiryDate']").val();
+    var datetimeNow = $.format.date(new Date($.now()), "yyyy-MM-dd");
+    var expiryValue = $("input[name='ExpiryValue']").val();
+    var price = $("#price-control").text().replace(",", ".");
+    console.log(expiryValue)
     if (customer == "" && invoice == 1) {
-        sweetAlert("Uyarı", "Faturalı satışlar için müşteri seçmek zorundasınız!", "warning");
+        sweetAlert("Uyarı", "Faturalı satışlar için müşteri seçmek zorundasınız !", "warning");
     }
     else if (priceString == "" && invoice == 1) {
-        sweetAlert("Uyarı", "Satış fiyatını yazılı olarak giriniz!", "warning");
+        sweetAlert("Uyarı", "Satış fiyatını yazılı olarak giriniz !", "warning");
     }
     else if (payment == "Vadeli" && expiryDate == "") {
-        sweetAlert("Uyarı", "Vade tarihini giriniz!", "warning");
+        sweetAlert("Uyarı", "Vade tarihini giriniz !", "warning");
+    }
+    else if (!$.isNumeric(expiryValue)) {
+        sweetAlert("Uyarı", "Teslim alınan bakiye sayı değeri olmalıdır ! ", "warning");
+    }
+    else if (new Date(datetimeNow) > new Date(expiryDate)) {
+        sweetAlert("Uyarı", "Vade tarihi için bugünden sonraki bir tarih seçiniz !", "warning");
     }
     else if (payment == "Vadeli" && customer == "") {
-        sweetAlert("Uyarı", "Vadeli satışlar için müşteri seçiniz!", "warning");
+        sweetAlert("Uyarı", "Vadeli satışlar için müşteri seçiniz !", "warning");
     }
     else {
-        $("#sale-form").submit();
+        if (price > 0) {
+            $("#sale-form").submit();
+        }
     }
 });
 

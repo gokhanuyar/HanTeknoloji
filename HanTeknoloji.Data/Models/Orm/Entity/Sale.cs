@@ -8,22 +8,18 @@ namespace HanTeknoloji.Data.Models.Orm.Entity
 {
     public class Sale : BaseEntity
     {
-        public int ProductID { get; set; }
-
-        public decimal Price { get; set; }
-
         public string PaymentType { get; set; }
-
-        public int Quantity { get; set; }
-
+        
         public int UserID { get; set; }
 
         public int CustomerID { get; set; }
 
-        public DateTime InvoiceDate { get; set; }
+        public Nullable<DateTime> InvoiceDate { get; set; }        
 
-        public decimal KdvPrice { get; set; }
+        public Nullable<DateTime> ExpiryDate { get; set; }
 
-        public DateTime? ExpiryDate { get; set; }
+        public virtual List<SaleDetails> SaleDetails { get; set; }
+
+        public decimal TotalPrice { get; set; }
     }
 }
