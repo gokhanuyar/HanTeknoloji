@@ -1,0 +1,27 @@
+﻿
+@model List<ExpiryResultVM>
+<table class="table table-striped">   
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Satış Tarihi</th>
+            <th>Vade Tarihi</th>
+            <th>Satış Fiyatı</th>
+            <th>Ödenen Miktar</th>
+            <th>Borç</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>1</td>
+                <td>@item.SaleDate</td>
+                <td>@item.ExpiryDate</td>
+                <td>@item.SalePrice</td>
+                <td>@item.PaidPrice</td>
+                <td>@item.ExpiryValue</td>
+            </tr>
+        }       
+    </tbody>
+</table>

@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewBag.Title = "Customer";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
+@model CustomerExpiryWrapVM
+
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header">Vade İşlemleri</h3>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Müşteri hesabına gitmek için aşağıdaki formdan Müşteri arayın
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        @using (Html.BeginForm(null, null, FormMethod.Post, new { @role = "form" }))
+                        {
+                            @Html.Partial("Partial/CustomerForm", Model.CustomerList)
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Vadeli İşlemler - @Model.CustomerName
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+                    @Html.Partial("Partial/ResultList", Model.ExpiryResultList)
+                </div>
+                <h4 style="float:right">Toplam Borç : @Model.TotalExpiryValue TL</h4>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+</div>
+@section scripts{
+    @*<script>
+        $("button").click(function () {
+            var value = $("#input-val").val();
+            alert(value);
+        })
+    </script>*@
+}

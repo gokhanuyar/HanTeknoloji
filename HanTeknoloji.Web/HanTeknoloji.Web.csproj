@@ -376,6 +376,9 @@
     <Content Include="Areas\Admin\Views\AdminReport\Partial\CustomerModal.cshtml" />
     <Content Include="Areas\Admin\Views\AdminReport\Service.cshtml" />
     <Content Include="Areas\Admin\Views\AdminReport\CustomerReport.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminExpiry\Customer.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminExpiry\Partial\CustomerForm.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminExpiry\Partial\ResultList.cshtml" />
     <None Include="Properties\PublishProfiles\gokhan.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\dateFormat.min.js" />
@@ -411,6 +414,7 @@
     <Compile Include="Areas\Admin\Models\Barcode\barcodecs.cs" />
     <Compile Include="Areas\Admin\Models\Types\Enums\EnumIslemDurum.cs" />
     <Compile Include="Areas\Admin\Models\Types\Messages\FormMessages.cs" />
+    <Compile Include="Areas\Admin\Models\Types\ReturnTypes\Jresult.cs" />
     <Compile Include="Areas\Admin\Models\VM\AdminUserVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\BarCodeVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\BaseVM.cs" />
@@ -418,7 +422,10 @@
     <Compile Include="Areas\Admin\Models\VM\CategoryVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\ChangePriceVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\ColorVM.cs" />
+    <Compile Include="Areas\Admin\Models\VM\CustomerExpiryWrapVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\CustomerVM.cs" />
+    <Compile Include="Areas\Admin\Models\VM\CustomerExpiryVM.cs" />
+    <Compile Include="Areas\Admin\Models\VM\ExpiryResultVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\InvoiceVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\LoginVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\PaymentType.cs" />
@@ -455,7 +462,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Views\AdminBase\" />
-    <Folder Include="Areas\Admin\Views\AdminExpiry\" />
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
   </ItemGroup>

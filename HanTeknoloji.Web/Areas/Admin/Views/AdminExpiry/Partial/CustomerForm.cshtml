@@ -1,0 +1,14 @@
+﻿
+@model List<CustomerExpiryVM>
+
+<div class="form-group">
+    <label>Müşteri :</label>
+    <input list="customers" name="name" class="form-control" id="input-val">
+    <datalist id="customers">
+        @foreach (var item in Model)
+        {
+            <option value="#@item.CustomerID @item.Name @item.Phone"></option>
+        }
+    </datalist>
+</div>
+<button class="btn btn-success" type="submit">Bul</button>
