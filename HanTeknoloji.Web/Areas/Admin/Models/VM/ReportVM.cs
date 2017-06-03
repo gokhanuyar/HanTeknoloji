@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HanTeknoloji.Data.Models.Orm.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -34,6 +35,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         public CustomerVM Customer { get; set; }
 
         public string Note { get; set; }
-        
+
+        public List<SaleDetailsVM> Details { get; set; }
     }
 }

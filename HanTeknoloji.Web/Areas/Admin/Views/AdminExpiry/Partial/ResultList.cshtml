@@ -1,27 +1,35 @@
 ﻿
 @model List<ExpiryResultVM>
+    @{ 
+        int sayi = 1;
+    }
 <table class="table table-striped">   
     <thead>
         <tr>
             <th>#</th>
-            <th>Satış Tarihi</th>
             <th>Vade Tarihi</th>
+            <th>Satış Tarihi</th>            
             <th>Satış Fiyatı</th>
             <th>Ödenen Miktar</th>
             <th>Borç</th>
+            <th>İşlem</th>
+            <th>Satış Detayı</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td>1</td>
-                <td>@item.SaleDate</td>
+                <td>@sayi</td>
                 <td>@item.ExpiryDate</td>
+                <td>@item.SaleDate</td>                
                 <td>@item.SalePrice</td>
                 <td>@item.PaidPrice</td>
-                <td>@item.ExpiryValue</td>
+                <td id="td_@item.ID">@item.ExpiryValue</td>
+                <td><button onclick="SetButton(@item.ID)" data-toggle="modal" data-target="#myModal" class="btn btn-primary btn-sm">Tahsil Et</button></td>
+                <td><button class="btn btn-info btn-sm" onclick="Details(@item.ID)">Detay</button></td>
             </tr>
+            sayi++;
         }       
     </tbody>
 </table>

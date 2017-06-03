@@ -28,78 +28,138 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             date = Session["date"] == null ? "" : Session["date"].ToString();
             if (date.Length == 7)
             {
-                var list = rpsale
+                var sales = rpsale
                                 .GetListWithQuery(x => x
                                 .AddDate.Month == _date.Month && x
                                 .AddDate.Year == _date.Year && x
-                                .CustomerID == 0)
+                                .IsInvoiced == false)
                                 .OrderByDescending(x => x.AddDate)
-                                .ToList().Select(x => new ReportVM()
-                                {
-                                    PaymentType = x.PaymentType,
-                                    SaleDate = String.Format("{0:d/M/yyyy}", x.AddDate),
-                                    SaleTime = String.Format("{0:HH:mm}", x.AddDate),
-                                    //Price = x.Price,
-                                    //ProductID = x.ProductID,
-                                    //Quantity = x.Quantity,
-                                    //UserID = x.UserID,
-                                    //KdvPrice = x.KdvPrice
-                                }).ToList();
+                                .ToList();
 
-                list.ForEach(l => l.Product = rpproduct.GetListWithQuery(x => x.ID == l.ProductID).Select(x => new ProductVM()
+                var list = sales.Select(x => new ReportVM()
                 {
-                    TradeMark = rptrademark.Find(x.TradeMarkID).Name,
-                    ProductModel = rpproductmodel.Find(x.ProductModelID).Name,
-                    UnitPrice = x.UnitPrice
-                }).FirstOrDefault());
+                    ID = x.ID,
+                    PaymentType = x.PaymentType,
+                    SaleDate = String.Format("{0:d/M/yyyy}", x.AddDate),
+                    SaleTime = String.Format("{0:HH:mm}", x.AddDate),
+                    UserID = x.UserID
+                }).ToList();
+
+                list.ForEach(l => l.Details = rpsaledetails
+                .GetListWithQuery(d => d.SaleID == l.ID)
+                .Select(d => new SaleDetailsVM
+                {
+                    AddDate = d.AddDate,
+                    KdvPrice = d.KdvPrice,
+                    Price = d.Price,
+                    ProductID = d.ProductID,
+                    Quantity = d.Quantity
+                }).ToList());
+
+                list.ForEach(l => l.Details.ForEach(d => d.Product = rpproduct.GetListWithQuery(p => p.ID == d.ProductID).Select(p => new ProductVM
+                {
+                    TradeMark = rptrademark.Find(p.TradeMarkID).Name,
+                    ProductModel = rpproductmodel.Find(p.ProductModelID).Name,
+                    UnitPrice = p.UnitPrice,
+                    UnitSalePrice = p.UnitSalePrice
+                }).FirstOrDefault()));
 
                 list.ForEach(l => l.AdminUserName = rpadminuser.Find(l.UserID).FullName);
-                ViewBag.quantity = list.Sum(x => x.Quantity);
-                ViewBag.unitprice = list.Sum(x => x.Product.UnitPrice * x.Quantity);
-                ViewBag.saleprice = list.Sum(x => x.Price);
-                ViewBag.kdv = list.Sum(x => x.KdvPrice);
+                List<ReportVM> model = new List<ReportVM>();
+                foreach (var sale in list)
+                {
+                    foreach (var detail in sale.Details)
+                    {
+                        ReportVM vm = new ReportVM()
+                        {
+                            AdminUserName = sale.AdminUserName,
+                            Product = detail.Product,
+                            Quantity = detail.Quantity,
+                            KdvPrice = detail.KdvPrice,
+                            Price = detail.Price + detail.KdvPrice,
+                            SaleDate = sale.SaleDate,
+                            SaleTime = sale.SaleTime,
+                        };
+                        model.Add(vm);
+                    }
+                }
+
+                ViewBag.quantity = model.Sum(x => x.Quantity);
+                ViewBag.unitprice = model.Sum(x => x.Product.UnitPrice * x.Quantity);
+                ViewBag.saleprice = model.Sum(x => x.Price);
+                ViewBag.kdv = model.Sum(x => x.KdvPrice);
                 ViewBag.brut = ViewBag.saleprice - (ViewBag.unitprice + ViewBag.kdv);
                 ViewBag.date = String.Format("{0:y}", _date);
-                IPagedList<ReportVM> model = list.ToPagedList(_page, 20);
+                IPagedList<ReportVM> pagedModel = model.ToPagedList(_page, 20);
                 return View(model);
             }
             else
             {
-                var list = rpsale
+                var sales = rpsale
                                 .GetListWithQuery(x => x
                                 .AddDate.Day == _date.Day && x
                                 .AddDate.Month == _date.Month && x
                                 .AddDate.Year == _date.Year && x
-                                .CustomerID == 0)
+                                .IsInvoiced == false)
                                 .OrderByDescending(x => x.AddDate)
-                                .ToList().Select(x => new ReportVM()
-                                {
-                                    PaymentType = x.PaymentType,
-                                    SaleDate = String.Format("{0:d/M/yyyy}", x.AddDate),
-                                    SaleTime = String.Format("{0:HH:mm}", x.AddDate),
-                                    //Price = x.Price,
-                                    //ProductID = x.ProductID,
-                                    //Quantity = x.Quantity,
-                                    //UserID = x.UserID,
-                                    //KdvPrice = x.KdvPrice
-                                }).ToList();
+                                .ToList();
 
-                list.ForEach(l => l.Product = rpproduct.GetListWithQuery(x => x.ID == l.ProductID).Select(x => new ProductVM()
+                var list = sales.Select(x => new ReportVM()
                 {
-                    TradeMark = rptrademark.Find(x.TradeMarkID).Name,
-                    ProductModel = rpproductmodel.Find(x.ProductModelID).Name,
-                    UnitPrice = x.UnitPrice
-                }).FirstOrDefault());
+                    ID = x.ID,
+                    PaymentType = x.PaymentType,
+                    SaleDate = String.Format("{0:d/M/yyyy}", x.AddDate),
+                    SaleTime = String.Format("{0:HH:mm}", x.AddDate),
+                    UserID = x.UserID
+                }).ToList();
+
+                list.ForEach(l => l.Details = rpsaledetails
+                .GetListWithQuery(d => d.SaleID == l.ID)
+                .Select(d => new SaleDetailsVM
+                {
+                    AddDate = d.AddDate,
+                    KdvPrice = d.KdvPrice,
+                    Price = d.Price,
+                    ProductID = d.ProductID,
+                    Quantity = d.Quantity
+                }).ToList());
+
+                list.ForEach(l => l.Details.ForEach(d => d.Product = rpproduct.GetListWithQuery(p => p.ID == d.ProductID).Select(p => new ProductVM
+                {
+                    TradeMark = rptrademark.Find(p.TradeMarkID).Name,
+                    ProductModel = rpproductmodel.Find(p.ProductModelID).Name,
+                    UnitPrice = p.UnitPrice,
+                    UnitSalePrice = p.UnitSalePrice
+                }).FirstOrDefault()));
 
                 list.ForEach(l => l.AdminUserName = rpadminuser.Find(l.UserID).FullName);
-                ViewBag.quantity = list.Sum(x => x.Quantity);
-                ViewBag.unitprice = list.Sum(x => x.Product.UnitPrice * x.Quantity);
-                ViewBag.saleprice = list.Sum(x => x.Price);
-                ViewBag.kdv = list.Sum(x => x.KdvPrice);
+                List<ReportVM> model = new List<ReportVM>();
+                foreach (var sale in list)
+                {
+                    foreach (var detail in sale.Details)
+                    {
+                        ReportVM vm = new ReportVM()
+                        {
+                            AdminUserName = sale.AdminUserName,
+                            Product = detail.Product,
+                            Quantity = detail.Quantity,
+                            KdvPrice = detail.KdvPrice,
+                            Price = detail.Price + detail.KdvPrice,
+                            SaleDate = sale.SaleDate,
+                            SaleTime = sale.SaleTime,
+                        };
+                        model.Add(vm);
+                    }
+                }
+
+                ViewBag.quantity = model.Sum(x => x.Quantity);
+                ViewBag.unitprice = model.Sum(x => x.Product.UnitPrice * x.Quantity);
+                ViewBag.saleprice = model.Sum(x => x.Price);
+                ViewBag.kdv = model.Sum(x => x.KdvPrice);
                 ViewBag.brut = ViewBag.saleprice - (ViewBag.unitprice + ViewBag.kdv);
                 ViewBag.date = _date.ToLongDateString();
-                IPagedList<ReportVM> model = list.ToPagedList(_page, 20);
-                return View(model);
+                IPagedList<ReportVM> pagedModel = model.ToPagedList(_page, 20);
+                return View(pagedModel);
             }
         }
 
@@ -120,80 +180,143 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
 
             if (date.Length == 7)
             {
-                var list = rpsale
+                var sales = rpsale
                                 .GetListWithQuery(x => x
                                 .AddDate.Month == _date.Month && x
                                 .AddDate.Year == _date.Year && x
-                                .CustomerID != 0)
+                                .IsInvoiced)
                                 .OrderByDescending(x => x.AddDate)
-                                .ToList().Select(x => new ReportVM()
-                                {
-                                    CustomerID = x.CustomerID,
-                                    PaymentType = x.PaymentType,
-                                    SaleDate = String.Format("{0:d/M/yyyy HH:mm}", x.AddDate),
-                                    InvoiceDate = String.Format("{0:d/M/yyyy HH:mm}", x.InvoiceDate),
-                                    //Price = x.Price,
-                                    //ProductID = x.ProductID,
-                                    //Quantity = x.Quantity,
-                                    //UserID = x.UserID,
-                                    //KdvPrice = x.KdvPrice
-                                }).ToList();
+                                .ToList();
 
-                list.ForEach(l => l.Product = rpproduct.GetListWithQuery(x => x.ID == l.ProductID).Select(x => new ProductVM()
+                var list = sales.Select(x => new ReportVM()
                 {
-                    TradeMark = rptrademark.Find(x.TradeMarkID).Name,
-                    ProductModel = rpproductmodel.Find(x.ProductModelID).Name,
-                    UnitPrice = x.UnitPrice
-                }).FirstOrDefault());
+                    ID = x.ID,
+                    PaymentType = x.PaymentType,
+                    SaleDate = String.Format("{0:d/M/yyyy HH:mm}", x.AddDate),
+                    InvoiceDate = String.Format("{0:d/M/yyyy HH:mm}", x.InvoiceDate),
+                    UserID = x.UserID,
+                    CustomerID = x.CustomerID
+                }).ToList();
+
+                list.ForEach(l => l.Details = rpsaledetails
+                .GetListWithQuery(d => d.SaleID == l.ID)
+                .Select(d => new SaleDetailsVM
+                {
+                    AddDate = d.AddDate,
+                    KdvPrice = d.KdvPrice,
+                    Price = d.Price,
+                    ProductID = d.ProductID,
+                    Quantity = d.Quantity
+                }).ToList());
+
+                list.ForEach(l => l.Details.ForEach(d => d.Product = rpproduct.GetListWithQuery(p => p.ID == d.ProductID).Select(p => new ProductVM
+                {
+                    TradeMark = rptrademark.Find(p.TradeMarkID).Name,
+                    ProductModel = rpproductmodel.Find(p.ProductModelID).Name,
+                    UnitPrice = p.UnitPrice,
+                    UnitSalePrice = p.UnitSalePrice
+                }).FirstOrDefault()));
 
                 list.ForEach(l => l.AdminUserName = rpadminuser.Find(l.UserID).FullName);
-                ViewBag.quantity = list.Sum(x => x.Quantity);
-                ViewBag.unitprice = list.Sum(x => x.Product.UnitPrice * x.Quantity);
-                ViewBag.saleprice = list.Sum(x => x.Price);
-                ViewBag.kdv = list.Sum(x => x.KdvPrice);
+                List<ReportVM> model = new List<ReportVM>();
+                foreach (var sale in list)
+                {
+                    foreach (var detail in sale.Details)
+                    {
+                        ReportVM vm = new ReportVM()
+                        {
+                            AdminUserName = sale.AdminUserName,
+                            Product = detail.Product,
+                            Quantity = detail.Quantity,
+                            KdvPrice = detail.KdvPrice,
+                            Price = detail.Price + detail.KdvPrice,
+                            SaleDate = sale.SaleDate,
+                            InvoiceDate = sale.InvoiceDate,
+                            CustomerID = sale.CustomerID
+                        };
+                        model.Add(vm);
+                    }
+                }
+
+                ViewBag.quantity = model.Sum(x => x.Quantity);
+                ViewBag.unitprice = model.Sum(x => x.Product.UnitPrice * x.Quantity);
+                ViewBag.saleprice = model.Sum(x => x.Price);
+                ViewBag.kdv = model.Sum(x => x.KdvPrice);
                 ViewBag.brut = ViewBag.saleprice - (ViewBag.unitprice + ViewBag.kdv);
                 ViewBag.date = String.Format("{0:y}", _date);
-                IPagedList<ReportVM> model = list.ToPagedList(_page, 20);
-                return View(model);
+                IPagedList<ReportVM> pagedModel = model.ToPagedList(_page, 20);
+                return View(pagedModel);
             }
             else
             {
-                var list = rpsale
+                var sales = rpsale
                                 .GetListWithQuery(x => x
                                 .AddDate.Day == _date.Day && x
                                 .AddDate.Month == _date.Month && x
                                 .AddDate.Year == _date.Year && x
-                                .CustomerID != 0)
+                                .IsInvoiced)
                                 .OrderByDescending(x => x.AddDate)
-                                .ToList().Select(x => new ReportVM()
-                                {
-                                    CustomerID = x.CustomerID,
-                                    PaymentType = x.PaymentType,
-                                    SaleDate = String.Format("{0:d/M/yyyy HH:mm}", x.AddDate),
-                                    InvoiceDate = String.Format("{0:d/M/yyyy HH:mm}", x.InvoiceDate),
-                                    //Price = x.Price,
-                                    //ProductID = x.ProductID,
-                                    //Quantity = x.Quantity,
-                                    //UserID = x.UserID,
-                                    //KdvPrice = x.KdvPrice
-                                }).ToList();
+                                .ToList();
 
-                list.ForEach(l => l.Product = rpproduct.GetListWithQuery(x => x.ID == l.ProductID).Select(x => new ProductVM()
+                var list = sales.Select(x => new ReportVM()
                 {
-                    TradeMark = rptrademark.Find(x.TradeMarkID).Name,
-                    ProductModel = rpproductmodel.Find(x.ProductModelID).Name,
-                    UnitPrice = x.UnitPrice
-                }).FirstOrDefault());
+                    ID = x.ID,
+                    PaymentType = x.PaymentType,
+                    SaleDate = String.Format("{0:d/M/yyyy HH:mm}", x.AddDate),
+                    InvoiceDate = String.Format("{0:d/M/yyyy HH:mm}", x.InvoiceDate),
+                    Price = x.TotalPrice,
+                    UserID = x.UserID,
+                    CustomerID = x.CustomerID
+                }).ToList();
+
+                list.ForEach(l => l.Details = rpsaledetails
+                .GetListWithQuery(d => d.SaleID == l.ID)
+                .Select(d => new SaleDetailsVM
+                {
+                    AddDate = d.AddDate,
+                    KdvPrice = d.KdvPrice,
+                    Price = d.Price,
+                    ProductID = d.ProductID,
+                    Quantity = d.Quantity
+                }).ToList());
+
+                list.ForEach(l => l.Details.ForEach(d => d.Product = rpproduct.GetListWithQuery(p => p.ID == d.ProductID).Select(p => new ProductVM
+                {
+                    TradeMark = rptrademark.Find(p.TradeMarkID).Name,
+                    ProductModel = rpproductmodel.Find(p.ProductModelID).Name,
+                    UnitPrice = p.UnitPrice,
+                    UnitSalePrice = p.UnitSalePrice
+                }).FirstOrDefault()));
 
                 list.ForEach(l => l.AdminUserName = rpadminuser.Find(l.UserID).FullName);
-                ViewBag.quantity = list.Sum(x => x.Quantity);
-                ViewBag.unitprice = list.Sum(x => x.Product.UnitPrice * x.Quantity);
-                ViewBag.saleprice = list.Sum(x => x.Price);
-                ViewBag.kdv = list.Sum(x => x.KdvPrice);
+                List<ReportVM> model = new List<ReportVM>();
+                foreach (var sale in list)
+                {
+                    foreach (var detail in sale.Details)
+                    {
+                        ReportVM vm = new ReportVM()
+                        {
+                            AdminUserName = sale.AdminUserName,
+                            Product = detail.Product,
+                            Quantity = detail.Quantity,
+                            KdvPrice = detail.KdvPrice,
+                            Price = detail.Price + detail.KdvPrice,
+                            SaleDate = sale.SaleDate,
+                            InvoiceDate = sale.InvoiceDate,
+                            CustomerID = sale.CustomerID
+                        };
+                        model.Add(vm);
+                    }
+                }
+
+                ViewBag.quantity = model.Sum(x => x.Quantity);
+                ViewBag.unitprice = model.Sum(x => x.Product.UnitPrice * x.Quantity);
+                ViewBag.saleprice = model.Sum(x => x.Price);
+                ViewBag.kdv = model.Sum(x => x.KdvPrice);
                 ViewBag.brut = ViewBag.saleprice - (ViewBag.unitprice + ViewBag.kdv);
                 ViewBag.date = _date.ToLongDateString();
-                IPagedList<ReportVM> model = list.ToPagedList(_page, 20);
-                return View(model);
+                IPagedList<ReportVM> pagedModel = model.ToPagedList(_page, 20);
+                return View(pagedModel);
             }
         }
 
@@ -271,7 +394,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 TaxNumber = customer.TaxNumber,
                 City = rpcity.Find(customer.CityID).Name,
                 Region = rpregion.Find(customer.RegionID).Name,
-                Address = customer.Address
+                Address = customer.Address,
+                IsPerson = customer.IsPerson
             };
             return Json(model, JsonRequestBehavior.AllowGet);
         }

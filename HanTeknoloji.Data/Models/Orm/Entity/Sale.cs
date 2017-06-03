@@ -21,5 +21,7 @@ namespace HanTeknoloji.Data.Models.Orm.Entity
         public virtual List<SaleDetails> SaleDetails { get; set; }
 
         public decimal TotalPrice { get; set; }
+
+        public bool IsInvoiced { get; set; }
     }
 }

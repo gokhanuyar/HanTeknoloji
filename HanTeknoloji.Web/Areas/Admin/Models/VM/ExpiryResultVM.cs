@@ -5,7 +5,7 @@ using System.Web;
 
 namespace HanTeknoloji.Web.Areas.Admin.Models.VM
 {
-    public class ExpiryResultVM
+    public class ExpiryResultVM : BaseVM
     {
         public string SaleDate { get; set; }
 

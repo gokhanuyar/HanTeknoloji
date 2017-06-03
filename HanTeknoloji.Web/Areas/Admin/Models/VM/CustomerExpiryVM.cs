@@ -12,5 +12,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         public string Name { get; set; }
 
         public string Phone { get; set; }
+
+        public decimal Price { get; set; }
     }
 }

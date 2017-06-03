@@ -193,7 +193,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     CustomerID = model.CustomerID,
                     InvoiceDate = model.InvoiceDate,
                     ExpiryDate = model.ExpiryDate.Year == 0001 ? DateTime.Now : model.ExpiryDate,
-                    TotalPrice = sepet.TotalSalePrice
+                    TotalPrice = sepet.TotalSalePrice,
+                    IsInvoiced = model.Invoice == 1 ? true : false
                 };
                 var list = new List<SaleDetails>();
                 foreach (var item in sepet.ProductList)
@@ -201,9 +202,9 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     SaleDetails detail = new SaleDetails()
                     {
                         ProductID = item.ID,
-                        KdvPrice = item.KdvPrice,
+                        KdvPrice = Math.Round(item.KdvPrice,2),
                         Quantity = item.SaleCount,
-                        Price = item.TotalPrice,
+                        Price = Math.Round(item.UnitSalePrice, 2),
                         AddDate = DateTime.Now
                     };
                     list.Add(detail);

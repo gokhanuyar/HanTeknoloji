@@ -17,6 +17,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         public GenericRepository<TradeMark> rptrademark;
         public GenericRepository<Color> rpcolor;
         public GenericRepository<Sale> rpsale;
+        public GenericRepository<SaleDetails> rpsaledetails;
         public GenericRepository<AdminUser> rpadminuser;
         public GenericRepository<ServiceSale> rpservicesale;
         public GenericRepository<Supplier> rpsupplier;
@@ -33,6 +34,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             rptrademark = new GenericRepository<TradeMark>();
             rpcolor = new GenericRepository<Color>();
             rpsale = new GenericRepository<Sale>();
+            rpsaledetails = new GenericRepository<SaleDetails>();
             rpadminuser = new GenericRepository<AdminUser>();
             rpservicesale = new GenericRepository<ServiceSale>();
             rpsupplier = new GenericRepository<Supplier>();
@@ -50,6 +52,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             rptrademark.Dispose();
             rpcolor.Dispose();
             rpsale.Dispose();
+            rpsaledetails.Dispose();
             rpadminuser.Dispose();
             rpservicesale.Dispose();
             rpsupplier.Dispose();

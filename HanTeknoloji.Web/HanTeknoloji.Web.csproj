@@ -273,7 +273,8 @@
     <Content Include="Areas\Admin\Content\vendor\raphael\raphael.js" />
     <Content Include="Areas\Admin\Content\vendor\raphael\raphael.min.js" />
     <Content Include="Areas\Admin\Scripts\custom\add-product.js" />
-    <Content Include="Areas\Admin\Scripts\custom\invoice-sale.js" />
+    <Content Include="Areas\Admin\Scripts\custom\customer-expiry-opr.js" />
+    <Content Include="Areas\Admin\Scripts\custom\invoice-sale-report.js" />
     <Content Include="Areas\Admin\Scripts\custom\region.js" />
     <Content Include="Areas\Admin\Scripts\custom\sale-operations.js" />
     <Content Include="Areas\Admin\Scripts\custom\product-list.js" />
@@ -379,6 +380,7 @@
     <Content Include="Areas\Admin\Views\AdminExpiry\Customer.cshtml" />
     <Content Include="Areas\Admin\Views\AdminExpiry\Partial\CustomerForm.cshtml" />
     <Content Include="Areas\Admin\Views\AdminExpiry\Partial\ResultList.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminExpiry\Partial\Modal.cshtml" />
     <None Include="Properties\PublishProfiles\gokhan.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\dateFormat.min.js" />
@@ -433,6 +435,7 @@
     <Compile Include="Areas\Admin\Models\VM\ProductVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\RegionVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\ReportVM.cs" />
+    <Compile Include="Areas\Admin\Models\VM\SaleDetailsVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\SaleVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\ServiceSaleVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\SupplierVM.cs" />

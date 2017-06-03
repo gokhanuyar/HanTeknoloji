@@ -26,9 +26,10 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             model.CustomerList = Customers();
             model.ExpiryResultList = rpcustomerexpiry
                 .GetListWithQuery(x => x.CustomerID == customerId)
-                .OrderByDescending(x => x.AddDate)
+                .OrderBy(x => x.ExpiryDate)
                 .Select(x => new ExpiryResultVM
                 {
+                    ID = x.ID,
                     ExpiryDate = x.ExpiryDate.ToLongDateString(),
                     SaleDate = x.AddDate.ToLongDateString(),
                     SalePrice = x.SaleTotalPrice,
@@ -48,6 +49,38 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 Name = x.Name,
                 Phone = x.Phone
             }).ToList();
+        }
+
+        public JsonResult Pay(CustomerExpiryVM model)
+        {
+            var expiry = rpcustomerexpiry.Find(model.ID);
+            var customer = rpcustomer.Find(expiry.CustomerID);
+            expiry.ExpiryValue -= model.Price;
+            rpcustomerexpiry.SaveChanges();
+            string postValue = "#" + customer.ID + " " + customer.Name + " " + customer.Phone;
+            return Json(postValue, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetSaleDetails(int id)
+        {
+            var expiry = rpcustomerexpiry.Find(id);
+            var sale = rpsale.Find(expiry.SaleID);
+            var list = sale.SaleDetails.Select(x => new ReportVM
+            {
+                Quantity = x.Quantity,
+                Price = x.Price + x.KdvPrice,
+                ProductID = x.ProductID
+            }).ToList();
+
+            list.ForEach(l => l.Product = rpproduct
+            .GetListWithQuery(p => p.ID == l.ProductID)
+            .Select(p => new ProductVM
+            {
+                TradeMark = rptrademark.Find(p.TradeMarkID).Name,
+                ProductModel = rpproductmodel.Find(p.ProductModelID).Name,
+            }).FirstOrDefault());
+
+            return Json(list, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Supplier()
