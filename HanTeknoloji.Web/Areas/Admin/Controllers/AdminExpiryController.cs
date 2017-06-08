@@ -36,8 +36,10 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     PaidPrice = x.SaleTotalPrice - x.ExpiryValue,
                     ExpiryValue = x.ExpiryValue
                 }).ToList();
-            model.TotalExpiryValue = model.ExpiryResultList.Sum(x => x.ExpiryValue);
+            model.TotalExpiryValue = customer.ExpiryValue;
             model.CustomerName = customer.Name + "  İçin Vadeli Satış Tablosu";
+            model.CustomerID = customer.ID;
+            model.PaidExpiryValue = customer.PaidExpiryValue;
             return View(model);
         }
 
@@ -53,10 +55,10 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
 
         public JsonResult Pay(CustomerExpiryVM model)
         {
-            var expiry = rpcustomerexpiry.Find(model.ID);
-            var customer = rpcustomer.Find(expiry.CustomerID);
-            expiry.ExpiryValue -= model.Price;
-            rpcustomerexpiry.SaveChanges();
+            var customer = rpcustomer.Find(model.ID);
+            customer.ExpiryValue -= model.Price;
+            customer.PaidExpiryValue += model.Price;
+            rpcustomer.SaveChanges();
             string postValue = "#" + customer.ID + " " + customer.Name + " " + customer.Phone;
             return Json(postValue, JsonRequestBehavior.AllowGet);
         }

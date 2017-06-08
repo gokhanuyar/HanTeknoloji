@@ -414,6 +414,7 @@
     <Compile Include="Areas\Admin\Controllers\AdminReportController.cs" />
     <Compile Include="Areas\Admin\Models\Barcode\BarCode39.cs" />
     <Compile Include="Areas\Admin\Models\Barcode\barcodecs.cs" />
+    <Compile Include="Areas\Admin\Models\Services\CustomerExpiryService.cs" />
     <Compile Include="Areas\Admin\Models\Types\Enums\EnumIslemDurum.cs" />
     <Compile Include="Areas\Admin\Models\Types\Messages\FormMessages.cs" />
     <Compile Include="Areas\Admin\Models\Types\ReturnTypes\Jresult.cs" />

@@ -91,7 +91,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 ViewBag.brut = ViewBag.saleprice - (ViewBag.unitprice + ViewBag.kdv);
                 ViewBag.date = String.Format("{0:y}", _date);
                 IPagedList<ReportVM> pagedModel = model.ToPagedList(_page, 20);
-                return View(model);
+                return View(pagedModel);
             }
             else
             {

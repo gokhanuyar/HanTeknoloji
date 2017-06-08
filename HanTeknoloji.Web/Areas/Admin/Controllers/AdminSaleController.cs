@@ -1,4 +1,5 @@
 ﻿using HanTeknoloji.Data.Models.Orm.Entity;
+using HanTeknoloji.Web.Areas.Admin.Models.Services;
 using HanTeknoloji.Web.Areas.Admin.Models.Types.Enums;
 using HanTeknoloji.Web.Areas.Admin.Models.VM;
 using System;
@@ -221,6 +222,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                         SaleID = sale.ID,
                         SaleTotalPrice = sepet.TotalSalePrice
                     };
+                    CustomerExpiryService.SetCustomerExpiry(expiry);
                     rpcustomerexpiry.Add(expiry);
                 }
                 if (model.Invoice == 1)

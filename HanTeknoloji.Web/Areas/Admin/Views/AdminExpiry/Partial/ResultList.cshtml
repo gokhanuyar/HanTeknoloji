@@ -12,7 +12,6 @@
             <th>Satış Fiyatı</th>
             <th>Ödenen Miktar</th>
             <th>Borç</th>
-            <th>İşlem</th>
             <th>Satış Detayı</th>
         </tr>
     </thead>
@@ -26,7 +25,6 @@
                 <td>@item.SalePrice</td>
                 <td>@item.PaidPrice</td>
                 <td id="td_@item.ID">@item.ExpiryValue</td>
-                <td><button onclick="SetButton(@item.ID)" data-toggle="modal" data-target="#myModal" class="btn btn-primary btn-sm">Tahsil Et</button></td>
                 <td><button class="btn btn-info btn-sm" onclick="Details(@item.ID)">Detay</button></td>
             </tr>
             sayi++;

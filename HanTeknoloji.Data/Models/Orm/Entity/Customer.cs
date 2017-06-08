@@ -25,5 +25,9 @@ namespace HanTeknoloji.Data.Models.Orm.Entity
         public string Phone { get; set; }
 
         public bool IsPerson { get; set; }
+
+        public decimal ExpiryValue { get; set; }
+
+        public decimal PaidExpiryValue { get; set; }
     }
 }

@@ -48,7 +48,7 @@ $(".total-input").change(function () {
         data: data,
         success: function (result) {
             if (result == "succ") {
-                window.location.href = "/Admin/AdminSale/Index"
+                window.location.href = "/Admin/AdminSale/Index";
             }
             else {
                 sweetAlert("Hatalı Giriş", "Lütfen yalnız rakam girildiğinden emin olun ve nokta yerine virgül kullanın !", "warning");
@@ -94,7 +94,7 @@ $("#sale-button").click(function () {
     else if (payment == "Vadeli" && expiryDate == "") {
         sweetAlert("Uyarı", "Vade tarihini giriniz !", "warning");
     }
-    else if (!$.isNumeric(expiryValue)) {
+    else if (!$.isNumeric(expiryValue) && payment == "Vadeli") {
         sweetAlert("Uyarı", "Teslim alınan bakiye sayı değeri olmalıdır ! ", "warning");
     }
     else if (new Date(datetimeNow) > new Date(expiryDate)) {
@@ -105,6 +105,8 @@ $("#sale-button").click(function () {
     }
     else {
         if (price > 0) {
+            var newVal = expiryValue.replace(".", ",");
+            $("input[name='ExpiryValue']").val(newVal)
             $("#sale-form").submit();
         }
     }

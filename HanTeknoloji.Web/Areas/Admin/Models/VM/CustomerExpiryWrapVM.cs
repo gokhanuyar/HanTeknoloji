@@ -13,6 +13,10 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
 
         public decimal TotalExpiryValue { get; set; }
 
+        public decimal PaidExpiryValue { get; set; }
+
         public string CustomerName { get; set; }
+
+        public int CustomerID { get; set; }
     }
 }

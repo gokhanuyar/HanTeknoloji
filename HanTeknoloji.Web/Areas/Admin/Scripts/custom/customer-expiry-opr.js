@@ -6,7 +6,7 @@ function SetButton(id) {
 function Pay(id) {
     var value = $("#pay-value").val().replace(",", ".");
     if ($.isNumeric(value)) {
-        var debt = $("#td_" + id).text().replace(",", ".");
+        var debt = $("#expiry-value").text().replace(",", ".");
         var sonuc = parseFloat(debt) - parseFloat(value);
         if (sonuc < 0) {
             sweetAlert("Uyarı", "Girilen miktar borç değerinin üzerindedir ! ", "warning");
@@ -15,7 +15,6 @@ function Pay(id) {
             var data = new Object();
             data.ID = id;
             data.Price = value.replace(".", ",");
-            console.log(data.Price);
             $.ajax({
                 type: "post",
                 url: "/Admin/AdminExpiry/Pay",
