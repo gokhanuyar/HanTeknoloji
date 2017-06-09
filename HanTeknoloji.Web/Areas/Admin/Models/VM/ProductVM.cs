@@ -39,7 +39,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         [Display(Name = "Renk")]
         public string Color { get; set; }
 
-        [Display(Name = "Birim Fiyat"), Required(ErrorMessage = "Birim fiyat boş geçilemez.")]
+        [Display(Name = "Alış Fiyatı"), Required(ErrorMessage = "Alış fiyatı boş geçilemez.")]
         public decimal UnitPrice { get; set; }
 
         [Display(Name = "Satış Fiyatı"), Required(ErrorMessage = "Satış fiyatı boş geçilemez.")]
@@ -64,6 +64,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         public string CartNumber { get; set; }
         //[DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public string ExpiryDate { get; set; }
+        public decimal PaidPrice { get; set; }
         public string CheckNumber { get; set; }
 
         private decimal totalPrice;

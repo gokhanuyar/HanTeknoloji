@@ -21,5 +21,9 @@ namespace HanTeknoloji.Data.Models.Orm.Entity
         public int CityID { get; set; }
 
         public int RegionID { get; set; }
+
+        public decimal TotalExpiryValue { get; set; }
+
+        public decimal PaidExpiryValue { get; set; }
     }
 }

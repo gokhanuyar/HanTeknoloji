@@ -381,6 +381,7 @@
     <Content Include="Areas\Admin\Views\AdminExpiry\Partial\CustomerForm.cshtml" />
     <Content Include="Areas\Admin\Views\AdminExpiry\Partial\ResultList.cshtml" />
     <Content Include="Areas\Admin\Views\AdminExpiry\Partial\Modal.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminExpiry\Supplier.cshtml" />
     <None Include="Properties\PublishProfiles\gokhan.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\dateFormat.min.js" />

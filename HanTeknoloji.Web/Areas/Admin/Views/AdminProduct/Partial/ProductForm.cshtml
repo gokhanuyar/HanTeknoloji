@@ -88,13 +88,17 @@
         <label>Kart Numarası(Son 6 Hane)</label>
         @Html.TextBoxFor(x => x.CartNumber, new { @class = "form-control" })
     </div>
-    <div class="form-group expiry-date display-row" style="display:none">
+    <div class="form-group expiry-date expiry display-row" style="display:none">
         <label>Vade Tarihi</label>
         @Html.TextBoxFor(x => x.ExpiryDate, new { @class = "form-control", type = "date" })
     </div>
     <div class="form-group check display-row" style="display:none">
         <label>Çek Numarası</label>
         @Html.TextBoxFor(x => x.CheckNumber, new { @class = "form-control" })
+    </div>
+    <div class="form-group display-row expiry" style="display:none">
+        <label>Ödenen Tutar</label>
+        @Html.TextBoxFor(x => x.PaidPrice, new { @class = "form-control" })
     </div>
 
     <input type="submit" class="btn btn-primary" value="Kayıt" />

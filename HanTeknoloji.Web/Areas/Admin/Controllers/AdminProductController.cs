@@ -125,6 +125,22 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     ExpiryDate = Convert.ToDateTime(model.ExpiryDate)
                 };
                 rpproduct.Add(entity);
+                if (model.Payment == "Vadeli")
+                {
+                    var supplierExpiry = new SupplierExpiry
+                    {
+                        ExpiryDate = Convert.ToDateTime(model.ExpiryDate),
+                        PaidPrice = model.PaidPrice,
+                        ProductID = entity.ID,
+                        ProductCount = model.Count,
+                        SupplierID = model.SupplierID,
+                        TotalBuyingPrice = entity.Count * entity.UnitPrice
+                    };
+                    rpsupplierexpiry.Add(supplierExpiry);
+                    var supplier = rpsupplier.Find(model.SupplierID);
+                    supplier.TotalExpiryValue = supplierExpiry.TotalBuyingPrice - model.PaidPrice;
+                    rpsupplier.SaveChanges();
+                }
                 ViewBag.IslemDurum = EnumIslemDurum.Basarili;
                 ModelState.Clear();
             }
@@ -133,7 +149,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 ViewBag.IslemDurum = EnumIslemDurum.ValidationHata;
             }
             GetDropdownItems(FirstTrademarkID());
-            return View();
+            return View(model);
         }
 
         public ActionResult Edit(int id)

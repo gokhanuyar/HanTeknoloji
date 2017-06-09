@@ -36,5 +36,6 @@ namespace HanTeknoloji.Data.Models.Orm.Context
         public DbSet<Region> Region { get; set; }
         public DbSet<Customer> Customer { get; set; }
         public DbSet<CustomerExpiry> CustomerExpiry { get; set; }
+        public DbSet<SupplierExpiry> SupplierExpiry { get; set; }
     }
 }

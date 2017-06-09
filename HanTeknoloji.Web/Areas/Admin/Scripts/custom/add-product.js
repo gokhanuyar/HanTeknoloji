@@ -36,7 +36,7 @@ $("#Payment").change(function () {
             $(".transfer").show();
             break;
         case "Vadeli":
-            $(".expiry-date").show();
+            $(".expiry").show();
             break;
         case "Çek":
             $(".expiry-date").show();
@@ -57,7 +57,7 @@ $(function () {
             $("#Payment").val("Havale");
             break;
         case "Vadeli":
-            $(".expiry-date").show();
+            $(".expiry").show();
             $("#Payment").val("Vadeli");
             break;
         case "Çek":

@@ -29,3 +29,20 @@ function Pay(id) {
         sweetAlert("Uyarı", "Teslim alınan bakiye sayı değeri olmalıdır ! ", "warning");
     }
 }
+
+function Details(id) {
+    $("#sale-datails-content").empty();
+    $.ajax({
+        type: "get",
+        url: "/Admin/AdminExpiry/GetSaleDetails/" + id,
+        success: function (result) {
+            $.each(result, function (i, item) {
+                $("#sale-datails-content").append("<tr>" +
+                    "<td>" + item.Product.TradeMark + " " + item.Product.ProductModel + "</td>" +
+                    "<td>" + item.Quantity + "</td>" +
+                    "<td>" + item.Price.toFixed(2) + " " + "TL</td ></tr > ");
+            });
+            $("#myModal2").modal("show");
+        }
+    })
+}

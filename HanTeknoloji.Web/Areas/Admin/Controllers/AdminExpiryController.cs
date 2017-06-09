@@ -53,6 +53,16 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             }).ToList();
         }
 
+        private List<CustomerExpiryVM> Suppliers()
+        {
+            return rpsupplier.GetAll().Select(x => new CustomerExpiryVM
+            {
+                CustomerID = x.ID,
+                Name = x.CompanyName,
+                Phone = x.Phone
+            }).ToList();
+        }
+
         public JsonResult Pay(CustomerExpiryVM model)
         {
             var customer = rpcustomer.Find(model.ID);
