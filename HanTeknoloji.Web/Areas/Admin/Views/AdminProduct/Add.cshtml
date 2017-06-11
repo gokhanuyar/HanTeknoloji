@@ -24,7 +24,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-12">
-                        @using (Html.BeginForm("Add", "AdminProduct", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+                        @using (Html.BeginForm("Add", "AdminProduct", FormMethod.Post, new { @enctype = "multipart/form-data", id = "form" }))
                         {
                             @Html.Partial("Partial/ProductForm")
                         }

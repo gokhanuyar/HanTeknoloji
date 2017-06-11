@@ -1,4 +1,5 @@
-﻿using HanTeknoloji.Web.Areas.Admin.Models.VM;
+﻿using HanTeknoloji.Data.Models.Orm.Entity;
+using HanTeknoloji.Web.Areas.Admin.Models.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +42,40 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             model.CustomerID = customer.ID;
             model.PaidExpiryValue = customer.PaidExpiryValue;
             return View(model);
+        }       
+        
+        public ActionResult Supplier()
+        {
+            SupplierExpiryWrapVM model = new SupplierExpiryWrapVM();
+            model.ExpiryResultList = new List<ExpiryResultVM>();
+            model.SupplierList = Suppliers();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Supplier(string name)
+        {
+            int supplierId = Convert.ToInt32(name.Split(' ')[0].Replace("#", ""));
+            var supplier = rpsupplier.Find(supplierId);
+            SupplierExpiryWrapVM model = new SupplierExpiryWrapVM();
+            model.SupplierList = Suppliers();
+            model.ExpiryResultList = rpsupplierexpiry
+                .GetListWithQuery(x => x.SupplierID == supplierId)
+                .OrderBy(x => x.ExpiryDate)
+                .Select(x => new ExpiryResultVM
+                {
+                    ID = x.ID,
+                    ExpiryDate = x.ExpiryDate.ToLongDateString(),
+                    SaleDate = x.AddDate.ToLongDateString(),
+                    SalePrice = x.TotalBuyingPrice,
+                    PaidPrice = x.PaidPrice,
+                    ExpiryValue = x.TotalBuyingPrice - x.PaidPrice
+                }).ToList();
+            model.TotalExpiryValue = supplier.TotalExpiryValue;
+            model.SupplierName = supplier.CompanyName + "  İçin Vadeli Satış Tablosu";
+            model.SupplierID = supplier.ID;
+            model.PaidExpiryValue = supplier.PaidExpiryValue;
+            return View(model);
         }
 
         private List<CustomerExpiryVM> Customers()
@@ -53,24 +88,19 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             }).ToList();
         }
 
-        private List<CustomerExpiryVM> Suppliers()
+        private List<SupplierExpiryVM> Suppliers()
         {
-            return rpsupplier.GetAll().Select(x => new CustomerExpiryVM
+            return rpsupplier.GetAll().Select(x => new SupplierExpiryVM
             {
-                CustomerID = x.ID,
+                SupplierID = x.ID,
                 Name = x.CompanyName,
                 Phone = x.Phone
             }).ToList();
         }
 
-        public JsonResult Pay(CustomerExpiryVM model)
+        private decimal Calculate(Product pro, int count)
         {
-            var customer = rpcustomer.Find(model.ID);
-            customer.ExpiryValue -= model.Price;
-            customer.PaidExpiryValue += model.Price;
-            rpcustomer.SaveChanges();
-            string postValue = "#" + customer.ID + " " + customer.Name + " " + customer.Phone;
-            return Json(postValue, JsonRequestBehavior.AllowGet);
+            return ((pro.KDV * pro.UnitPrice) + pro.UnitPrice) * count;
         }
 
         public JsonResult GetSaleDetails(int id)
@@ -95,9 +125,39 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             return Json(list, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Supplier()
+        public JsonResult GetProductDetails(int id)
         {
-            return View();
+            var expiry = rpsupplierexpiry.Find(id);
+            var product = rpproduct.Find(expiry.ProductID);
+            string trademark = rptrademark.Find(product.TradeMarkID).Name;
+            string model = rpproductmodel.Find(product.ProductModelID).Name;
+            var pro = new ReportVM()
+            {
+                Quantity = expiry.ProductCount,
+                Price = Calculate(product, expiry.ProductCount),
+                Note = trademark + " " + model
+            };
+            return Json(pro, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult Pay(CustomerExpiryVM model)
+        {
+            var customer = rpcustomer.Find(model.ID);
+            customer.ExpiryValue -= model.Price;
+            customer.PaidExpiryValue += model.Price;
+            rpcustomer.SaveChanges();
+            //string postValue = "#" + customer.ID + " " + customer.Name + " " + customer.Phone;
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult PaySupplier(SupplierExpiryVM model)
+        {
+            var supplier = rpsupplier.Find(model.ID);
+            supplier.TotalExpiryValue -= model.Price;
+            supplier.PaidExpiryValue += model.Price;
+            rpsupplier.SaveChanges();
+            //string postValue = "#" + supplier.ID + " " + supplier.CompanyName + " " + supplier.Phone;
+            return Json("", JsonRequestBehavior.AllowGet);
         }
     }
 }

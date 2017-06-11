@@ -4,7 +4,7 @@
     Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
 }
 
-@model CustomerExpiryWrapVM
+@model SupplierExpiryWrapVM
 
 @section css{
     <style>
@@ -25,14 +25,14 @@
     <div class="col-lg-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Müşteri hesabına gitmek için aşağıdaki formdan Müşteri arayın
+                Tedarikçi hesabına gitmek için aşağıdaki formdan Tedarikçi arayın
             </div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-12">
                         @using (Html.BeginForm(null, null, FormMethod.Post, new { @role = "form" }))
                         {
-                            @Html.Partial("Partial/CustomerForm", Model.CustomerList)
+                            @Html.Partial("Partial/SupplierForm", Model.SupplierList)
                         }
                     </div>
                 </div>
@@ -42,7 +42,7 @@
     <div class="col-lg-10">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Vadeli İşlemler - @Model.CustomerName
+                Vadeli İşlemler - @Model.SupplierName
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -51,7 +51,7 @@
                 </div>
                 @if (Model.ExpiryResultList.Count != 0)
                 {
-                    <button style="float:right;margin-left:20px;" onclick="SetButton(@Model.CustomerID)" data-toggle="modal" data-target="#myModal" class="btn btn-primary btn-sm">Tahsil Et</button>
+                    <button style="float:right;margin-left:20px;" onclick="SetButton(@Model.SupplierID)" data-toggle="modal" data-target="#myModal" class="btn btn-primary btn-sm">Tahsil Et</button>
                 }
 
                 <h4 style="float:right;margin-left:20px">Toplam Borç : <span id="expiry-value">@Model.TotalExpiryValue</span> TL</h4>
@@ -67,6 +67,6 @@
 
 @Html.Partial("Partial/Modal")
 @section scripts{
-    <script src="~/Areas/Admin/Scripts/custom/customer-expiry-opr.js"></script>
+    <script src="~/Areas/Admin/Scripts/custom/supplier-expiry-opr.js"></script>
 }
 

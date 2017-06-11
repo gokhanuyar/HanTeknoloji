@@ -23,7 +23,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
 
         public List<ProductVM> ProductList { get; set; }
 
-        public decimal TotalPrice { get; set; }
+        public double TotalPrice { get; set; }
 
         public string DateOfArrangement { get; set; }
 

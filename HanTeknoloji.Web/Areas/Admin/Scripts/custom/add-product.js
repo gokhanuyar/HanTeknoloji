@@ -17,7 +17,7 @@ $("#TradeMarkID").change(function () {
 });
 
 $("#CategoryID").change(function () {
-    if (this.value == 3 || this.value == 4) {
+    if (this.value == 6 || this.value == 7) {
         $(".imei-box").fadeIn();
     }
     else {
@@ -68,5 +68,16 @@ $(function () {
         default:
             $("#Payment").val("Nakit");
             break;
+    }
+});
+
+$(".btn-primary").click(function () {
+    var payment = $("#Payment").val();
+    var date = $("#ExpiryDate").val();
+    if (payment == "Vadeli" && date == "" || payment == "Çek" && date == "") {
+        swal("Uyarı", "Vadeli alımlarda vade tarihini girmelisiniz.", "warning");
+    }
+    else {
+        $("#form").submit();
     }
 })

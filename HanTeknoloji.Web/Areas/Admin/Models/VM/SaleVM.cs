@@ -21,6 +21,6 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
 
         public DateTime ExpiryDate { get; set; }
 
-        public decimal ExpiryValue { get; set; }
+        public decimal PaidExpiryValue { get; set; }
     }
 }

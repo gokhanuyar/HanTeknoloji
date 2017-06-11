@@ -39,13 +39,13 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         [Display(Name = "Renk")]
         public string Color { get; set; }
 
-        [Display(Name = "Alış Fiyatı"), Required(ErrorMessage = "Alış fiyatı boş geçilemez.")]
+        [Display(Name = "Alış Fiyatı"), Required(ErrorMessage = "Alış fiyatı boş geçilemez."), Range(typeof(Decimal), "1", "50000", ErrorMessage = "{0} {1} ve {2} arasında bir değer olmalı.")]
         public decimal UnitPrice { get; set; }
 
-        [Display(Name = "Satış Fiyatı"), Required(ErrorMessage = "Satış fiyatı boş geçilemez.")]
+        [Display(Name = "Satış Fiyatı"), Required(ErrorMessage = "Satış fiyatı boş geçilemez."), Range(typeof(Decimal), "1", "50000", ErrorMessage = "{0} {1} ve {2} arasında bir değer olmalı.")]
         public decimal UnitSalePrice { get; set; }
 
-        [Display(Name = "Adet"), Required(ErrorMessage = "Lütfen ürün adeti giriniz.")]
+        [Display(Name = "Adet"), Required(ErrorMessage = "Lütfen ürün adeti giriniz."), Range(typeof(Int32), "1", "1000", ErrorMessage = "{0} {1} ve {2} arasında bir değer olmalı.")]
         public int Count { get; set; }
 
         [Display(Name = "Ödeme Şekli"), Required(ErrorMessage = "Ödeme şekli alanı boş geçilemez.")]

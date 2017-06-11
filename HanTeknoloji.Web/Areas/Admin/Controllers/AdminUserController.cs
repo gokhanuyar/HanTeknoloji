@@ -33,23 +33,31 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Add(AdminUserVM model)
         {
-            if (ModelState.IsValid)
+            if (rpadminuser.Any(x => x.Email == model.Email))
             {
-                AdminUser entity = new AdminUser
-                {
-                    FullName = model.FullName,
-                    Email = model.Email,
-                    Password = model.Password
-                };
-                rpadminuser.Add(entity);
-                ViewBag.IslemDurum = EnumIslemDurum.Basarili;
-                ModelState.Clear();
+                ViewBag.IslemDurum = EnumIslemDurum.AdminMevcut;
+                return View(model);
             }
             else
             {
-                ViewBag.IslemDurum = EnumIslemDurum.ValidationHata;
-            }            
-            return View();
+                if (ModelState.IsValid)
+                {
+                    AdminUser entity = new AdminUser
+                    {
+                        FullName = model.FullName,
+                        Email = model.Email,
+                        Password = model.Password
+                    };
+                    rpadminuser.Add(entity);
+                    ViewBag.IslemDurum = EnumIslemDurum.Basarili;
+                    ModelState.Clear();
+                }
+                else
+                {
+                    ViewBag.IslemDurum = EnumIslemDurum.ValidationHata;
+                }
+                return View(model);
+            }
         }
 
         public ActionResult Edit(int id)
@@ -67,21 +75,29 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Edit(AdminUserVM model)
         {
-            if (ModelState.IsValid)
+            if (rpadminuser.Any(x => x.Email == model.Email && x.ID != model.ID))
             {
-                AdminUser entity = rpadminuser.Find(model.ID);
-                entity.FullName = model.FullName;
-                entity.Email = model.Email;
-                entity.Password = model.Password;
-                entity.UpdateDate = DateTime.Now;
-                rpadminuser.SaveChanges();
-                ViewBag.IslemDurum = EnumIslemDurum.Basarili;
+                ViewBag.IslemDurum = EnumIslemDurum.AdminMevcut;
+                return View(model);
             }
             else
             {
-                ViewBag.IslemDurum = EnumIslemDurum.ValidationHata;
-            }
-            return View(model);
+                if (ModelState.IsValid)
+                {
+                    AdminUser entity = rpadminuser.Find(model.ID);
+                    entity.FullName = model.FullName;
+                    entity.Email = model.Email;
+                    entity.Password = model.Password;
+                    entity.UpdateDate = DateTime.Now;
+                    rpadminuser.SaveChanges();
+                    ViewBag.IslemDurum = EnumIslemDurum.Basarili;
+                }
+                else
+                {
+                    ViewBag.IslemDurum = EnumIslemDurum.ValidationHata;
+                }
+                return View(model);
+            }            
         }
 
         public ActionResult Delete(int id)

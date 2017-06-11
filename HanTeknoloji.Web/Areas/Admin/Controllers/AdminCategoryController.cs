@@ -23,8 +23,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 model = rpcategory.GetAll().OrderByDescending(x => x.AddDate).Select(x => new CategoryVM
                 {
                     ID = x.ID,
-                    CategoryName = x.CategoryName,
-                    BarcodeValue = x.BarcodeValue
+                    CategoryName = x.CategoryName
                 }).ToList();
             }
             else
@@ -52,8 +51,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             {
                 Category entity = new Category
                 {
-                    CategoryName = model.CategoryName,
-                    BarcodeValue = model.BarcodeValue
+                    CategoryName = model.CategoryName
                 };
                 rpcategory.Add(entity);
                 ViewBag.IslemDurum = EnumIslemDurum.Basarili;
@@ -63,8 +61,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             {
                 ViewBag.IslemDurum = EnumIslemDurum.ValidationHata;
             }
-            ModelState.Clear();
-            return View();
+            return View(model);
         }
 
         public ActionResult Edit(int id)
@@ -73,8 +70,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             CategoryVM model = new CategoryVM
             {
                 ID = entity.ID,
-                CategoryName = entity.CategoryName,
-                BarcodeValue = entity.BarcodeValue
+                CategoryName = entity.CategoryName
             };
             return View(model);
         }
@@ -86,7 +82,6 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             {
                 Category entity = rpcategory.Find(model.ID);
                 entity.CategoryName = model.CategoryName;
-                entity.BarcodeValue = model.BarcodeValue;
                 entity.UpdateDate = DateTime.Now;
                 rpcategory.SaveChanges();
                 ViewBag.IslemDurum = EnumIslemDurum.Basarili;

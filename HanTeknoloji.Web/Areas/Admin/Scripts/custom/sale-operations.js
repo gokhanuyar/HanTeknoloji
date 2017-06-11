@@ -82,7 +82,7 @@ $("#sale-button").click(function () {
     var priceString = $.trim($("input[name='PriceString']").val());
     var expiryDate = $("input[name='ExpiryDate']").val();
     var datetimeNow = $.format.date(new Date($.now()), "yyyy-MM-dd");
-    var expiryValue = $("input[name='ExpiryValue']").val();
+    var expiryValue = $("input[name='PaidExpiryValue']").val();
     var price = $("#price-control").text().replace(",", ".");
     console.log(expiryValue)
     if (customer == "" && invoice == 1) {

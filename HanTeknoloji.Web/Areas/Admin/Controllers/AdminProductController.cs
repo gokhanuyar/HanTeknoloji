@@ -1,5 +1,6 @@
 ﻿using HanTeknoloji.Data.Models.Orm.Entity;
 using HanTeknoloji.Web.Areas.Admin.Models.Barcode;
+using HanTeknoloji.Web.Areas.Admin.Models.Services;
 using HanTeknoloji.Web.Areas.Admin.Models.Types.Enums;
 using HanTeknoloji.Web.Areas.Admin.Models.VM;
 using PagedList;
@@ -87,7 +88,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         public ActionResult Add()
         {
             GetDropdownItems(FirstTrademarkID());
-            return View();
+            return View(new ProductVM());
         }
 
         [HttpPost]
@@ -98,11 +99,11 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             {
                 if (model.SerialNumber == null)
                 {
-                    string category = rpcategory.Find(model.CategoryID).BarcodeValue;
+                    //string category = rpcategory.Find(model.CategoryID).BarcodeValue;
                     string trademark = rptrademark.Find(model.TradeMarkID).BarcodeValue;
-                    string proModel = rpproductmodel.Find(model.ProductModelID).BarcodeValue;
+                    string proModel = model.ProductModelID == 0 ? "000" : rpproductmodel.Find(model.ProductModelID).BarcodeValue;
                     string color = rpcolor.Find(model.ColorID).BarcodeValue;
-                    model.SerialNumber = category + trademark + proModel + color;
+                    model.SerialNumber = trademark + proModel + color;
                 }
                 Product entity = new Product()
                 {
@@ -122,24 +123,22 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     BankCartName = model.BankCartName,
                     CartNumber = model.CartNumber,
                     CheckNumber = model.CheckNumber,
-                    ExpiryDate = Convert.ToDateTime(model.ExpiryDate)
+                    ExpiryDate = model.ExpiryDate == null ? DateTime.Now : Convert.ToDateTime(model.ExpiryDate)
                 };
                 rpproduct.Add(entity);
                 if (model.Payment == "Vadeli")
                 {
                     var supplierExpiry = new SupplierExpiry
                     {
-                        ExpiryDate = Convert.ToDateTime(model.ExpiryDate),
-                        PaidPrice = model.PaidPrice,
+                        ExpiryDate = model.ExpiryDate == null ? DateTime.Now : Convert.ToDateTime(model.ExpiryDate),
+                        PaidPrice = Convert.ToDecimal(model.PaidPrice),
                         ProductID = entity.ID,
                         ProductCount = model.Count,
                         SupplierID = model.SupplierID,
-                        TotalBuyingPrice = entity.Count * entity.UnitPrice
+                        TotalBuyingPrice = Calculate(model)
                     };
                     rpsupplierexpiry.Add(supplierExpiry);
-                    var supplier = rpsupplier.Find(model.SupplierID);
-                    supplier.TotalExpiryValue = supplierExpiry.TotalBuyingPrice - model.PaidPrice;
-                    rpsupplier.SaveChanges();
+                    ExpiryService.SetSupplierExpiry(supplierExpiry);
                 }
                 ViewBag.IslemDurum = EnumIslemDurum.Basarili;
                 ModelState.Clear();
@@ -150,6 +149,11 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             }
             GetDropdownItems(FirstTrademarkID());
             return View(model);
+        }
+
+        private decimal Calculate(ProductVM model)
+        {
+            return model.Count * ((model.UnitPrice * model.KDV) + model.UnitPrice);
         }
 
         public ActionResult Edit(int id)
@@ -253,13 +257,13 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 Value = x.ID.ToString()
             }).ToList();
 
-            SelectListItem item = new SelectListItem() { Value = "0", Text = "-" };
+            //SelectListItem item = new SelectListItem() { Value = "0", Text = "-" };
             var modelList = rpproductmodel.GetListWithQuery(x => x.TradeMarkID == id).Select(x => new SelectListItem()
             {
                 Text = x.Name,
                 Value = x.ID.ToString()
-            }).ToList();
-            modelList.Add(item);
+            }).ToList() ?? new List<SelectListItem>();
+            //modelList.Add(item);
             ViewData["productmodel"] = modelList;
         }
 

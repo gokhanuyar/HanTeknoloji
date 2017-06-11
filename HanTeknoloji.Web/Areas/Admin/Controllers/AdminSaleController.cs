@@ -218,11 +218,11 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     {
                         ExpiryDate = model.ExpiryDate,
                         CustomerID = model.CustomerID,
-                        ExpiryValue = sepet.TotalSalePrice - model.ExpiryValue,
+                        ExpiryValue = sepet.TotalSalePrice - model.PaidExpiryValue,
                         SaleID = sale.ID,
                         SaleTotalPrice = sepet.TotalSalePrice
                     };
-                    CustomerExpiryService.SetCustomerExpiry(expiry);
+                    ExpiryService.SetCustomerExpiry(expiry);
                     rpcustomerexpiry.Add(expiry);
                 }
                 if (model.Invoice == 1)

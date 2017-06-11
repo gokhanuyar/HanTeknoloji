@@ -9,7 +9,5 @@ namespace HanTeknoloji.Data.Models.Orm.Entity
     public class Category : BaseEntity
     {
         public string CategoryName { get; set; }
-
-        public string BarcodeValue { get; set; }
     }
 }

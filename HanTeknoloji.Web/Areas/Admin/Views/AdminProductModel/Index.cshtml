@@ -15,7 +15,8 @@
 
 @section scripts{
     <script src="~/Scripts/gridmvc.js"></script>
-    <script src="~/Areas/Admin/Scripts/product-list.js"></script>
+    <script src="~/Areas/Admin/Scripts/custom/product-list.js"></script>
+    <script src="~/Areas/Admin/Scripts/custom/delete-scripts/product-model.js"></script>
 }
 
 <div class="row">
@@ -55,7 +56,7 @@
                    }).Titled("Düzelt");
                    col.Add().Encoded(false).Sanitized(false).RenderValueAs(html =>
                    {
-                       string htmlelement = "<a class='btn btn-danger btn-circle' href='/Admin/AdminProductModel/Delete/" + html.ID.ToString() + "'><i class='fa fa-remove'></i></a>";
+                       string htmlelement = "<a class='btn btn-danger btn-circle' onclick='Delete(" + html.ID.ToString() + ")'><i class='fa fa-remove'></i></a>";
                        return MvcHtmlString.Create(htmlelement);
 
                    }).Titled("Sil");

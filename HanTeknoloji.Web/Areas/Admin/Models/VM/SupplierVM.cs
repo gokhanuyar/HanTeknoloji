@@ -11,7 +11,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         [Display(Name = "Şirket Adı"),Required(ErrorMessage ="Bu alan boş geçilemez.")]
         public string CompanyName { get; set; }
 
-        [Display(Name = "Adres"), Required(ErrorMessage = "Bu alan boş bırakılamaz.")]
+        [Display(Name = "Adres"), Required(ErrorMessage = "Bu alan boş geçilemez.")]
         public string Address { get; set; }
 
         public string City { get; set; }
@@ -22,7 +22,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         [Display(Name ="İlçe"), Required(ErrorMessage = "Bu alan boş geçilemez.")]
         public int RegionID { get; set; }
 
-        [Display(Name = "Telefon Numarası")]
+        [Display(Name = "Telefon Numarası"), Required(ErrorMessage = "Bu alan boş geçilemez.")]
         public string Phone { get; set; }
 
         [Display(Name = "Fax Numarası")]

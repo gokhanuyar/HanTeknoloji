@@ -8,10 +8,10 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
 {
     public class TradeMarkVM : BaseVM
     {
-        [Display(Name ="Marka Adı"),Required(ErrorMessage ="Marka Adı alanı boş geçilemez.")]
+        [Display(Name = "Marka Adı"), Required(ErrorMessage = "Bu alan boş geçilemez.")]
         public string Name { get; set; }
 
-        [Display(Name = "Barkod Değeri")]
+        [Display(Name = "Barkod Değeri"), Required(ErrorMessage = "Bu alan boş geçilemez.")]
         public string BarcodeValue { get; set; }
     }
 }

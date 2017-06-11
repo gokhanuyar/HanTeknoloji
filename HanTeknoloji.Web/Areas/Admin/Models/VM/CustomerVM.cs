@@ -11,17 +11,17 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         [Display(Name = "TC Kimlik No")]
         public string TCNo { get; set; }
 
-        [Display(Name = "Müşteri Adı / Ünvanı"), Required(ErrorMessage = "Bu alan boş bırakılamaz.")]
+        [Display(Name = "Müşteri Adı / Ünvanı"), Required(ErrorMessage = "Bu alan boş geçilemez.")]
         public string Name { get; set; }
 
-        [Display(Name = "Adres"), Required(ErrorMessage = "Bu alan boş bırakılamaz.")]
+        [Display(Name = "Adres"), Required(ErrorMessage = "Bu alan boş geçilemez.")]
         public string Address { get; set; }
 
-        [Display(Name = "İl"), Required(ErrorMessage = "Bu alan boş bırakılamaz.")]
+        [Display(Name = "İl"), Required(ErrorMessage = "Bu alan boş geçilemez.")]
         public int CityID { get; set; }
         public string City { get; set; }
 
-        [Display(Name = "İlçe"), Required(ErrorMessage = "Bu alan boş bırakılamaz.")]
+        [Display(Name = "İlçe"), Required(ErrorMessage = "Bu alan boş geçilemez.")]
         public int RegionID { get; set; }
         public string Region { get; set; }
 
@@ -33,7 +33,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
 
         [Display(Name = "Telefon Numarası"),
         MaxLength(11, ErrorMessage = " En fazla 11 (onbir) karkater belirtebilirsiniz."),
-        MinLength(10, ErrorMessage = " En az 10 (on) karakter belirtmelisiniz.")]
+        MinLength(10, ErrorMessage = " En az 10 (on) karakter belirtmelisiniz."),
+        Required(ErrorMessage = "Bu alan boş geçilemez.")]
         public string Phone { get; set; }
 
         [Display(Name = "Müşteri Tipi")]

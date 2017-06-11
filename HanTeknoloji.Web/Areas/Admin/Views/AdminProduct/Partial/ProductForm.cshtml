@@ -14,43 +14,43 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(x => x.CategoryID)
+        @Html.LabelFor(x => x.CategoryID)<span style="color:red"> *</span>
         @Html.DropDownListFor(x => x.CategoryID, (IList<SelectListItem>)ViewData["category"], "Kategori Seçiniz", new { @class = "form-control" })
         @Html.ValidationMessageFor(x => x.CategoryID)
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(x => x.TradeMarkID)
+        @Html.LabelFor(x => x.TradeMarkID)<span style="color:red"> *</span>
         @Html.DropDownListFor(x => x.TradeMarkID, (IList<SelectListItem>)ViewData["trademark"], new { @class = "form-control" })
         @Html.ValidationMessageFor(x => x.TradeMarkID)
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(x => x.ProductModelID)
+        @Html.LabelFor(x => x.ProductModelID)<span style="color:red"> *</span>
         @Html.DropDownListFor(x => x.ProductModelID, (IList<SelectListItem>)ViewData["productmodel"], new { @class = "form-control" })
         @Html.ValidationMessageFor(x => x.ProductModelID)
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(x => x.ColorID)
+        @Html.LabelFor(x => x.ColorID)<span style="color:red"> *</span>
         @Html.DropDownListFor(x => x.ColorID, (IList<SelectListItem>)ViewData["color"], new { @class = "form-control" })
         @Html.ValidationMessageFor(x => x.ColorID)
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(x => x.SupplierID)
+        @Html.LabelFor(x => x.SupplierID)<span style="color:red"> *</span>
         @Html.DropDownListFor(x => x.SupplierID, (IList<SelectListItem>)ViewData["supplier"], new { @class = "form-control" })
         @Html.ValidationMessageFor(x => x.SupplierID)
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(x => x.UnitPrice)
+        @Html.LabelFor(x => x.UnitPrice)<span style="color:red"> *</span>
         @Html.TextBoxFor(x => x.UnitPrice, new { @class = "form-control" })
         @Html.ValidationMessageFor(x => x.UnitPrice)
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(x => x.KDV)
+        @Html.LabelFor(x => x.KDV)<span style="color:red"> *</span>
         <select name="KDV" class="form-control">
             <option value="0,18">%18</option>
             <option value="0,08">%8</option>
@@ -59,19 +59,19 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(x => x.UnitSalePrice)
+        @Html.LabelFor(x => x.UnitSalePrice)<span style="color:red"> *</span>
         @Html.TextBoxFor(x => x.UnitSalePrice, new { @class = "form-control" })
         @Html.ValidationMessageFor(x => x.UnitSalePrice)
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(x => x.Count)
+        @Html.LabelFor(x => x.Count)<span style="color:red"> *</span>
         @Html.TextBoxFor(x => x.Count, new { @class = "form-control" })
         @Html.ValidationMessageFor(x => x.Count)
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(x => x.Payment)
+        @Html.LabelFor(x => x.Payment)<span style="color:red"> *</span>
         @Html.DropDownListFor(x => x.Payment, (IList<SelectListItem>)ViewData["payment"], "Ödeme Şeklini Seçiniz", new { @class = "form-control" })
         @Html.ValidationMessageFor(x => x.Payment)
     </div>
@@ -89,7 +89,7 @@
         @Html.TextBoxFor(x => x.CartNumber, new { @class = "form-control" })
     </div>
     <div class="form-group expiry-date expiry display-row" style="display:none">
-        <label>Vade Tarihi</label>
+        <label>Vade Tarihi</label><span style="color:red"> *</span>
         @Html.TextBoxFor(x => x.ExpiryDate, new { @class = "form-control", type = "date" })
     </div>
     <div class="form-group check display-row" style="display:none">
@@ -101,7 +101,7 @@
         @Html.TextBoxFor(x => x.PaidPrice, new { @class = "form-control" })
     </div>
 
-    <input type="submit" class="btn btn-primary" value="Kayıt" />
+    <input type="button" class="btn btn-primary" value="Kayıt" />
 </div>
 @if (Model != null)
 {

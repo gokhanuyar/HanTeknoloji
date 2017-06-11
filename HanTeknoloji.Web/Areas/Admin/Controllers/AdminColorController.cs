@@ -54,8 +54,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             {
                 ViewBag.IslemDurum = EnumIslemDurum.ValidationHata;
             }
-            ModelState.Clear();
-            return View();
+            return View(model);
         }
 
         public ActionResult Edit(int id)
