@@ -41,7 +41,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             model.ProductList = new List<ProductVM>();
             if (!string.IsNullOrEmpty(BarcodeNumber))
             {
-                var product = rpproduct.FirstOrDefault(x => x.SerialNumber == BarcodeNumber);
+                var product = rpproduct.FirstOrDefault(x => x.SerialNumber == BarcodeNumber && x.Count != 0);
                 if (product != null)
                 {
                     if (product.Count != 0)
@@ -72,7 +72,6 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
 
                         if (!varMi)
                         {
-                            product = rpproduct.FirstOrDefault(x => x.SerialNumber == BarcodeNumber);
                             ProductVM pro = new ProductVM()
                             {
                                 ID = product.ID,
@@ -80,11 +79,13 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                 TradeMark = rptrademark.Find(product.TradeMarkID).Name,
                                 ProductModel = product.ProductModelID == 0 ? "" : rpproductmodel.Find(product.ProductModelID).Name,
                                 Color = rpcolor.Find(product.ColorID).Name,
-                                UnitSalePrice = product.UnitSalePrice,
-                                UnitPrice = product.UnitSalePrice,
+                                UnitSalePrice = product.UnitSalePrice,//satış fiyatı değişken
+                                UnitPrice = product.UnitSalePrice,//satış fiyatı
+                                UnitBuyPrice = product.UnitPrice,//alış fiyatı
                                 Count = product.Count,
                                 SaleCount = 1,
                                 KDV = product.KDV,
+                                PaymentInfoID = rppaymentinfo.GetListWithQuery(x => x.ProductID == product.ID).Last().ID,
                                 KdvPrice = Math.Round((product.UnitSalePrice * product.KDV), 4)
                             };
                             model.ProductList.Add(pro);
@@ -203,10 +204,13 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     SaleDetails detail = new SaleDetails()
                     {
                         ProductID = item.ID,
-                        KdvPrice = Math.Round(item.KdvPrice,2),
+                        KdvPrice = Math.Round(item.KdvPrice, 2),
                         Quantity = item.SaleCount,
                         Price = Math.Round(item.UnitSalePrice, 2),
-                        AddDate = DateTime.Now
+                        AddDate = DateTime.Now,
+                        UnitBuyPrice = item.UnitBuyPrice,
+                        UnitSalePrice = item.UnitSalePrice,
+                        PaymentInfoID = item.PaymentInfoID
                     };
                     list.Add(detail);
                 }

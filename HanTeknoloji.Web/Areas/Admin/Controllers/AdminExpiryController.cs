@@ -100,7 +100,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
 
         private decimal Calculate(Product pro, int count)
         {
-            return ((pro.KDV * pro.UnitPrice) + pro.UnitPrice) * count;
+            return pro.UnitPrice * count;
         }
 
         public JsonResult GetSaleDetails(int id)

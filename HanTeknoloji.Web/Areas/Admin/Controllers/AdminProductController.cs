@@ -37,7 +37,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                         Count = x.Count,
                         TradeMark = rptrademark.Find(x.TradeMarkID).Name,
                         ProductModel = x.ProductModelID == 0 ? "Yok" : rpproductmodel.Find(x.ProductModelID).Name,
-                        Payment = x.Payment,
+                        //Payment = x.PaymentInfo.Payment,
                         UnitPrice = x.UnitPrice,
                         UnitSalePrice = x.UnitSalePrice,
                         Supplier = rpsupplier.Find(x.SupplierID).CompanyName
@@ -54,7 +54,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                         ProductModel = x.ProductModelID == 0 ? "Yok" : rpproductmodel.Find(x.ProductModelID).Name,
                         UnitPrice = x.UnitPrice,
                         UnitSalePrice = x.UnitSalePrice,
-                        Payment = x.Payment,
+                        //Payment = x.PaymentInfo.Payment,
                         Supplier = rpsupplier.Find(x.SupplierID).CompanyName
                     }).ToList();
                 }
@@ -71,7 +71,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     ProductModel = x.ProductModelID == 0 ? "Yok" : rpproductmodel.Find(x.ProductModelID).Name,
                     UnitPrice = x.UnitPrice,
                     UnitSalePrice = x.UnitSalePrice,
-                    Payment = x.Payment,
+                    //Payment = x.PaymentInfo.Payment,
                     Supplier = rpsupplier.Find(x.SupplierID).CompanyName
                 }).ToList();
             }
@@ -105,41 +105,34 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     string color = rpcolor.Find(model.ColorID).BarcodeValue;
                     model.SerialNumber = trademark + proModel + color;
                 }
-                Product entity = new Product()
+                var product = rpproduct.FirstOrDefault(x => x.SerialNumber == model.SerialNumber);
+                if (product != null)
                 {
-                    SerialNumber = model.SerialNumber,
-                    TradeMarkID = model.TradeMarkID,
-                    ProductModelID = model.ProductModelID,
-                    SupplierID = model.SupplierID,
-                    ColorID = model.ColorID,
-                    UnitPrice = model.UnitPrice,
-                    UnitSalePrice = model.UnitSalePrice,
-                    Count = model.Count,
-                    CategoryID = model.CategoryID,
-                    Payment = model.Payment,
-                    KDV = model.KDV,
-                    IMEI = model.IMEI,
-                    BankName = model.BankName,
-                    BankCartName = model.BankCartName,
-                    CartNumber = model.CartNumber,
-                    CheckNumber = model.CheckNumber,
-                    ExpiryDate = model.ExpiryDate == null ? DateTime.Now : Convert.ToDateTime(model.ExpiryDate)
-                };
-                rpproduct.Add(entity);
-                if (model.Payment == "Vadeli")
-                {
-                    var supplierExpiry = new SupplierExpiry
-                    {
-                        ExpiryDate = model.ExpiryDate == null ? DateTime.Now : Convert.ToDateTime(model.ExpiryDate),
-                        PaidPrice = Convert.ToDecimal(model.PaidPrice),
-                        ProductID = entity.ID,
-                        ProductCount = model.Count,
-                        SupplierID = model.SupplierID,
-                        TotalBuyingPrice = Calculate(model)
-                    };
-                    rpsupplierexpiry.Add(supplierExpiry);
-                    ExpiryService.SetSupplierExpiry(supplierExpiry);
+                    product.Count += model.Count;
+                    product.UnitPrice = model.UnitPrice;
+                    product.UnitSalePrice = model.UnitSalePrice;
+                    rpproduct.SaveChanges();
+                    SaveOthers(product.ID, model);
                 }
+                else
+                {
+                    Product entity = new Product()
+                    {
+                        SerialNumber = model.SerialNumber,
+                        TradeMarkID = model.TradeMarkID,
+                        ProductModelID = model.ProductModelID,
+                        SupplierID = model.SupplierID,
+                        ColorID = model.ColorID,
+                        UnitPrice = model.UnitPrice,
+                        UnitSalePrice = model.UnitSalePrice,
+                        Count = model.Count,
+                        CategoryID = model.CategoryID,
+                        KDV = model.KDV
+                    };
+                    rpproduct.Add(entity);
+                    SaveOthers(entity.ID, model);
+                }
+
                 ViewBag.IslemDurum = EnumIslemDurum.Basarili;
                 ModelState.Clear();
             }
@@ -151,14 +144,45 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             return View(model);
         }
 
+        private void SaveOthers(int id, ProductVM model)
+        {
+            var paymentInfo = new PaymentInfo
+            {
+                BankName = model.BankName,
+                BankCartName = model.BankCartName,
+                CartNumber = model.CartNumber,
+                Payment = model.Payment,
+                CheckNumber = model.CheckNumber,
+                ExpiryDate = model.ExpiryDate == null ? DateTime.Now : Convert.ToDateTime(model.ExpiryDate),
+                ProductID = id,
+                IMEI = model.IMEI
+            };
+            rppaymentinfo.Add(paymentInfo);
+            if (model.Payment == "Vadeli")
+            {
+                var supplierExpiry = new SupplierExpiry
+                {
+                    ExpiryDate = model.ExpiryDate == null ? DateTime.Now : Convert.ToDateTime(model.ExpiryDate),
+                    PaidPrice = Convert.ToDecimal(model.PaidPrice),
+                    ProductID = id,
+                    ProductCount = model.Count,
+                    SupplierID = model.SupplierID,
+                    TotalBuyingPrice = Calculate(model)
+                };
+                rpsupplierexpiry.Add(supplierExpiry);
+                ExpiryService.SetSupplierExpiry(supplierExpiry);
+            }
+        }
+
         private decimal Calculate(ProductVM model)
         {
-            return model.Count * ((model.UnitPrice * model.KDV) + model.UnitPrice);
+            return model.Count * model.UnitPrice;
         }
 
         public ActionResult Edit(int id)
         {
             var entity = rpproduct.Find(id);
+            var paymentInfo = rppaymentinfo.FirstOrDefault(x => x.ProductID == id);
             ProductVM model = new ProductVM()
             {
                 ID = entity.ID,
@@ -170,15 +194,15 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 UnitPrice = entity.UnitPrice,
                 Count = entity.Count,
                 CategoryID = entity.CategoryID,
-                Payment = entity.Payment,
                 KDV = entity.KDV,
-                IMEI = entity.IMEI,
                 UnitSalePrice = entity.UnitSalePrice,
-                BankName = entity.BankName,
-                BankCartName = entity.BankCartName,
-                CartNumber = entity.CartNumber,
-                CheckNumber = entity.CheckNumber,
-                ExpiryDate = string.Format("{0:yyyy-MM-dd}", entity.ExpiryDate)
+                Payment = paymentInfo.Payment,
+                BankName = paymentInfo.BankName,
+                BankCartName = paymentInfo.BankCartName,
+                CartNumber = paymentInfo.CartNumber,
+                IMEI = paymentInfo.IMEI,
+                CheckNumber = paymentInfo.CheckNumber,
+                ExpiryDate = string.Format("{0:yyyy-MM-dd}", paymentInfo.ExpiryDate)
             };
             GetDropdownItems(entity.TradeMarkID);
             return View(model);
@@ -189,7 +213,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                Product entity = rpproduct.Find(model.ID);
+                var entity = rpproduct.Find(model.ID);
                 entity.SerialNumber = model.SerialNumber;
                 entity.TradeMarkID = model.TradeMarkID;
                 entity.ProductModelID = model.ProductModelID;
@@ -198,17 +222,20 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 entity.UnitPrice = model.UnitPrice;
                 entity.Count = model.Count;
                 entity.CategoryID = model.CategoryID;
-                entity.Payment = model.Payment;
                 entity.KDV = model.KDV;
-                entity.IMEI = model.IMEI;
                 entity.UnitSalePrice = model.UnitSalePrice;
                 entity.UpdateDate = DateTime.Now;
-                entity.BankName = model.BankName;
-                entity.BankCartName = model.BankCartName;
-                entity.CartNumber = model.CartNumber;
-                entity.CheckNumber = model.CheckNumber;
-                entity.ExpiryDate = Convert.ToDateTime(model.ExpiryDate);
                 rpproduct.SaveChanges();
+
+                var paymentInfo = rppaymentinfo.FirstOrDefault(x => x.ProductID == entity.ID);
+                paymentInfo.IMEI = model.IMEI;
+                paymentInfo.Payment = model.Payment;
+                paymentInfo.BankName = model.BankName;
+                paymentInfo.BankCartName = model.BankCartName;
+                paymentInfo.CartNumber = model.CartNumber;
+                paymentInfo.CheckNumber = model.CheckNumber;
+                paymentInfo.ExpiryDate = Convert.ToDateTime(model.ExpiryDate);
+                rppaymentinfo.SaveChanges();
                 ViewBag.IslemDurum = EnumIslemDurum.Basarili;
             }
             else

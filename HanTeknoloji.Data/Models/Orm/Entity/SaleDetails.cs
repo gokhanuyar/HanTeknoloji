@@ -20,5 +20,11 @@ namespace HanTeknoloji.Data.Models.Orm.Entity
         public int Quantity { get; set; }
 
         public decimal KdvPrice { get; set; }
+
+        public decimal UnitBuyPrice { get; set; }
+
+        public decimal UnitSalePrice { get; set; }
+
+        public int PaymentInfoID { get; set; }
     }
 }

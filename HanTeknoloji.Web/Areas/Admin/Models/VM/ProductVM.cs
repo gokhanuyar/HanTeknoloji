@@ -58,7 +58,9 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         public string IMEI { get; set; }
 
         public int SaleCount { get; set; }
+        public decimal UnitBuyPrice { get; set; }
 
+        public int PaymentInfoID { get; set; }
         public string BankName { get; set; }
         public string BankCartName { get; set; }
         public string CartNumber { get; set; }

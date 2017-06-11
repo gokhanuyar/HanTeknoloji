@@ -22,6 +22,6 @@ namespace HanTeknoloji.Data.Models.Orm.Entity
 
         public decimal TotalPrice { get; set; }
 
-        public bool IsInvoiced { get; set; }
+        public bool IsInvoiced { get; set; }        
     }
 }
