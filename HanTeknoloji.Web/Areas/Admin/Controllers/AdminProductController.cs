@@ -37,7 +37,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                         Count = x.Count,
                         TradeMark = rptrademark.Find(x.TradeMarkID).Name,
                         ProductModel = x.ProductModelID == 0 ? "Yok" : rpproductmodel.Find(x.ProductModelID).Name,
-                        //Payment = x.PaymentInfo.Payment,
+                        Payment = rppaymentinfo.FirstOrDefault(i => i.ProductID == x.ID).Payment,
                         UnitPrice = x.UnitPrice,
                         UnitSalePrice = x.UnitSalePrice,
                         Supplier = rpsupplier.Find(x.SupplierID).CompanyName
@@ -54,7 +54,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                         ProductModel = x.ProductModelID == 0 ? "Yok" : rpproductmodel.Find(x.ProductModelID).Name,
                         UnitPrice = x.UnitPrice,
                         UnitSalePrice = x.UnitSalePrice,
-                        //Payment = x.PaymentInfo.Payment,
+                        Payment = rppaymentinfo.FirstOrDefault(i => i.ProductID == x.ID).Payment,
                         Supplier = rpsupplier.Find(x.SupplierID).CompanyName
                     }).ToList();
                 }
@@ -71,7 +71,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     ProductModel = x.ProductModelID == 0 ? "Yok" : rpproductmodel.Find(x.ProductModelID).Name,
                     UnitPrice = x.UnitPrice,
                     UnitSalePrice = x.UnitSalePrice,
-                    //Payment = x.PaymentInfo.Payment,
+                    Payment = rppaymentinfo.FirstOrDefault(i => i.ProductID == x.ID).Payment,
                     Supplier = rpsupplier.Find(x.SupplierID).CompanyName
                 }).ToList();
             }
@@ -135,13 +135,15 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
 
                 ViewBag.IslemDurum = EnumIslemDurum.Basarili;
                 ModelState.Clear();
+                GetDropdownItems(FirstTrademarkID());
+                return View(new ProductVM());
             }
             else
             {
                 ViewBag.IslemDurum = EnumIslemDurum.ValidationHata;
-            }
-            GetDropdownItems(FirstTrademarkID());
-            return View(model);
+                GetDropdownItems(FirstTrademarkID());
+                return View(model);
+            }            
         }
 
         private void SaveOthers(int id, ProductVM model)

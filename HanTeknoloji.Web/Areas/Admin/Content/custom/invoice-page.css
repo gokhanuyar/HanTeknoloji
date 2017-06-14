@@ -1,7 +1,7 @@
 ﻿
 .musteri-adres {
     position: absolute;
-    top: 255px;
+    top: 6.6cm;
     width: 190px;
     left: 2cm;
 }
@@ -14,20 +14,20 @@
 
 .tax-number {
     position: absolute;
-    top: 385px;
+    top: 10.2cm;
     left: 6.8cm;
 }
 
 .product-list {
     position: absolute;
-    top: 435px;
+    top: 11.6cm;
     left: 3.5cm;
 }
 
 .kdv-list {
     position: absolute;
     left: 12.4cm;
-    top: 850px;
+    top: 23cm;
     margin: 0;
 }
 
@@ -70,19 +70,19 @@
 .date {
     position: absolute;
     left: 18cm;
-    top: 330px;
+    top: 8.7cm;
 }
 
 .hour {
     position: absolute;
-    top: 360px;
+    top: 9.5cm;
     left: 18cm;
 }
 
 .date2 {
     position: absolute;
     left: 18cm;
-    top: 390px;
+    top: 10.3cm;
 }
 
 .total-unit-price {
