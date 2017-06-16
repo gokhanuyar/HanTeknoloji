@@ -2,12 +2,9 @@
 using HanTeknoloji.Data.Models.Orm.Entity;
 using HanTeknoloji.Web.Areas.Admin.Models.Types.Enums;
 using HanTeknoloji.Web.Areas.Admin.Models.VM;
-using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;

@@ -41,8 +41,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.Barcode
             try
             {
                 BarCode39 _barcode = new BarCode39();
-                int barSize = 50;
-                string fontFile = HttpContext.Current.Server.MapPath("/Content/free3of9.ttf");
+                int barSize = 40;
+                string fontFile = HttpContext.Current.Server.MapPath("/fonts/free3of9.ttf");
                 return (_barcode.Code39(barcode, barSize, true, file, fontFile));
             }
             catch (Exception ex)

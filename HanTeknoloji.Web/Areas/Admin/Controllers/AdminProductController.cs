@@ -144,7 +144,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 ViewBag.IslemDurum = EnumIslemDurum.ValidationHata;
                 GetDropdownItems(FirstTrademarkID());
                 return View(model);
-            }            
+            }
         }
 
         private void SaveOthers(int id, ProductVM model)
@@ -322,11 +322,15 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult SingleBarCode()
+        public ActionResult BarCode(int id)
         {
+            var product = rpproduct.Find(id);
+            string trademark = rptrademark.Find(product.TradeMarkID).Name;
+            string promodel = rpproductmodel.Find(product.ProductModelID).Name;
+
             barcodecs objbar = new barcodecs();
-            byte[] url = objbar.getBarcodeImage("123456", "");
-            BarCodeVM model = new BarCodeVM();
+            byte[] url = objbar.getBarcodeImage(product.SerialNumber, trademark + " " + promodel);
+            BarCodeModel model = new BarCodeModel();
             model.ImageUrl = "data:image/jpg;base64," + Convert.ToBase64String((byte[])url);
 
             return View(model);

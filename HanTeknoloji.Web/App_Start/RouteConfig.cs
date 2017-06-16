@@ -11,14 +11,14 @@ namespace HanTeknoloji.Web
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
-            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");            
 
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "AdminHome", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "AdminSale", action = "Index", id = UrlParameter.Optional }
                 //namespaces: new string[] { "HanTeknoloji.Web.Areas.Admin.Controllers" }
-            );
+            ).DataTokens.Add("area", "Admin");
         }
     }
 }

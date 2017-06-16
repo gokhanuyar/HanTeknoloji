@@ -53,6 +53,12 @@
                    col.Add(x => x.Supplier).Titled("Tedarikçi");
                    col.Add().Encoded(false).Sanitized(false).RenderValueAs(html =>
                    {
+                       string htmlelement = "<a href='/Admin/AdminProduct/Barcode/" + html.ID.ToString() + "' class='fa fa-barcode'></a>";
+                       return MvcHtmlString.Create(htmlelement);
+
+                   }).Titled("Barkod");
+                   col.Add().Encoded(false).Sanitized(false).RenderValueAs(html =>
+                   {
                        string htmlelement = "<a href='/Admin/AdminProduct/Edit/" + html.ID.ToString() + "' class='fa fa-pencil'></a>";
                        return MvcHtmlString.Create(htmlelement);
 

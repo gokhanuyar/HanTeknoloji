@@ -25,25 +25,30 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             var customer = rpcustomer.Find(customerId);
             CustomerExpiryWrapVM model = new CustomerExpiryWrapVM();
             model.CustomerList = Customers();
-            model.ExpiryResultList = rpcustomerexpiry
-                .GetListWithQuery(x => x.CustomerID == customerId)
-                .OrderBy(x => x.ExpiryDate)
-                .Select(x => new ExpiryResultVM
-                {
-                    ID = x.ID,
-                    ExpiryDate = x.ExpiryDate.ToLongDateString(),
-                    SaleDate = x.AddDate.ToLongDateString(),
-                    SalePrice = x.SaleTotalPrice,
-                    PaidPrice = x.SaleTotalPrice - x.ExpiryValue,
-                    ExpiryValue = x.ExpiryValue
-                }).ToList();
-            model.TotalExpiryValue = customer.ExpiryValue;
-            model.CustomerName = customer.Name + "  İçin Vadeli Satış Tablosu";
-            model.CustomerID = customer.ID;
-            model.PaidExpiryValue = customer.PaidExpiryValue;
+            model.ExpiryResultList = new List<ExpiryResultVM>();
+            if (customer != null)
+            {
+                model.ExpiryResultList = rpcustomerexpiry
+                                .GetListWithQuery(x => x.CustomerID == customerId)
+                                .OrderBy(x => x.ExpiryDate)
+                                .Select(x => new ExpiryResultVM
+                                {
+                                    ID = x.ID,
+                                    ExpiryDate = x.ExpiryDate.ToLongDateString(),
+                                    SaleDate = x.AddDate.ToLongDateString(),
+                                    SalePrice = x.SaleTotalPrice,
+                                    PaidPrice = x.SaleTotalPrice - x.ExpiryValue,
+                                    ExpiryValue = x.ExpiryValue
+                                }).ToList();
+                model.TotalExpiryValue = customer.ExpiryValue;
+                model.CustomerName = customer.Name + "  İçin Vadeli Satış Tablosu";
+                model.CustomerID = customer.ID;
+                model.PaidExpiryValue = customer.PaidExpiryValue;
+            }
+
             return View(model);
-        }       
-        
+        }
+
         public ActionResult Supplier()
         {
             SupplierExpiryWrapVM model = new SupplierExpiryWrapVM();
@@ -59,22 +64,27 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             var supplier = rpsupplier.Find(supplierId);
             SupplierExpiryWrapVM model = new SupplierExpiryWrapVM();
             model.SupplierList = Suppliers();
-            model.ExpiryResultList = rpsupplierexpiry
-                .GetListWithQuery(x => x.SupplierID == supplierId)
-                .OrderBy(x => x.ExpiryDate)
-                .Select(x => new ExpiryResultVM
-                {
-                    ID = x.ID,
-                    ExpiryDate = x.ExpiryDate.ToLongDateString(),
-                    SaleDate = x.AddDate.ToLongDateString(),
-                    SalePrice = x.TotalBuyingPrice,
-                    PaidPrice = x.PaidPrice,
-                    ExpiryValue = x.TotalBuyingPrice - x.PaidPrice
-                }).ToList();
-            model.TotalExpiryValue = supplier.TotalExpiryValue;
-            model.SupplierName = supplier.CompanyName + "  İçin Vadeli Satış Tablosu";
-            model.SupplierID = supplier.ID;
-            model.PaidExpiryValue = supplier.PaidExpiryValue;
+            model.ExpiryResultList = new List<ExpiryResultVM>();
+            if (supplier != null)
+            {
+                model.ExpiryResultList = rpsupplierexpiry
+                                .GetListWithQuery(x => x.SupplierID == supplierId)
+                                .OrderBy(x => x.ExpiryDate)
+                                .Select(x => new ExpiryResultVM
+                                {
+                                    ID = x.ID,
+                                    ExpiryDate = x.ExpiryDate.ToLongDateString(),
+                                    SaleDate = x.AddDate.ToLongDateString(),
+                                    SalePrice = x.TotalBuyingPrice,
+                                    PaidPrice = x.PaidPrice,
+                                    ExpiryValue = x.TotalBuyingPrice - x.PaidPrice
+                                }).ToList();
+                model.TotalExpiryValue = supplier.TotalExpiryValue;
+                model.SupplierName = supplier.CompanyName + "  İçin Vadeli Satış Tablosu";
+                model.SupplierID = supplier.ID;
+                model.PaidExpiryValue = supplier.PaidExpiryValue;
+            }
+
             return View(model);
         }
 

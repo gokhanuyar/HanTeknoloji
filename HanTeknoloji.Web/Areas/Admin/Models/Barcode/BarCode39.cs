@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
+﻿using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
+using System.Text.RegularExpressions;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Drawing;
 
 namespace HanTeknoloji.Web.Areas.Admin.Models.Barcode
 {
