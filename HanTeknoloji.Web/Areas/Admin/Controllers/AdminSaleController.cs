@@ -10,7 +10,6 @@ using System.Web.Mvc;
 
 namespace HanTeknoloji.Web.Areas.Admin.Controllers
 {
-    [Authorize]
     public class AdminSaleController : AdminBaseController
     {
         public ActionResult Index()

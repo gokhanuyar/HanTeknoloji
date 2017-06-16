@@ -393,6 +393,7 @@
     <Content Include="Areas\Admin\Views\AdminExpiry\Partial\Modal.cshtml" />
     <Content Include="Areas\Admin\Views\AdminExpiry\Supplier.cshtml" />
     <Content Include="Areas\Admin\Views\AdminExpiry\Partial\SupplierForm.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminAuthority\Index.cshtml" />
     <None Include="Properties\PublishProfiles\gokhan.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\dateFormat.min.js" />
@@ -410,6 +411,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Start.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminAuthorityController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminBaseController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminCategoryController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminCustomerController.cs" />
@@ -424,6 +426,9 @@
     <Compile Include="Areas\Admin\Controllers\AdminLoginController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminUserController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminReportController.cs" />
+    <Compile Include="Areas\Admin\Models\Attributes\EnumRoles.cs" />
+    <Compile Include="Areas\Admin\Models\Attributes\LoginControl.cs" />
+    <Compile Include="Areas\Admin\Models\Attributes\RolControl.cs" />
     <Compile Include="Areas\Admin\Models\Barcode\BarCode39.cs" />
     <Compile Include="Areas\Admin\Models\Barcode\barcodecs.cs" />
     <Compile Include="Areas\Admin\Models\Services\ExpiryService.cs" />

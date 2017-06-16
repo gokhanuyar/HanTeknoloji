@@ -6,7 +6,7 @@ function Delete(id) {
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Evet, sil!",
+        confirmButtonText: "Evet, sil !",
         cancelButtonText: "İptal",
         closeOnConfirm: false
     },

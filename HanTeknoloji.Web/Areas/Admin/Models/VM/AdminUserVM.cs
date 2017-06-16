@@ -19,5 +19,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
 
         [Display(Name = "Şifre Tekrar"), Required(ErrorMessage = "Bu alan boş geçilemez"), Compare("Password")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name ="Yetki")]
+        public string Role { get; set; }
     }
 }

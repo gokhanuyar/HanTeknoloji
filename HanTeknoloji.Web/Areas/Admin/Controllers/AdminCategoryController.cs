@@ -1,4 +1,5 @@
 ﻿using HanTeknoloji.Data.Models.Orm.Entity;
+using HanTeknoloji.Web.Areas.Admin.Models.Attributes;
 using HanTeknoloji.Web.Areas.Admin.Models.Types.Enums;
 using HanTeknoloji.Web.Areas.Admin.Models.VM;
 using PagedList;
@@ -9,8 +10,8 @@ using System.Web;
 using System.Web.Mvc;
 
 namespace HanTeknoloji.Web.Areas.Admin.Controllers
-{
-    [Authorize]
+{    
+    [RolControl(EnumRoles.Manager)]
     public class AdminCategoryController : AdminBaseController
     {
         public ActionResult Index(int? page, string searchString)

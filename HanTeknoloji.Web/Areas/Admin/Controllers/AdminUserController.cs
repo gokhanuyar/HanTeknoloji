@@ -7,10 +7,11 @@ using System.Web.Mvc;
 using PagedList;
 using HanTeknoloji.Data.Models.Orm.Entity;
 using HanTeknoloji.Web.Areas.Admin.Models.Types.Enums;
+using HanTeknoloji.Web.Areas.Admin.Models.Attributes;
 
 namespace HanTeknoloji.Web.Areas.Admin.Controllers
 {
-    [Authorize]
+    [RolControl(EnumRoles.Manager)]
     public class AdminUserController : AdminBaseController
     {
         public ActionResult Index(int? page)
@@ -27,7 +28,18 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
 
         public ActionResult Add()
         {
+            GetRoles();
             return View();
+        }
+
+        private void GetRoles()
+        {
+            var list = new List<SelectListItem>()
+            {
+                new SelectListItem{Text="Süper Admin",Value="1"},
+                new SelectListItem{Text="Satış Elemanı",Value="2"}
+            };
+            ViewData["roles"] = list;
         }
 
         [HttpPost]
@@ -36,6 +48,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             if (rpadminuser.Any(x => x.Email == model.Email))
             {
                 ViewBag.IslemDurum = EnumIslemDurum.AdminMevcut;
+                GetRoles();
                 return View(model);
             }
             else
@@ -46,7 +59,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     {
                         FullName = model.FullName,
                         Email = model.Email,
-                        Password = model.Password
+                        Password = model.Password,
+                        Roles = model.Role + ";"
                     };
                     rpadminuser.Add(entity);
                     ViewBag.IslemDurum = EnumIslemDurum.Basarili;
@@ -56,6 +70,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 {
                     ViewBag.IslemDurum = EnumIslemDurum.ValidationHata;
                 }
+                GetRoles();
                 return View(model);
             }
         }
@@ -67,8 +82,10 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             {
                 FullName = entity.FullName,
                 Email = entity.Email,
-                Password = entity.Password
+                Password = entity.Password,
+                Role = entity.Roles.Replace(";", "")
             };
+            GetRoles();
             return View(model);
         }
 
@@ -78,6 +95,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             if (rpadminuser.Any(x => x.Email == model.Email && x.ID != model.ID))
             {
                 ViewBag.IslemDurum = EnumIslemDurum.AdminMevcut;
+                GetRoles();
                 return View(model);
             }
             else
@@ -85,10 +103,15 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
                     AdminUser entity = rpadminuser.Find(model.ID);
+                    string[] roles = entity.Roles.Split(';');
                     entity.FullName = model.FullName;
                     entity.Email = model.Email;
                     entity.Password = model.Password;
                     entity.UpdateDate = DateTime.Now;
+                    if (!roles.Contains(model.Role))
+                    {
+                        entity.Roles = model.Role + ";";
+                    }
                     rpadminuser.SaveChanges();
                     ViewBag.IslemDurum = EnumIslemDurum.Basarili;
                 }
@@ -96,8 +119,9 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 {
                     ViewBag.IslemDurum = EnumIslemDurum.ValidationHata;
                 }
+                GetRoles();
                 return View(model);
-            }            
+            }
         }
 
         public ActionResult Delete(int id)

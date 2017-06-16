@@ -15,5 +15,7 @@ namespace HanTeknoloji.Data.Models.Orm.Entity
         public string Password { get; set; }
 
         public DateTime? LastLoginDate { get; set; }
+
+        public string Roles { get; set; }
     }
 }

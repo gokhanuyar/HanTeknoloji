@@ -1,4 +1,5 @@
 ﻿using HanTeknoloji.Data.Models.Orm.Entity;
+using HanTeknoloji.Web.Areas.Admin.Models.Attributes;
 using HanTeknoloji.Web.Areas.Admin.Models.Barcode;
 using HanTeknoloji.Web.Areas.Admin.Models.Services;
 using HanTeknoloji.Web.Areas.Admin.Models.Types.Enums;
@@ -12,7 +13,7 @@ using System.Web.Mvc;
 
 namespace HanTeknoloji.Web.Areas.Admin.Controllers
 {
-    [Authorize]
+    [RolControl(EnumRoles.Manager)]
     public class AdminProductController : AdminBaseController
     {
         public ActionResult Index(int? id, int? page, string searchString)

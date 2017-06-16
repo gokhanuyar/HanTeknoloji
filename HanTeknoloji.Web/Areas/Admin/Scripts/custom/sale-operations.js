@@ -106,7 +106,7 @@ $("#sale-button").click(function () {
     else {
         if (price > 0) {
             var newVal = expiryValue.replace(".", ",");
-            $("input[name='ExpiryValue']").val(newVal)
+            $("input[name='ExpiryValue']").val(newVal);
             $("#sale-form").submit();
         }
     }
@@ -132,9 +132,11 @@ $("#service-sale-button").click(function () {
     var price = $.trim($("#service-sale-price").val());
 
     if (price == "") {
-        sweetAlert("Uyarı", "Lütfen fiyat değeri giriniz!", "warning");
+        sweetAlert("Uyarı", "Lütfen tutar giriniz!", "warning");
     }
     else {
+        var newPrice = price.replace(".", ",");
+        $("#service-sale-price").val(newPrice);
         $("#service-sale-form").submit();
     }
 });

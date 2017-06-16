@@ -1,5 +1,6 @@
 ﻿using HanTeknoloji.Business.Manager;
 using HanTeknoloji.Data.Models.Orm.Entity;
+using HanTeknoloji.Web.Areas.Admin.Models.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Web.Mvc;
 
 namespace HanTeknoloji.Web.Areas.Admin.Controllers
 {
+    [LoginControl]
     public class AdminBaseController : Controller
     {
         public GenericRepository<Product> rpproduct;
@@ -70,16 +72,14 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
 
         public string UserEmail()
         {
-            IEnumerable<Claim> claims = ((ClaimsIdentity)User.Identity).Claims;
-            string UserEmail = claims.First(x => x.Type == ClaimTypes.Name).Value;
-            return UserEmail;
+            return HttpContext.User.Identity.Name;
         }
 
         public int UserID()
         {
-            IEnumerable<Claim> claims = ((ClaimsIdentity)User.Identity).Claims;
-            int UserID = Convert.ToInt32(claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            return UserID;
+            string email = UserEmail();
+            var admin = rpadminuser.FirstOrDefault(x => x.Email == email);
+            return admin.ID;
         }
 
         public int FirstTrademarkID()

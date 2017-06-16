@@ -1,4 +1,5 @@
-﻿using HanTeknoloji.Data.Models.Orm.Entity;
+﻿using HanTeknoloji.Business.Manager;
+using HanTeknoloji.Data.Models.Orm.Entity;
 using HanTeknoloji.Web.Areas.Admin.Models.Types.Enums;
 using HanTeknoloji.Web.Areas.Admin.Models.VM;
 using Microsoft.AspNet.Identity;
@@ -9,11 +10,14 @@ using System.Linq;
 using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace HanTeknoloji.Web.Areas.Admin.Controllers
 {
-    public class AdminLoginController : AdminBaseController
+    public class AdminLoginController : Controller
     {
+        GenericRepository<AdminUser> rpadminuser = new GenericRepository<AdminUser>();
+
         public ActionResult Index()
         {
             return View();
@@ -25,12 +29,11 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             AdminUser user = rpadminuser.FirstOrDefault(x => x.Email == model.Email && x.Password == model.Password);
             if (user != null)
             {
-                model.ID = user.ID;
                 user.LastLoginDate = DateTime.Now;
                 rpadminuser.SaveChanges();
-                IdentitySignin(model);
-
-                return RedirectToAction("Index", "AdminHome");
+                FormsAuthentication.SetAuthCookie(user.Email, true);
+                string controller = user.Roles.Split(';').Contains("1") ? "AdminHome" : "AdminSale";
+                return RedirectToAction("Index", controller);
             }
             else
             {
@@ -41,40 +44,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
 
         public ActionResult SignOut()
         {
-            IdentitySignout();
-            return Redirect("/Admin/AdminLogin");
-        }
-
-        public void IdentitySignin(LoginVM model, string providerKey = null, bool isPersistent = false)
-        {
-            var claims = new List<Claim>();
-
-            // create required claims
-            claims.Add(new Claim(ClaimTypes.NameIdentifier, model.ID.ToString()));
-            claims.Add(new Claim(ClaimTypes.Name, model.Email));
-
-            // custom – my serialized AppUserState object
-            //claims.Add(new Claim("userState", "deneme"));
-
-            var identity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
-
-            AuthenticationManager.SignIn(new AuthenticationProperties()
-            {
-                AllowRefresh = true,
-                IsPersistent = isPersistent,
-                ExpiresUtc = DateTime.UtcNow.AddDays(7)
-            }, identity);
-        }
-
-        public void IdentitySignout()
-        {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie,
-                                            DefaultAuthenticationTypes.ExternalCookie);
-        }
-
-        private IAuthenticationManager AuthenticationManager
-        {
-            get { return HttpContext.GetOwinContext().Authentication; }
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Index");
         }
     }
 }

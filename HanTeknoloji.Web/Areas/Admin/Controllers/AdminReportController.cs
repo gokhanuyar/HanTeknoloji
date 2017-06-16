@@ -6,10 +6,11 @@ using System.Web;
 using System.Web.Mvc;
 using PagedList;
 using HanTeknoloji.Data.Models.Orm.Entity;
+using HanTeknoloji.Web.Areas.Admin.Models.Attributes;
 
 namespace HanTeknoloji.Web.Areas.Admin.Controllers
 {
-    [Authorize]
+    [RolControl(EnumRoles.Manager)]
     public class AdminReportController : AdminBaseController
     {
         public ActionResult ProductSale(int? page, string date)
