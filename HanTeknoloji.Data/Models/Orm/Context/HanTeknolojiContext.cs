@@ -15,6 +15,7 @@ namespace HanTeknoloji.Data.Models.Orm.Context
         {
             //Database.Connection.ConnectionString = "Server=DESKTOP-15VL0N4;Database=HanTeknolojiDB;Trusted_Connection=True";
             Database.Connection.ConnectionString = @"Server = mssql13.trwww.com; database = hanteknolojiDB; uid = user_hanteknoloji; pwd = hanteknoloji_DB1";
+            //
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

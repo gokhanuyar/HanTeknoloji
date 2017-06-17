@@ -37,11 +37,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                         SerialNumber = x.SerialNumber,
                         Count = x.Count,
                         TradeMark = rptrademark.Find(x.TradeMarkID).Name,
-                        ProductModel = x.ProductModelID == 0 ? "Yok" : rpproductmodel.Find(x.ProductModelID).Name,
-                        Payment = rppaymentinfo.FirstOrDefault(i => i.ProductID == x.ID).Payment,
-                        UnitPrice = x.UnitPrice,
-                        UnitSalePrice = x.UnitSalePrice,
-                        Supplier = rpsupplier.Find(x.SupplierID).CompanyName
+                        ProductModel = x.ProductModelID == 0 ? "Yok" : rpproductmodel.Find(x.ProductModelID).Name
                     }).ToList();
                 }
                 else
@@ -52,11 +48,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                         SerialNumber = x.SerialNumber,
                         Count = x.Count,
                         TradeMark = rptrademark.Find(x.TradeMarkID).Name,
-                        ProductModel = x.ProductModelID == 0 ? "Yok" : rpproductmodel.Find(x.ProductModelID).Name,
-                        UnitPrice = x.UnitPrice,
-                        UnitSalePrice = x.UnitSalePrice,
-                        Payment = rppaymentinfo.FirstOrDefault(i => i.ProductID == x.ID).Payment,
-                        Supplier = rpsupplier.Find(x.SupplierID).CompanyName
+                        ProductModel = x.ProductModelID == 0 ? "Yok" : rpproductmodel.Find(x.ProductModelID).Name
                     }).ToList();
                 }
             }
@@ -69,11 +61,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     SerialNumber = x.SerialNumber,
                     Count = x.Count,
                     TradeMark = rptrademark.Find(x.TradeMarkID).Name,
-                    ProductModel = x.ProductModelID == 0 ? "Yok" : rpproductmodel.Find(x.ProductModelID).Name,
-                    UnitPrice = x.UnitPrice,
-                    UnitSalePrice = x.UnitSalePrice,
-                    Payment = rppaymentinfo.FirstOrDefault(i => i.ProductID == x.ID).Payment,
-                    Supplier = rpsupplier.Find(x.SupplierID).CompanyName
+                    ProductModel = x.ProductModelID == 0 ? "Yok" : rpproductmodel.Find(x.ProductModelID).Name
                 }).ToList();
             }
             if (!String.IsNullOrEmpty(searchString))
@@ -90,6 +78,33 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         {
             GetDropdownItems(FirstTrademarkID());
             return View(new ProductVM());
+        }
+
+        public ActionResult AddWithBarcode()
+        {
+            GetDropdownItems(FirstTrademarkID());
+            return View(new ProductVM());
+        }
+        [HttpPost]
+        public ActionResult AddWithBarcode(string id)
+        {
+            ProductVM model = new ProductVM();
+            if (!string.IsNullOrEmpty(id))
+            {
+                var entity = rpproduct.FirstOrDefault(x => x.SerialNumber == id);
+                model.ID = entity.ID;
+                model.SerialNumber = entity.SerialNumber;
+                model.TradeMarkID = entity.TradeMarkID;
+                model.ProductModelID = entity.ProductModelID;
+                model.SupplierID = entity.SupplierID;
+                model.ColorID = entity.ColorID;
+                model.UnitPrice = entity.UnitPrice;
+                model.CategoryID = entity.CategoryID;
+                model.KDV = entity.KDV;
+                model.UnitSalePrice = entity.UnitSalePrice;
+                GetDropdownItems(entity.TradeMarkID);
+            }
+            return View(model);
         }
 
         [HttpPost]
@@ -334,6 +349,19 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             model.ImageUrl = "data:image/jpg;base64," + Convert.ToBase64String((byte[])url);
 
             return View(model);
+        }
+
+        public JsonResult Detail(int id)
+        {
+            var product = rpproduct.Find(id);
+            var supplier = rpsupplier.Find(product.SupplierID);
+            return Json(new
+            {
+                buyprice = product.UnitPrice,
+                saleprice = product.UnitSalePrice,
+                KDV = product.KDV * 100,
+                supplier = supplier.CompanyName
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }

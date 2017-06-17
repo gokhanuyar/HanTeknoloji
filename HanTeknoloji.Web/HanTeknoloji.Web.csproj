@@ -374,6 +374,9 @@
     <Content Include="Areas\Admin\Views\AdminAuthority\Index.cshtml" />
     <Content Include="fonts\free3of9.ttf" />
     <Content Include="Areas\Admin\Views\AdminProduct\BarCode.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminProduct\Partial\Modal.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminProduct\AddWithBarcode.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminProduct\Partial\BarcodeForm.cshtml" />
     <None Include="Properties\PublishProfiles\gokhan.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\dateFormat.min.js" />

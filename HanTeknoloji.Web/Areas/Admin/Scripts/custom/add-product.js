@@ -16,14 +16,14 @@ $("#TradeMarkID").change(function () {
     })
 });
 
-$("#CategoryID").change(function () {
-    if (this.value == 6 || this.value == 7) {
-        $(".imei-box").fadeIn();
-    }
-    else {
-        $(".imei-box").fadeOut();
-    }
-});
+//$("#CategoryID").change(function () {
+//    if (this.value == 6 || this.value == 7) {
+//        $(".imei-box").fadeIn();
+//    }
+//    else {
+//        $(".imei-box").fadeOut();
+//    }
+//});
 
 $("#Payment").change(function () {
     $(".display-row").hide();

@@ -43,14 +43,16 @@
                 <div class="dataTable_wrapper">
                     @Html.Grid(Model).Named("Product").Columns(col =>
                {
-                   col.Add(x => x.SerialNumber).Titled("Seri Numarası");
+                   col.Add(x => x.SerialNumber).Titled("Barkod Numarası");
                    col.Add(x => x.TradeMark).Titled("Marka");
                    col.Add(x => x.ProductModel).Titled("Model");
                    col.Add(x => x.Count).Titled("Adet");
-                   col.Add(x => x.UnitPrice).Titled("Alış Fiyatı (TL)");
-                   col.Add(x => x.UnitSalePrice).Titled("Satış Fiyatı (TL)");
-                   col.Add(x => x.Payment).Titled("Ödeme Şekli");
-                   col.Add(x => x.Supplier).Titled("Tedarikçi");
+                   col.Add().Encoded(false).Sanitized(false).RenderValueAs(html =>
+                   {
+                       string htmlelement = "<a onclick='Detail(" + html.ID.ToString() + ")' class='btn btn-info btn-sm' href='javascript:;'>Detay</a>";
+                       return MvcHtmlString.Create(htmlelement);
+
+                   }).Titled("Detay");
                    col.Add().Encoded(false).Sanitized(false).RenderValueAs(html =>
                    {
                        string htmlelement = "<a href='/Admin/AdminProduct/Barcode/" + html.ID.ToString() + "' class='fa fa-barcode'></a>";
@@ -77,7 +79,26 @@
 </div>
 @Html.PagedListPager(Model, page => Url.Action("Index", "AdminProduct", new { page = page, id = ViewBag.Statuid }))
 
-@section scripts{
-    <script src="~/Scripts/gridmvc.js"></script>
-    <script src="~/Areas/Admin/Scripts/custom/product-list.js"></script>
-}
+@Html.Partial("Partial/Modal")
+    @section scripts{
+        <script src="~/Scripts/gridmvc.js"></script>
+        <script src="~/Areas/Admin/Scripts/custom/product-list.js"></script>
+        <script>
+            function Detail(id) {
+                $("#product-datails-content").empty();
+                $.ajax({
+                    type: "get",
+                    url: "/Admin/AdminProduct/Detail/" + id,
+                    success: function (result) {
+                        $("#product-datails-content").append("<tr>" +
+                            "<td>" + result.buyprice + " " + "TL</td>" +
+                            "<td>" + result.saleprice + " " + "TL</td>" +
+                            "<td>% " + result.KDV + "</td>" +
+                            "<td>" + result.supplier + "</td ></tr > ");
+                        $("#myModal").modal("show");
+                    }
+                })
+            }
+
+        </script>
+    }

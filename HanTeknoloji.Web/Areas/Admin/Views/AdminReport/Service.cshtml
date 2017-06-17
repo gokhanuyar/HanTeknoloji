@@ -10,22 +10,22 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Servis/Yardım Rapor Sayfası</h1>
+        <h3 class="page-header">Servis/Yardım Rapor Sayfası</h3>
     </div>
 </div>
 <div class="row">
-    <div class="col-lg-2">
+    <div class="col-lg-3">
         <div class="form-group">
-            <h4>Günlük İşlemler İçin Tarih Seçimi</h4>
+            <h5>Günlük İşlemler İçin Tarih Seçimi</h5>
             <form method="post" id="form_date">
                 <input name="date" id="date" type="date" class="form-control" />
             </form>
 
         </div>
     </div>
-    <div class="col-lg-2">
+    <div class="col-lg-3">
         <div class="form-group">
-            <h4>Aylık İşlemler İçin Tarih Seçimi</h4>
+            <h5>Aylık İşlemler İçin Tarih Seçimi</h5>
             <form method="post" id="form_month">
                 <input name="date" id="month" type="month" class="form-control" />
             </form>
@@ -34,9 +34,13 @@
 </div>
 
 <div class="row">
-    <div class="col-lg-3">
-        <h4>İşlem Adedi : @ViewBag.quantity</h4>
-        <h4>Toplam Tutar : @ViewBag.saleprice</h4>
+    <div class="col-lg-2">
+        <h5>İşlem Adedi</h5>
+        <h5>Toplam Tutar</h5>
+    </div>
+    <div class="col-lg-2">
+        <h5>: @ViewBag.quantity</h5>
+        <h5>: @ViewBag.saleprice TL</h5>
     </div>
 </div>
 

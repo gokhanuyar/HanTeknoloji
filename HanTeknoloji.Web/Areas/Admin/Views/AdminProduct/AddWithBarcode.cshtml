@@ -1,0 +1,66 @@
+﻿
+@{
+    ViewBag.Title = "AddWithBarcode";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
+@section css{
+    <link href="~/Areas/Admin/Content/custom/add-product.css" rel="stylesheet" />
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header">Ürün Ekleme</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        @Html.Partial("/Areas/Admin/Views/Shared/Partial/MessagesPart.cshtml")
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Barkod Numarasını Giriniz
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        @using (Html.BeginForm("AddWithBarcode", "AdminProduct", FormMethod.Post, new { @enctype = "multipart/form-data", id = "barcode-form" }))
+                        {
+                            <div class="form-group">
+                                <label>Barkod Numarası</label>
+                                <input type="text" name="id" class="form-control" />
+                            </div>
+                            <button class="btn btn-success" type="submit">Gönder</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        @Html.Partial("/Areas/Admin/Views/Shared/Partial/MessagesPart.cshtml")
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Ürün Ekleme Formu
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        @using (Html.BeginForm("Add", "AdminProduct", FormMethod.Post, new { @enctype = "multipart/form-data", id = "form" }))
+                        {
+                            @Html.Partial("Partial/BarcodeForm")
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/dateFormat.min.js"></script>
+    <script src="~/Areas/Admin/Scripts/custom/add-product.js"></script>
+}
+

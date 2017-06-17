@@ -39,3 +39,15 @@
 textarea {
     resize: none;
 }
+
+#urun-adet {
+    min-width: 80px;
+}
+
+.container-fluid{
+    padding:0;
+}
+
+.col-lg-12{
+    padding:0 5px;
+}
