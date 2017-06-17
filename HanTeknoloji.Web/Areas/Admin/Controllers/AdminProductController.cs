@@ -80,33 +80,6 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             return View(new ProductVM());
         }
 
-        public ActionResult AddWithBarcode()
-        {
-            GetDropdownItems(FirstTrademarkID());
-            return View(new ProductVM());
-        }
-        [HttpPost]
-        public ActionResult AddWithBarcode(string id)
-        {
-            ProductVM model = new ProductVM();
-            if (!string.IsNullOrEmpty(id))
-            {
-                var entity = rpproduct.FirstOrDefault(x => x.SerialNumber == id);
-                model.ID = entity.ID;
-                model.SerialNumber = entity.SerialNumber;
-                model.TradeMarkID = entity.TradeMarkID;
-                model.ProductModelID = entity.ProductModelID;
-                model.SupplierID = entity.SupplierID;
-                model.ColorID = entity.ColorID;
-                model.UnitPrice = entity.UnitPrice;
-                model.CategoryID = entity.CategoryID;
-                model.KDV = entity.KDV;
-                model.UnitSalePrice = entity.UnitSalePrice;
-                GetDropdownItems(entity.TradeMarkID);
-            }
-            return View(model);
-        }
-
         [HttpPost]
         public ActionResult Add(ProductVM model)
         {
@@ -118,7 +91,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     //string category = rpcategory.Find(model.CategoryID).BarcodeValue;
                     string trademark = rptrademark.Find(model.TradeMarkID).BarcodeValue;
                     string proModel = model.ProductModelID == 0 ? "000" : rpproductmodel.Find(model.ProductModelID).BarcodeValue;
-                    string color = rpcolor.Find(model.ColorID).BarcodeValue;
+                    string color = model.ColorID != 0 ? rpcolor.Find(model.ColorID).BarcodeValue : "0";
                     model.SerialNumber = trademark + proModel + color;
                 }
                 var product = rpproduct.FirstOrDefault(x => x.SerialNumber == model.SerialNumber);
@@ -160,6 +133,34 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 GetDropdownItems(FirstTrademarkID());
                 return View(model);
             }
+        }
+
+        public ActionResult AddWithBarcode()
+        {
+            GetDropdownItems(FirstTrademarkID());
+            return View(new ProductVM());
+        }
+
+        [HttpPost]
+        public ActionResult AddWithBarcode(string id)
+        {
+            ProductVM model = new ProductVM();
+            if (!string.IsNullOrEmpty(id))
+            {
+                var entity = rpproduct.FirstOrDefault(x => x.SerialNumber == id);
+                model.ID = entity.ID;
+                model.SerialNumber = entity.SerialNumber;
+                model.TradeMarkID = entity.TradeMarkID;
+                model.ProductModelID = entity.ProductModelID;
+                model.SupplierID = entity.SupplierID;
+                model.ColorID = entity.ColorID;
+                model.UnitPrice = entity.UnitPrice;
+                model.CategoryID = entity.CategoryID;
+                model.KDV = entity.KDV;
+                model.UnitSalePrice = entity.UnitSalePrice;
+                GetDropdownItems(entity.TradeMarkID);
+            }
+            return View(model);
         }
 
         private void SaveOthers(int id, ProductVM model)

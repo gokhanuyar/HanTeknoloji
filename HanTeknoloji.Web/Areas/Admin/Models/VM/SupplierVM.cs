@@ -25,8 +25,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         [Display(Name = "Telefon Numarası"), Required(ErrorMessage = "Bu alan boş geçilemez.")]
         public string Phone { get; set; }
 
-        [Display(Name = "Fax Numarası")]
-        public string Fax { get; set; }
+        [Display(Name = "E-posta Adresi")]
+        public string Email { get; set; }
 
         [Display(Name = "Web Sitesi")]
         public string WebSite { get; set; }

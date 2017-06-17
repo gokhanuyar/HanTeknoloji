@@ -29,6 +29,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         public GenericRepository<CustomerExpiry> rpcustomerexpiry;
         public GenericRepository<SupplierExpiry> rpsupplierexpiry;
         public GenericRepository<PaymentInfo> rppaymentinfo;
+        public GenericRepository<ExpiryPayment> rpexpirypayment;
 
         public AdminBaseController()
         {
@@ -48,6 +49,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             rpcustomerexpiry = new GenericRepository<CustomerExpiry>();
             rpsupplierexpiry = new GenericRepository<SupplierExpiry>();
             rppaymentinfo = new GenericRepository<PaymentInfo>();
+            rpexpirypayment = new GenericRepository<ExpiryPayment>();
         }
 
         protected override void Dispose(bool disposing)
@@ -68,6 +70,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             rpcustomerexpiry.Dispose();
             rpsupplierexpiry.Dispose();
             rppaymentinfo.Dispose();
+            rpexpirypayment.Dispose();
         }
 
         public string UserEmail()

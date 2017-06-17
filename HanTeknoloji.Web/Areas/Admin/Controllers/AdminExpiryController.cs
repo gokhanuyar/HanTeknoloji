@@ -156,6 +156,12 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             customer.ExpiryValue -= model.Price;
             customer.PaidExpiryValue += model.Price;
             rpcustomer.SaveChanges();
+            var expiryPayment = new ExpiryPayment
+            {
+                Price = model.Price,
+                PersonID = model.ID
+            };
+            rpexpirypayment.Add(expiryPayment);
             //string postValue = "#" + customer.ID + " " + customer.Name + " " + customer.Phone;
             return Json("", JsonRequestBehavior.AllowGet);
         }
@@ -166,6 +172,12 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             supplier.TotalExpiryValue -= model.Price;
             supplier.PaidExpiryValue += model.Price;
             rpsupplier.SaveChanges();
+            var expiryPayment = new ExpiryPayment
+            {
+                Price = model.Price,
+                PersonID = model.ID
+            };
+            rpexpirypayment.Add(expiryPayment);
             //string postValue = "#" + supplier.ID + " " + supplier.CompanyName + " " + supplier.Phone;
             return Json("", JsonRequestBehavior.AllowGet);
         }

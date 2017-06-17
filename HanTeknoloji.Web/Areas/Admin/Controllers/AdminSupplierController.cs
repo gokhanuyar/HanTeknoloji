@@ -26,7 +26,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     ID = x.ID,
                     CompanyName = x.CompanyName,
                     Phone = x.Phone ?? "-",
-                    Fax = x.Fax ?? "-",
+                    Email = x.Email ?? "-",
                     WebSite = x.WebSite ?? "-",
                     City = rpcity.Find(x.CityID).Name,
                     Region = rpregion.Find(x.RegionID).Name,
@@ -41,7 +41,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     ID = x.ID,
                     CompanyName = x.CompanyName,
                     Phone = x.Phone ?? "-",
-                    Fax = x.Fax ?? "-",
+                    Email = x.Email ?? "-",
                     WebSite = x.WebSite ?? "-",
                     City = rpcity.Find(x.CityID).Name,
                     Region = rpregion.Find(x.RegionID).Name,
@@ -96,7 +96,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     CompanyName = model.CompanyName,
                     Address = model.Address,
                     Phone = model.Phone,
-                    Fax = model.Fax,
+                    Email = model.Email,
                     WebSite = model.WebSite,
                     CityID = model.CityID,
                     RegionID = model.RegionID
@@ -122,7 +122,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 CompanyName = entity.CompanyName,
                 Address = entity.Address,
                 Phone = entity.Phone,
-                Fax = entity.Fax,
+                Email = entity.Email,
                 WebSite = entity.WebSite,
                 CityID = entity.CityID,
                 RegionID = entity.RegionID
@@ -140,7 +140,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 entity.CompanyName = model.CompanyName;
                 entity.Address = model.Address;
                 entity.Phone = model.Phone;
-                entity.Fax = model.Fax;
+                entity.Email = model.Email;
                 entity.WebSite = model.WebSite;
                 entity.CityID = model.CityID;
                 entity.RegionID = model.RegionID;

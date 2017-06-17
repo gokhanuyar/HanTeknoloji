@@ -64,6 +64,7 @@
     <Compile Include="Models\Orm\Entity\Color.cs" />
     <Compile Include="Models\Orm\Entity\Customer.cs" />
     <Compile Include="Models\Orm\Entity\CustomerExpiry.cs" />
+    <Compile Include="Models\Orm\Entity\ExpiryPayment.cs" />
     <Compile Include="Models\Orm\Entity\PaymentInfo.cs" />
     <Compile Include="Models\Orm\Entity\Product.cs" />
     <Compile Include="Models\Orm\Entity\ProductModel.cs" />

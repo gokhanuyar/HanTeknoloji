@@ -33,7 +33,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         public int SupplierID { get; set; }
         public string Supplier { get; set; }
 
-        [Display(Name = "Renk"), Required(ErrorMessage = "Renk alanı boş geçilemez.")]
+        [Display(Name = "Renk")]
         public int ColorID { get; set; }
 
         [Display(Name = "Renk")]
