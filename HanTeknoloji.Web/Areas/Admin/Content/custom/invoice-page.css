@@ -3,31 +3,31 @@
     position: absolute;
     top: 6.6cm;
     width: 190px;
-    left: 2cm;
+    left: 2.5cm;
 }
 
 .tax-office {
     position: absolute;
-    top: 385px;
+    top: 9.2cm;
     left: 2cm;
 }
 
 .tax-number {
     position: absolute;
-    top: 10.2cm;
+    top: 9.6cm;
     left: 6.8cm;
 }
 
 .product-list {
     position: absolute;
-    top: 11.6cm;
+    top: 10.8cm;
     left: 3.5cm;
 }
 
 .kdv-list {
     position: absolute;
-    left: 12.4cm;
-    top: 23cm;
+    left: 12.5cm;
+    top: 22.2cm;
     margin: 0;
 }
 
@@ -70,19 +70,19 @@
 .date {
     position: absolute;
     left: 18cm;
-    top: 8.7cm;
+    top: 8.1cm;
 }
 
 .hour {
     position: absolute;
-    top: 9.5cm;
+    top: 8.9cm;
     left: 18cm;
 }
 
 .date2 {
     position: absolute;
     left: 18cm;
-    top: 10.3cm;
+    top: 9.7cm;
 }
 
 .total-unit-price {
@@ -99,7 +99,7 @@
 
 .price-string {
     position: absolute;
-    top: 26.1cm;
+    top: 25.3cm;
     left: 5cm;
 }
 
@@ -108,5 +108,13 @@
     height: 50px;
     position: absolute;
     top: 1161px;
-    left: 8cm;
+    left: 5cm;
+}
+
+.back {
+    font-size: 25px;
+    height: 50px;
+    position: absolute;
+    top: 1161px;
+    left: 9cm;
 }

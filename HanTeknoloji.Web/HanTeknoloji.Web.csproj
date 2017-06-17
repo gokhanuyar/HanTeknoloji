@@ -158,6 +158,8 @@
     <Content Include="Areas\Admin\Content\dist\css\sb-admin-2.min.css" />
     <Content Include="Areas\Admin\Content\dist\js\sb-admin-2.js" />
     <Content Include="Areas\Admin\Content\dist\js\sb-admin-2.min.js" />
+    <Content Include="Areas\Admin\Content\favicon.png" />
+    <Content Include="Areas\Admin\Content\hantek.jpg" />
     <Content Include="Areas\Admin\Content\invoice.jpg" />
     <Content Include="Areas\Admin\Content\sweetalert.css" />
     <Content Include="Areas\Admin\Content\vendor\bootstrap-social\bootstrap-social.css" />
