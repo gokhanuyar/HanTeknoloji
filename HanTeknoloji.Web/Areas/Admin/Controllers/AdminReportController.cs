@@ -74,15 +74,15 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 KdvPrice = d.KdvPrice,
                 Price = d.Price,
                 ProductID = d.ProductID,
-                Quantity = d.Quantity
+                Quantity = d.Quantity,
+                UnitBuyPrice = d.UnitBuyPrice,
+                UnitSalePrice = d.UnitSalePrice
             }).ToList());
 
             list.ForEach(l => l.Details.ForEach(d => d.Product = rpproduct.GetListWithQuery(p => p.ID == d.ProductID).Select(p => new ProductVM
             {
                 TradeMark = rptrademark.Find(p.TradeMarkID).Name,
-                ProductModel = rpproductmodel.Find(p.ProductModelID).Name,
-                UnitPrice = p.UnitPrice,
-                UnitSalePrice = p.UnitSalePrice
+                ProductModel = rpproductmodel.Find(p.ProductModelID).Name
             }).FirstOrDefault()));
 
             list.ForEach(l => l.AdminUserName = rpadminuser.Find(l.UserID).FullName);
@@ -100,17 +100,19 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                         Price = detail.Price + detail.KdvPrice,
                         SaleDate = sale.SaleDate,
                         SaleTime = sale.SaleTime,
-                        PaymentType = sale.PaymentType
+                        PaymentType = sale.PaymentType,
+                        UnitBuyPrice = detail.UnitBuyPrice,
+                        UnitSalePrice = detail.UnitSalePrice
                     };
                     model.Add(vm);
                 }
             }
 
             ViewBag.quantity = model.Sum(x => x.Quantity);
-            ViewBag.unitprice = model.Sum(x => x.Product.UnitPrice * x.Quantity);
+            ViewBag.unitprice = model.Sum(x => x.UnitBuyPrice * x.Quantity);
             ViewBag.saleprice = model.Sum(x => x.Price);
             ViewBag.kdv = model.Sum(x => x.KdvPrice);
-            ViewBag.brut = ViewBag.saleprice - (ViewBag.unitprice + ViewBag.kdv);            
+            ViewBag.brut = ViewBag.saleprice - (ViewBag.unitprice + ViewBag.kdv);
             IPagedList<ReportVM> pagedModel = model.ToPagedList(_page, 20);
             return pagedModel;
         }
@@ -176,15 +178,15 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 KdvPrice = d.KdvPrice,
                 Price = d.Price,
                 ProductID = d.ProductID,
-                Quantity = d.Quantity
+                Quantity = d.Quantity,
+                UnitBuyPrice = d.UnitBuyPrice,
+                UnitSalePrice = d.UnitSalePrice
             }).ToList());
 
             list.ForEach(l => l.Details.ForEach(d => d.Product = rpproduct.GetListWithQuery(p => p.ID == d.ProductID).Select(p => new ProductVM
             {
                 TradeMark = rptrademark.Find(p.TradeMarkID).Name,
-                ProductModel = rpproductmodel.Find(p.ProductModelID).Name,
-                UnitPrice = p.UnitPrice,
-                UnitSalePrice = p.UnitSalePrice
+                ProductModel = rpproductmodel.Find(p.ProductModelID).Name
             }).FirstOrDefault()));
 
             list.ForEach(l => l.AdminUserName = rpadminuser.Find(l.UserID).FullName);
@@ -203,14 +205,16 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                         SaleDate = sale.SaleDate,
                         InvoiceDate = sale.InvoiceDate,
                         CustomerID = sale.CustomerID,
-                        PaymentType = sale.PaymentType
+                        PaymentType = sale.PaymentType,
+                        UnitBuyPrice = detail.UnitBuyPrice,
+                        UnitSalePrice = detail.UnitSalePrice
                     };
                     model.Add(vm);
                 }
             }
 
             ViewBag.quantity = model.Sum(x => x.Quantity);
-            ViewBag.unitprice = model.Sum(x => x.Product.UnitPrice * x.Quantity);
+            ViewBag.unitprice = model.Sum(x => x.UnitBuyPrice * x.Quantity);
             ViewBag.saleprice = model.Sum(x => x.Price);
             ViewBag.kdv = model.Sum(x => x.KdvPrice);
             ViewBag.brut = ViewBag.saleprice - (ViewBag.unitprice + ViewBag.kdv);
@@ -386,6 +390,11 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 Text = x.Name + " Tel:" + x.Phone,
                 Value = x.ID.ToString()
             }).ToList();
+        }
+
+        public ActionResult SupplierReport(int? page)
+        {
+            return View();
         }
     }
 }

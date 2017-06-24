@@ -15,5 +15,6 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.Types.Messages
         public static string ProductQuantity = "Girilen ürün stokta mevcut değildir.";
         public static string NoProduct = "Girilen ürün stokta mevcut değildir.";
         public static string TCNo = "Girilen TC Kimlik numarası doğru değil ! Lütfen tekrar deneyin...";
+        public static string NameExist = "Girilen isim kayıtlarda mevcut !";
     }
 }

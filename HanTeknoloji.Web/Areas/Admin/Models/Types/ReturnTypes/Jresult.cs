@@ -5,10 +5,8 @@ using System.Web;
 
 namespace HanTeknoloji.Web.Areas.Admin.Models.Types.ReturnTypes
 {
-    public class JResult<T>
-    {
-        public T Object { get; set; }
-        public long ID { get; set; }
+    public class JResult
+    { 
         public string MessageTitle { get; set; }
         public string Message { get; set; }
         public bool IsSuccess { get; set; }
@@ -16,10 +14,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.Types.ReturnTypes
         {
             get
             {
-                return this.IsSuccess ? "alert alert-info" : "alert alert-danger";
+                return this.IsSuccess ? "alert alert-success" : "alert alert-danger";
             }
         }
-        public bool IsRedirect { get; set; }
-        public string RedirectUrl { get; set; }
     }
 }

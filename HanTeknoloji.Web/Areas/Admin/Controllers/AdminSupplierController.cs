@@ -91,19 +91,25 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                Supplier entity = new Supplier
+                if (rpsupplier.Any(x => x.CompanyName.ToLower() == model.CompanyName.ToLower()))
                 {
-                    CompanyName = model.CompanyName,
-                    Address = model.Address,
-                    Phone = model.Phone,
-                    Email = model.Email,
-                    WebSite = model.WebSite,
-                    CityID = model.CityID,
-                    RegionID = model.RegionID
-                };
-                rpsupplier.Add(entity);
-                ViewBag.IslemDurum = EnumIslemDurum.Basarili;
-
+                    ViewBag.IslemDurum = EnumIslemDurum.IsimMevcut;
+                }
+                else
+                {
+                    Supplier entity = new Supplier
+                    {
+                        CompanyName = model.CompanyName,
+                        Address = model.Address,
+                        Phone = model.Phone,
+                        Email = model.Email,
+                        WebSite = model.WebSite,
+                        CityID = model.CityID,
+                        RegionID = model.RegionID
+                    };
+                    rpsupplier.Add(entity);
+                    ViewBag.IslemDurum = EnumIslemDurum.Basarili;
+                }
             }
             else
             {
@@ -136,18 +142,25 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                Supplier entity = rpsupplier.Find(model.ID);
-                entity.CompanyName = model.CompanyName;
-                entity.Address = model.Address;
-                entity.Phone = model.Phone;
-                entity.Email = model.Email;
-                entity.WebSite = model.WebSite;
-                entity.CityID = model.CityID;
-                entity.RegionID = model.RegionID;
+                if (rpsupplier.Any(x => x.CompanyName.ToLower() == model.CompanyName.ToLower() && x.ID != model.ID))
+                {
+                    ViewBag.IslemDurum = EnumIslemDurum.IsimMevcut;
+                }
+                else
+                {
+                    Supplier entity = rpsupplier.Find(model.ID);
+                    entity.CompanyName = model.CompanyName;
+                    entity.Address = model.Address;
+                    entity.Phone = model.Phone;
+                    entity.Email = model.Email;
+                    entity.WebSite = model.WebSite;
+                    entity.CityID = model.CityID;
+                    entity.RegionID = model.RegionID;
 
-                entity.UpdateDate = DateTime.Now;
-                rpsupplier.SaveChanges();
-                ViewBag.IslemDurum = EnumIslemDurum.Basarili;
+                    entity.UpdateDate = DateTime.Now;
+                    rpsupplier.SaveChanges();
+                    ViewBag.IslemDurum = EnumIslemDurum.Basarili;
+                }
             }
             else
             {

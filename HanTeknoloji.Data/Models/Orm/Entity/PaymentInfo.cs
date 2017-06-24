@@ -17,7 +17,9 @@ namespace HanTeknoloji.Data.Models.Orm.Entity
         public string CartNumber { get; set; }
         public DateTime? ExpiryDate { get; set; }
         public string CheckNumber { get; set; }
-
-        public string IMEI { get; set; }
+        public int SupplierID { get; set; }
+        public decimal UnitPrice { get; set; }
+        public decimal UnitSalePrice { get; set; }
+        public int Count { get; set; }
     }
 }

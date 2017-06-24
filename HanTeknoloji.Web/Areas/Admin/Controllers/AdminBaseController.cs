@@ -1,6 +1,7 @@
 ﻿using HanTeknoloji.Business.Manager;
 using HanTeknoloji.Data.Models.Orm.Entity;
 using HanTeknoloji.Web.Areas.Admin.Models.Attributes;
+using HanTeknoloji.Web.Areas.Admin.Models.Types.ReturnTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -90,6 +91,25 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             int id = rptrademark.First().ID;
             return id;
         }
-        
+
+        public JsonResult Success(string message)
+        {
+            JResult jp = new JResult()
+            {
+                IsSuccess = true,
+                Message = message
+            };
+            return Json(jp);
+        }
+        public JsonResult Fail(string message)
+        {
+            JResult jp = new JResult()
+            {
+                IsSuccess = false,
+                Message = message
+            };
+
+            return Json(jp);
+        }
     }
 }

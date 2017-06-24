@@ -1,6 +1,7 @@
 ﻿using HanTeknoloji.Data.Models.Orm.Entity;
 using HanTeknoloji.Web.Areas.Admin.Models.Services;
 using HanTeknoloji.Web.Areas.Admin.Models.Types.Enums;
+using HanTeknoloji.Web.Areas.Admin.Models.Types.Messages;
 using HanTeknoloji.Web.Areas.Admin.Models.VM;
 using System;
 using System.Collections.Generic;
@@ -14,30 +15,26 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
     {
         public ActionResult Index()
         {
-            CartVM model = new CartVM();
-            model.ProductList = new List<ProductVM>();
+            SaleWrapVM model = new SaleWrapVM();
+            model.Cart = new CartVM();
+            model.Customer = new CustomerVM();
+            model.Cart.ProductList = new List<ProductVM>();
             if (Session["Sepet"] != null)
             {
-                model = (CartVM)Session["Sepet"];
+                model.Cart = (CartVM)Session["Sepet"];
             }
             GetCustomers();
+            GetAllCitiesforAdding();
             return View(model);
-        }
-
-        private void GetCustomers()
-        {
-            ViewData["customer"] = rpcustomer.GetAll().Select(x => new SelectListItem
-            {
-                Text = x.Name + " Tel:" + x.Phone,
-                Value = x.ID.ToString()
-            }).ToList();
         }
 
         [HttpPost]
         public ActionResult Index(string BarcodeNumber)
         {
-            CartVM model = new CartVM();
-            model.ProductList = new List<ProductVM>();
+            SaleWrapVM model = new SaleWrapVM();
+            model.Cart = new CartVM();
+            model.Customer = new CustomerVM();
+            model.Cart.ProductList = new List<ProductVM>();
             if (!string.IsNullOrEmpty(BarcodeNumber))
             {
                 var product = rpproduct.FirstOrDefault(x => x.SerialNumber == BarcodeNumber && x.Count != 0);
@@ -52,8 +49,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
 
                         if (Session["Sepet"] != null)
                         {
-                            model = (CartVM)Session["Sepet"];
-                            foreach (var item in model.ProductList)
+                            model.Cart = (CartVM)Session["Sepet"];
+                            foreach (var item in model.Cart.ProductList)
                             {
                                 if (item.SerialNumber == BarcodeNumber)
                                 {
@@ -63,7 +60,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                     item.UnitSalePrice = item.UnitPrice * item.SaleCount;
                                     item.KdvPrice = Math.Round(item.UnitSalePrice * item.KDV, 4);
                                     item.TotalPrice = 0;
-                                    model.TotalSalePrice += item.TotalPrice / item.SaleCount;
+                                    model.Cart.TotalSalePrice += item.TotalPrice / item.SaleCount;
                                     break;
                                 }
                             }
@@ -87,8 +84,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                 PaymentInfoID = rppaymentinfo.GetListWithQuery(x => x.ProductID == product.ID).Last().ID,
                                 KdvPrice = Math.Round((product.UnitSalePrice * product.KDV), 4)
                             };
-                            model.ProductList.Add(pro);
-                            model.TotalSalePrice += pro.TotalPrice;
+                            model.Cart.ProductList.Add(pro);
+                            model.Cart.TotalSalePrice += pro.TotalPrice;
                         }
                         Session["Sepet"] = model;
                     }
@@ -96,7 +93,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     {
                         if (Session["Sepet"] != null)
                         {
-                            model = (CartVM)Session["Sepet"];
+                            model.Cart = (CartVM)Session["Sepet"];
                         }
                         ViewBag.IslemDurum = EnumIslemDurum.StokYetersiz;
                         GetCustomers();
@@ -107,7 +104,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 {
                     if (Session["Sepet"] != null)
                     {
-                        model = (CartVM)Session["Sepet"];
+                        model.Cart = (CartVM)Session["Sepet"];
                     }
                     ViewBag.IslemDurum = EnumIslemDurum.UrunYok;
                     GetCustomers();
@@ -292,6 +289,108 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             }
             ViewBag.IslemDurum = EnumIslemDurum.Basarili;
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public JsonResult AddCustomer(CustomerVM model)
+        {
+            GetAllCitiesforAdding();
+            if (ModelState.IsValid)
+            {
+                bool tcKontrol = false;
+                model.TCNo = model.TCNo == null ? "" : model.TCNo;
+                if (model.TCNo.Length == 11)
+                    tcKontrol = TCNoKontrolu(model.TCNo);
+
+                if (tcKontrol || model.TCNo == "")
+                {
+                    bool isCustomerExist = false;
+                    isCustomerExist = model.TaxNumber != null ? rpcustomer.Any(x => x.TaxNumber == model.TaxNumber) : rpcustomer.Any(x => x.TCNo == model.TCNo);
+                    if (isCustomerExist)
+                    {
+                        return Fail(FormMessages.NameExist);
+                    }
+                    else
+                    {
+                        Customer entity = new Customer
+                        {
+                            Name = model.Name,
+                            Address = model.Address,
+                            CityID = model.CityID,
+                            RegionID = model.RegionID,
+                            TCNo = model.TCNo,
+                            Phone = model.Phone,
+                            TaxNumber = model.TaxNumber,
+                            TaxOffice = model.TaxOffice,
+                            IsPerson = model.IsPerson
+                        };
+                        rpcustomer.Add(entity);
+                        return Success(FormMessages.Success);
+                    }
+                }
+                else
+                {
+                    return Fail(FormMessages.TCNo);
+                }
+            }
+            else
+            {
+                return Fail(FormMessages.ValidationError);
+            }
+        }
+
+        private void GetCustomers()
+        {
+            ViewData["customer"] = rpcustomer.GetAll().Select(x => new SelectListItem
+            {
+                Text = x.Name + " Tel:" + x.Phone,
+                Value = x.ID.ToString()
+            }).ToList();
+        }
+
+        private void GetAllCitiesforAdding()
+        {
+            ViewData["city"] = rpcity.GetAll().Select(x => new SelectListItem()
+            {
+                Value = x.ID.ToString(),
+                Text = x.Name
+            }).ToList();
+            ViewData["region"] = rpregion.GetListWithQuery(x => x.CityID == 1).Select(x => new SelectListItem()
+            {
+                Value = x.ID.ToString(),
+                Text = x.Name
+            }).ToList();
+        }
+
+        private static bool TCNoKontrolu(string TCNo)
+        {
+            int[] TC = new int[11];
+
+            for (int i = 0; i < 11; i++)
+            {
+                string a = TCNo[i].ToString();
+                TC[i] = Convert.ToInt32(a);
+            }
+            int tekler = 0;
+            int ciftler = 0;
+
+            for (int k = 0; k < 9; k++)
+            {
+                if (k % 2 == 0)
+                    tekler += TC[k];
+                else if (k % 2 != 0)
+                    ciftler += TC[k];
+            }
+
+            int t1 = (tekler * 3) + ciftler;
+            int c1 = (10 - (t1 % 10)) % 10;
+            int t2 = c1 + ciftler;
+            int t3 = (t2 * 3) + tekler;
+            int c2 = (10 - (t3 % 10)) % 10;
+            if (c1 == TC[9] && c2 == TC[10])
+                return true;
+            else
+                return false;
         }
     }
 }

@@ -37,5 +37,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         public string Note { get; set; }
 
         public List<SaleDetailsVM> Details { get; set; }
+
+        public decimal UnitBuyPrice { get; set; }
+        public decimal UnitSalePrice { get; set; }
     }
 }

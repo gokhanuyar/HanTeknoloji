@@ -36,9 +36,10 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (rpcolor.Any(x => x.BarcodeValue == model.BarcodeValue))
+                var color = rpcolor.FirstOrDefault(x => x.Name.ToLower() == model.Name.ToLower() || x.BarcodeValue == model.BarcodeValue);
+                if (color != null)
                 {
-                    ViewBag.IslemDurum = EnumIslemDurum.BarkodMevcut;
+                    ViewBag.IslemDurum = color.Name.ToLower() == model.Name.ToLower() ? EnumIslemDurum.IsimMevcut : EnumIslemDurum.BarkodMevcut;
                 }
                 else
                 {
@@ -75,9 +76,10 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (rpcolor.Any(x => x.BarcodeValue == model.BarcodeValue))
+                var color = rpcolor.FirstOrDefault(x => (x.Name.ToLower() == model.Name.ToLower() || x.BarcodeValue == model.BarcodeValue) && x.ID != model.ID);
+                if (color != null)
                 {
-                    ViewBag.IslemDurum = EnumIslemDurum.BarkodMevcut;
+                    ViewBag.IslemDurum = color.Name.ToLower() == model.Name.ToLower() ? EnumIslemDurum.IsimMevcut : EnumIslemDurum.BarkodMevcut;
                 }
                 else
                 {

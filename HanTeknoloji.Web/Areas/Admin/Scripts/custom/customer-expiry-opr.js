@@ -30,6 +30,22 @@ function Pay(id) {
     }
 }
 
+function ExpiryPayment(id) {
+    $("#sale-datails-content").empty();
+    $.ajax({
+        type: "get",
+        url: "/Admin/AdminExpiry/GetSaleDetails/" + id,
+        success: function (result) {
+            $.each(result, function (i, item) {
+                $("#sale-datails-content").append("<tr>" +
+                    "<td>" + item.Quantity + "</td>" +
+                    "<td>" + item.Price.toFixed(2) + " " + "TL</td ></tr > ");
+            });
+            $("#myModal2").modal("show");
+        }
+    })
+}
+
 function Details(id) {
     $("#sale-datails-content").empty();
     $.ajax({
@@ -43,6 +59,29 @@ function Details(id) {
                     "<td>" + item.Price.toFixed(2) + " " + "TL</td ></tr > ");
             });
             $("#myModal2").modal("show");
+        }
+    })
+}
+
+function Payments(id) {
+    $("#expiry-content").empty();
+    $.ajax({
+        type: "get",
+        url: "/Admin/AdminExpiry/GetPayments/" + id,
+        success: function (result) {
+            if (result.length > 0) {
+                $.each(result, function (i, item) {
+                    $("#expiry-content").append("<tr>" +
+                        "<td>" + item.AdminUserName + "</td>" +
+                        "<td>" + item.Date + "</td>" +
+                        "<td>" + item.Hour + "</td>" +
+                        "<td>" + item.Price + " " + "TL</td ></tr > ");
+                });
+                $("#myModal3").modal("show");
+            }
+            else {
+                swal("Uyarı", "Ödeme geçmişi bulunmamaktadır.", "warning");
+            }
         }
     })
 }

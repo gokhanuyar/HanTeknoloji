@@ -76,7 +76,6 @@ $(".btn-primary").click(function () {
     var date = $("#ExpiryDate").val();
     var datetimeNow = $.format.date(new Date($.now()), "yyyy-MM-dd");
     if (payment == "Vadeli" && date == "" || payment == "Çek" && date == "") {
-        alert("1")
         swal("Uyarı", "Vadeli alımlarda vade tarihini girmelisiniz.", "warning");
     }
     else if ((payment == "Vadeli" || payment == "Çek") && new Date(datetimeNow) > new Date(date)) {

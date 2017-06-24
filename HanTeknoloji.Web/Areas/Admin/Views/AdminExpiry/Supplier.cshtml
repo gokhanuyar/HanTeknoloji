@@ -42,26 +42,27 @@
     <div class="col-lg-10">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Vadeli İşlemler - @Model.SupplierName
+                <div class="row">
+                    <div class="col-lg-6">
+                        Vadeli İşlemler - @Model.SupplierName
+                        <h4>Ödenen Miktar : @Model.PaidExpiryValue TL</h4>
+                        <h4>Kalan Borç : <span id="expiry-value">@Model.TotalExpiryValue</span> TL</h4>
+                    </div>
+                    <div class="col-lg-6">
+                        @if (Model.ExpiryResultList.Count != 0)
+                        {
+                            <button style="float:right;margin-left:5px;" class="btn btn-warning btn-sm" onclick="Payments(@Model.SupplierID)">Ödeme Geçmişi</button>
+                            <button style="float:right;" onclick="SetButton(@Model.SupplierID)" data-toggle="modal" data-target="#myModal" class="btn btn-primary btn-sm">Tahsil Et</button>
+                        }
+                    </div>
+                </div>
             </div>
-            <!-- /.panel-heading -->
             <div class="panel-body">
                 <div class="table-responsive">
                     @Html.Partial("Partial/ResultList", Model.ExpiryResultList)
                 </div>
-                @if (Model.ExpiryResultList.Count != 0)
-                {
-                    <button style="float:right;margin-left:20px;" onclick="SetButton(@Model.SupplierID)" data-toggle="modal" data-target="#myModal" class="btn btn-primary btn-sm">Tahsil Et</button>
-                }
-
-                <h4 style="float:right;margin-left:20px">Toplam Borç : <span id="expiry-value">@Model.TotalExpiryValue</span> TL</h4>
-                <h4 style="float:right">Ödenen Miktar : @Model.PaidExpiryValue TL</h4>
-
-                <!-- /.table-responsive -->
             </div>
-            <!-- /.panel-body -->
         </div>
-        <!-- /.panel -->
     </div>
 </div>
 

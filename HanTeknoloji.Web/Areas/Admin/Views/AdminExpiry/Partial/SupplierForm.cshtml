@@ -2,13 +2,13 @@
 @model List<SupplierExpiryVM>
 
 <div class="form-group">
-    <label>Tedarikçi :</label>
-    <input list="suppliers" name="name" class="form-control" id="input-val">
-    <datalist id="suppliers">
+    <label>Müşteri :</label>
+    <select id="single" class="form-control select2" name="id">
         @foreach (var item in Model)
-        {
-            <option value="#@item.SupplierID @item.Name @item.Phone"></option>
+            {
+            <option value="@item.SupplierID">@item.Name @item.Phone</option>
         }
-    </datalist>
+    </select>
 </div>
+
 <button class="btn btn-success" type="submit">Bul</button>

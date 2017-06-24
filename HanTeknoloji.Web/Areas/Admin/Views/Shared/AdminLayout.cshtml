@@ -16,6 +16,7 @@
     <link href="/Areas/Admin/Content/dist/css/sb-admin-2.css" rel="stylesheet">
     <!-- Custom Fonts -->
     <link href="/Areas/Admin/Content/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Areas/Admin/Content/select2.min.css" rel="stylesheet" />
     <link href="~/Areas/Admin/Content/sweetalert.css" rel="stylesheet" />
     <link href="~/Areas/Admin/Content/custom/validation.css" rel="stylesheet" />
     @RenderSection("css", false)
@@ -220,7 +221,13 @@
     <script src="/Areas/Admin/Content/vendor/metisMenu/metisMenu.min.js"></script>
     <!-- Custom Theme JavaScript -->
     <script src="/Areas/Admin/Content/dist/js/sb-admin-2.js"></script>
+    <script src="~/Areas/Admin/Scripts/select2.full.min.js"></script>
     <script src="~/Areas/Admin/Scripts/sweetalert.min.js"></script>
     @RenderSection("scripts", false)
+    <script>
+        $(document).ready(function () {
+            $(".select2").select2();
+        });
+    </script>
 </body>
 </html>

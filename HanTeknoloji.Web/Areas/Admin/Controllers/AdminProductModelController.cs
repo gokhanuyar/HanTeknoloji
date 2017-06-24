@@ -84,15 +84,22 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                ProductModel entity = new ProductModel
+                var promodel = rpproductmodel.FirstOrDefault(x => x.Name.ToLower() == model.Name.ToLower() || x.BarcodeValue == model.BarcodeValue);
+                if (promodel != null)
                 {
-                    Name = model.Name,
-                    TradeMarkID = model.TradeMarkID,
-                    BarcodeValue = model.BarcodeValue
-                };
-                rpproductmodel.Add(entity);
-                ViewBag.IslemDurum = EnumIslemDurum.Basarili;
-
+                    ViewBag.IslemDurum = promodel.Name.ToLower() == model.Name.ToLower() ? EnumIslemDurum.IsimMevcut : EnumIslemDurum.BarkodMevcut;
+                }
+                else
+                {
+                    ProductModel entity = new ProductModel
+                    {
+                        Name = model.Name,
+                        TradeMarkID = model.TradeMarkID,
+                        BarcodeValue = model.BarcodeValue
+                    };
+                    rpproductmodel.Add(entity);
+                    ViewBag.IslemDurum = EnumIslemDurum.Basarili;
+                }
             }
             else
             {
@@ -121,6 +128,11 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                var promodel = rpproductmodel.FirstOrDefault(x => (x.Name.ToLower() == model.Name.ToLower() || x.BarcodeValue == model.BarcodeValue) && x.ID != model.ID);
+                if (promodel != null)
+                {
+                    ViewBag.IslemDurum = promodel.Name.ToLower() == model.Name.ToLower() ? EnumIslemDurum.IsimMevcut : EnumIslemDurum.BarkodMevcut;
+                }
                 ProductModel entity = rpproductmodel.Find(model.ID);
                 entity.Name = model.Name;
                 entity.TradeMarkID = model.TradeMarkID;

@@ -49,3 +49,9 @@ else if (ViewBag.IslemDurum == EnumIslemDurum.YanlısTCNo)
         @FormMessages.TCNo
     </div>
 }
+else if (ViewBag.IslemDurum == EnumIslemDurum.IsimMevcut)
+{
+    <div class="alert alert-danger">
+        @FormMessages.NameExist
+    </div>
+}

@@ -19,17 +19,16 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult Customer(string name)
+        public ActionResult Customer(int id)
         {
-            int customerId = Convert.ToInt32(name.Split(' ')[0].Replace("#", ""));
-            var customer = rpcustomer.Find(customerId);
+            var customer = rpcustomer.Find(id);
             CustomerExpiryWrapVM model = new CustomerExpiryWrapVM();
             model.CustomerList = Customers();
             model.ExpiryResultList = new List<ExpiryResultVM>();
             if (customer != null)
             {
                 model.ExpiryResultList = rpcustomerexpiry
-                                .GetListWithQuery(x => x.CustomerID == customerId)
+                                .GetListWithQuery(x => x.CustomerID == id)
                                 .OrderBy(x => x.ExpiryDate)
                                 .Select(x => new ExpiryResultVM
                                 {
@@ -58,17 +57,16 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult Supplier(string name)
+        public ActionResult Supplier(int id)
         {
-            int supplierId = Convert.ToInt32(name.Split(' ')[0].Replace("#", ""));
-            var supplier = rpsupplier.Find(supplierId);
+            var supplier = rpsupplier.Find(id);
             SupplierExpiryWrapVM model = new SupplierExpiryWrapVM();
             model.SupplierList = Suppliers();
             model.ExpiryResultList = new List<ExpiryResultVM>();
             if (supplier != null)
             {
                 model.ExpiryResultList = rpsupplierexpiry
-                                .GetListWithQuery(x => x.SupplierID == supplierId)
+                                .GetListWithQuery(x => x.SupplierID == id)
                                 .OrderBy(x => x.ExpiryDate)
                                 .Select(x => new ExpiryResultVM
                                 {
@@ -159,7 +157,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             var expiryPayment = new ExpiryPayment
             {
                 Price = model.Price,
-                PersonID = model.ID
+                PersonID = model.ID,
+                AdminUserID = UserID()
             };
             rpexpirypayment.Add(expiryPayment);
             //string postValue = "#" + customer.ID + " " + customer.Name + " " + customer.Phone;
@@ -175,11 +174,27 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             var expiryPayment = new ExpiryPayment
             {
                 Price = model.Price,
-                PersonID = model.ID
+                PersonID = model.ID,
+                AdminUserID = UserID()
             };
             rpexpirypayment.Add(expiryPayment);
             //string postValue = "#" + supplier.ID + " " + supplier.CompanyName + " " + supplier.Phone;
             return Json("", JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetPayments(int id)
+        {
+            var list = rpexpirypayment
+                .GetListWithQuery(x => x.PersonID == id)
+                .OrderByDescending(x => x.AddDate)
+                .Select(x => new ExpiryPaymentVM
+                {
+                    Date = x.AddDate.ToLongDateString(),
+                    Price = x.Price,
+                    AdminUserName = rpadminuser.Find(x.AdminUserID).FullName,
+                    Hour = String.Format("{0:HH:mm}", x.AddDate)
+                }).ToList();
+            return Json(list, JsonRequestBehavior.AllowGet);
         }
     }
 }

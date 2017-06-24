@@ -38,6 +38,7 @@ namespace HanTeknoloji.Data.Models.Orm.Context
         public DbSet<Customer> Customer { get; set; }
         public DbSet<CustomerExpiry> CustomerExpiry { get; set; }
         public DbSet<SupplierExpiry> SupplierExpiry { get; set; }
+        public DbSet<ExpiryPayment> ExpiryPayment { get; set; }
         public DbSet<PaymentInfo> PaymentInfo { get; set; }
     }
 }

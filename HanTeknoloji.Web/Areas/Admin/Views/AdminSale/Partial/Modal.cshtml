@@ -40,9 +40,9 @@
                                 </select>
                             </div>
 
-                            <div class="form-group display-input display-input-customer" style="display:grid;display:none">
+                            <div class="form-group">
                                 <h4 id="payment-title">Müşteri :</h4>
-                                @Html.DropDownList("CustomerID", (IList<SelectListItem>)ViewData["customer"], "Müşteri Seçiniz", new { @class = "form-control" })
+                                @Html.DropDownList("CustomerID", (IList<SelectListItem>)ViewData["customer"], "Müşteri Seçiniz", new { @class = "form-control select2" })
                             </div>
 
                             <div class="form-group display-input optional" style="display:grid;display:none">
@@ -56,6 +56,42 @@
                             <button class="btn btn-success float-right" type="button" id="sale-button">Satışı Bitir</button>
                         </div>
                     }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="customerModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Müşteri Ekleme Formu</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div id="response"></div>
+                                    @using (Ajax.BeginForm("AddCustomer", "AdminSale", new AjaxOptions()
+                                    {
+                                        HttpMethod = "post",
+                                        OnSuccess = "SuccessFunction"
+                                    }))
+                                    {
+                                        @Html.Partial("../AdminCustomer/Partial/CustomerForm")
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">

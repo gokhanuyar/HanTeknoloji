@@ -10,7 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 
 namespace HanTeknoloji.Web.Areas.Admin.Controllers
-{    
+{
     [RolControl(EnumRoles.Manager)]
     public class AdminCategoryController : AdminBaseController
     {
@@ -50,13 +50,19 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                Category entity = new Category
+                if (rpcategory.Any(x => x.CategoryName.ToLower() == model.CategoryName.ToLower()))
                 {
-                    CategoryName = model.CategoryName
-                };
-                rpcategory.Add(entity);
-                ViewBag.IslemDurum = EnumIslemDurum.Basarili;
-
+                    ViewBag.IslemDurum = EnumIslemDurum.IsimMevcut;
+                }
+                else
+                {
+                    Category entity = new Category
+                    {
+                        CategoryName = model.CategoryName
+                    };
+                    rpcategory.Add(entity);
+                    ViewBag.IslemDurum = EnumIslemDurum.Basarili;
+                }
             }
             else
             {
@@ -81,6 +87,10 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (rpcategory.Any(x => x.CategoryName.ToLower() == model.CategoryName.ToLower() && x.ID != model.ID))
+                {
+                    ViewBag.IslemDurum = EnumIslemDurum.IsimMevcut;
+                }
                 Category entity = rpcategory.Find(model.ID);
                 entity.CategoryName = model.CategoryName;
                 entity.UpdateDate = DateTime.Now;

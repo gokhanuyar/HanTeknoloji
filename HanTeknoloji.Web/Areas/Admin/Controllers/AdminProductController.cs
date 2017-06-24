@@ -174,7 +174,9 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 CheckNumber = model.CheckNumber,
                 ExpiryDate = model.ExpiryDate == null ? DateTime.Now : Convert.ToDateTime(model.ExpiryDate),
                 ProductID = id,
-                IMEI = model.IMEI
+                UnitPrice = model.UnitPrice,
+                UnitSalePrice = model.UnitSalePrice,
+                Count = model.Count
             };
             rppaymentinfo.Add(paymentInfo);
             if (model.Payment == "Vadeli")
@@ -219,7 +221,6 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 BankName = paymentInfo.BankName,
                 BankCartName = paymentInfo.BankCartName,
                 CartNumber = paymentInfo.CartNumber,
-                IMEI = paymentInfo.IMEI,
                 CheckNumber = paymentInfo.CheckNumber,
                 ExpiryDate = string.Format("{0:yyyy-MM-dd}", paymentInfo.ExpiryDate)
             };
@@ -247,13 +248,16 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 rpproduct.SaveChanges();
 
                 var paymentInfo = rppaymentinfo.FirstOrDefault(x => x.ProductID == entity.ID);
-                paymentInfo.IMEI = model.IMEI;
                 paymentInfo.Payment = model.Payment;
                 paymentInfo.BankName = model.BankName;
                 paymentInfo.BankCartName = model.BankCartName;
                 paymentInfo.CartNumber = model.CartNumber;
                 paymentInfo.CheckNumber = model.CheckNumber;
                 paymentInfo.ExpiryDate = Convert.ToDateTime(model.ExpiryDate);
+                paymentInfo.UnitPrice = model.UnitPrice;
+                paymentInfo.UnitSalePrice = model.UnitSalePrice;
+                paymentInfo.Count = model.Count;
+                paymentInfo.UpdateDate = DateTime.Now;
                 rppaymentinfo.SaveChanges();
                 ViewBag.IslemDurum = EnumIslemDurum.Basarili;
             }

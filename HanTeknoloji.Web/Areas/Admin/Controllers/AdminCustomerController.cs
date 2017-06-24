@@ -94,23 +94,29 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 if (model.TCNo.Length == 11)
                     tcKontrol = TCNoKontrolu(model.TCNo);
 
-
                 if (tcKontrol || model.TCNo == "")
                 {
-                    Customer entity = new Customer
+                    if (rpcustomer.Any(x => x.TCNo == model.TCNo || x.TaxNumber == model.TaxNumber))
                     {
-                        Name = model.Name,
-                        Address = model.Address,
-                        CityID = model.CityID,
-                        RegionID = model.RegionID,
-                        TCNo = model.TCNo,
-                        Phone = model.Phone,
-                        TaxNumber = model.TaxNumber,
-                        TaxOffice = model.TaxOffice,
-                        IsPerson = model.IsPerson
-                    };
-                    rpcustomer.Add(entity);
-                    ViewBag.IslemDurum = EnumIslemDurum.Basarili;
+                        ViewBag.IslemDurum = EnumIslemDurum.IsimMevcut;
+                    }
+                    else
+                    {
+                        Customer entity = new Customer
+                        {
+                            Name = model.Name,
+                            Address = model.Address,
+                            CityID = model.CityID,
+                            RegionID = model.RegionID,
+                            TCNo = model.TCNo,
+                            Phone = model.Phone,
+                            TaxNumber = model.TaxNumber,
+                            TaxOffice = model.TaxOffice,
+                            IsPerson = model.IsPerson
+                        };
+                        rpcustomer.Add(entity);
+                        ViewBag.IslemDurum = EnumIslemDurum.Basarili;
+                    }
                 }
                 else
                 {
@@ -155,20 +161,27 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     tcKontrol = TCNoKontrolu(model.TCNo);
                 if (tcKontrol || model.TCNo == "")
                 {
-                    Customer entity = rpcustomer.Find(model.ID);
-                    entity.Name = model.Name;
-                    entity.Address = model.Address;
-                    entity.CityID = model.CityID;
-                    entity.RegionID = model.RegionID;
-                    entity.TCNo = model.TCNo;
-                    entity.Phone = model.Phone;
-                    entity.TaxNumber = model.TaxNumber;
-                    entity.TaxOffice = model.TaxOffice;
-                    entity.UpdateDate = DateTime.Now;
-                    entity.IsPerson = model.IsPerson;
+                    if (rpcustomer.Any(x => (x.TCNo == model.TCNo || x.TaxNumber == model.TaxNumber) && x.ID != model.ID))
+                    {
+                        ViewBag.IslemDurum = EnumIslemDurum.IsimMevcut;
+                    }
+                    else
+                    {
+                        Customer entity = rpcustomer.Find(model.ID);
+                        entity.Name = model.Name;
+                        entity.Address = model.Address;
+                        entity.CityID = model.CityID;
+                        entity.RegionID = model.RegionID;
+                        entity.TCNo = model.TCNo;
+                        entity.Phone = model.Phone;
+                        entity.TaxNumber = model.TaxNumber;
+                        entity.TaxOffice = model.TaxOffice;
+                        entity.UpdateDate = DateTime.Now;
+                        entity.IsPerson = model.IsPerson;
 
-                    rpcustomer.SaveChanges();
-                    ViewBag.IslemDurum = EnumIslemDurum.Basarili;
+                        rpcustomer.SaveChanges();
+                        ViewBag.IslemDurum = EnumIslemDurum.Basarili;
+                    }
                 }
                 else
                 {
@@ -199,7 +212,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             return Json(list, JsonRequestBehavior.AllowGet);
         }
 
-        public static bool TCNoKontrolu(string TCNo)
+        private static bool TCNoKontrolu(string TCNo)
         {
             int[] TC = new int[11];
 

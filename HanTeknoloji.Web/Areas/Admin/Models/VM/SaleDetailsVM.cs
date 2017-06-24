@@ -18,5 +18,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         public DateTime AddDate { get; set; }
 
         public ProductVM Product { get; set; }
+
+        public decimal UnitBuyPrice { get; set; }
+        public decimal UnitSalePrice { get; set; }
     }
 }

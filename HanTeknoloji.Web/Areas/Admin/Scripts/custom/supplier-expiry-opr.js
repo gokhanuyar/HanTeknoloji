@@ -44,3 +44,26 @@ function Details(id) {
         }
     })
 }
+
+function Payments(id) {
+    $("#expiry-content").empty();
+    $.ajax({
+        type: "get",
+        url: "/Admin/AdminExpiry/GetPayments/" + id,
+        success: function (result) {
+            if (result.length > 0) {
+                $.each(result, function (i, item) {
+                    $("#expiry-content").append("<tr>" +
+                        "<td>" + item.AdminUserName + "</td>" +
+                        "<td>" + item.Date + "</td>" +
+                        "<td>" + item.Hour + "</td>" +
+                        "<td>" + item.Price + " " + "TL</td ></tr > ");
+                });
+                $("#myModal3").modal("show");
+            }
+            else {
+                swal("Uyarı", "Ödeme geçmişi bulunmamaktadır.", "warning");
+            }
+        }
+    })
+}

@@ -161,6 +161,8 @@
     <Content Include="Areas\Admin\Content\favicon.png" />
     <Content Include="Areas\Admin\Content\hantek.jpg" />
     <Content Include="Areas\Admin\Content\invoice.jpg" />
+    <Content Include="Areas\Admin\Content\select2-bootstrap.min.css" />
+    <Content Include="Areas\Admin\Content\select2.min.css" />
     <Content Include="Areas\Admin\Content\sweetalert.css" />
     <Content Include="Areas\Admin\Content\vendor\bootstrap-social\bootstrap-social.css" />
     <Content Include="Areas\Admin\Content\vendor\bootstrap\css\bootstrap.css" />
@@ -267,6 +269,7 @@
     <Content Include="Areas\Admin\Scripts\custom\product-list.js" />
     <Content Include="Areas\Admin\Scripts\custom\supplier-expiry-opr.js" />
     <Content Include="Areas\Admin\Scripts\printer.js" />
+    <Content Include="Areas\Admin\Scripts\select2.full.min.js" />
     <Content Include="Areas\Admin\Scripts\sweetalert.min.js" />
     <Content Include="Content\Gridmvc.css" />
     <Content Include="Content\PagedList.css" />
@@ -377,6 +380,7 @@
     <Content Include="Areas\Admin\Views\AdminProduct\Partial\Modal.cshtml" />
     <Content Include="Areas\Admin\Views\AdminProduct\AddWithBarcode.cshtml" />
     <Content Include="Areas\Admin\Views\AdminProduct\Partial\BarcodeForm.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminReport\SupplierReport.cshtml" />
     <None Include="Properties\PublishProfiles\gokhan.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\dateFormat.min.js" />
@@ -387,6 +391,13 @@
     <Content Include="Scripts\jquery-3.1.1.min.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\js\sb-admin-2.js" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -417,7 +428,7 @@
     <Compile Include="Areas\Admin\Models\Services\ExpiryService.cs" />
     <Compile Include="Areas\Admin\Models\Types\Enums\EnumIslemDurum.cs" />
     <Compile Include="Areas\Admin\Models\Types\Messages\FormMessages.cs" />
-    <Compile Include="Areas\Admin\Models\Types\ReturnTypes\Jresult.cs" />
+    <Compile Include="Areas\Admin\Models\Types\ReturnTypes\JResult.cs" />
     <Compile Include="Areas\Admin\Models\VM\AdminUserVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\BarCodeVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\BaseVM.cs" />
@@ -428,6 +439,7 @@
     <Compile Include="Areas\Admin\Models\VM\CustomerExpiryWrapVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\CustomerVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\CustomerExpiryVM.cs" />
+    <Compile Include="Areas\Admin\Models\VM\ExpiryPaymentVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\ExpiryResultVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\InvoiceVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\LoginVM.cs" />
@@ -438,6 +450,7 @@
     <Compile Include="Areas\Admin\Models\VM\ReportVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\SaleDetailsVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\SaleVM.cs" />
+    <Compile Include="Areas\Admin\Models\VM\SaleWrapVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\ServiceSaleVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\SupplierExpiryVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\SupplierExpiryWrapVM.cs" />
