@@ -78,17 +78,10 @@
 @Html.Partial("Partial/Modal", Model.Customer)
 
 @section scripts{
-    <script src="~/Scripts/dateFormat.min.js"></script>
     <script src="~/Scripts/jquery.validate.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/Areas/Admin/Scripts/custom/region.js"></script>
+    <script src="~/Scripts/dateFormat.min.js"></script>
     <script src="~/Areas/Admin/Scripts/custom/sale-operations.js"></script>
-<script>
-        function SuccessFunction(result) {
-            console.log(result)
-            $("#response").html(result.Message);
-            $("#response").attr("class", result.CssClass);
-        }
-</script>
 }

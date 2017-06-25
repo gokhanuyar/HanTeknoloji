@@ -35,6 +35,12 @@ namespace HanTeknoloji.Business.Manager
             }
         }
 
+        public void AddRange(List<T> list)
+        {
+            _dbcontext.AddRange(list);
+            SaveChanges();
+        }
+
         public List<T> GetAll()
         {
             return _dbcontext.Where(x => x.IsDeleted == false).ToList();

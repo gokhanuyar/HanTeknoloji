@@ -1,4 +1,5 @@
 ﻿using HanTeknoloji.Data.Models.Orm.Entity;
+using HanTeknoloji.Web.Areas.Admin.Models.Dto;
 using HanTeknoloji.Web.Areas.Admin.Models.Services;
 using HanTeknoloji.Web.Areas.Admin.Models.Types.Enums;
 using HanTeknoloji.Web.Areas.Admin.Models.Types.Messages;
@@ -31,6 +32,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Index(string BarcodeNumber)
         {
+            GetCustomers();
+            GetAllCitiesforAdding();
             SaleWrapVM model = new SaleWrapVM();
             model.Cart = new CartVM();
             model.Customer = new CustomerVM();
@@ -81,13 +84,13 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                 Count = product.Count,
                                 SaleCount = 1,
                                 KDV = product.KDV,
-                                PaymentInfoID = rppaymentinfo.GetListWithQuery(x => x.ProductID == product.ID).Last().ID,
                                 KdvPrice = Math.Round((product.UnitSalePrice * product.KDV), 4)
                             };
+
                             model.Cart.ProductList.Add(pro);
                             model.Cart.TotalSalePrice += pro.TotalPrice;
                         }
-                        Session["Sepet"] = model;
+                        Session["Sepet"] = model.Cart;
                     }
                     else
                     {
@@ -96,7 +99,6 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                             model.Cart = (CartVM)Session["Sepet"];
                         }
                         ViewBag.IslemDurum = EnumIslemDurum.StokYetersiz;
-                        GetCustomers();
                         return View(model);
                     }
                 }
@@ -107,11 +109,9 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                         model.Cart = (CartVM)Session["Sepet"];
                     }
                     ViewBag.IslemDurum = EnumIslemDurum.UrunYok;
-                    GetCustomers();
                     return View(model);
                 }
             }
-            GetCustomers();
             return View(model);
         }
 
@@ -205,13 +205,14 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                         Price = Math.Round(item.UnitSalePrice, 2),
                         AddDate = DateTime.Now,
                         UnitBuyPrice = item.UnitBuyPrice,
-                        UnitSalePrice = item.UnitSalePrice,
-                        PaymentInfoID = item.PaymentInfoID
+                        UnitSalePrice = item.UnitPrice,
                     };
                     list.Add(detail);
                 }
                 sale.SaleDetails = list;
                 rpsale.Add(sale);
+                SetPaymentInfoforAdding(sale.SaleDetails);
+
                 if (model.PaymentType == "Vadeli")
                 {
                     CustomerExpiry expiry = new CustomerExpiry()
@@ -391,6 +392,93 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 return true;
             else
                 return false;
+        }
+
+        private List<int> SetPaymentInfo(int productId)
+        {
+            List<int> list = new List<int>();
+            var paymentInfo = rppaymentinfo.FirstOrDefault(x => x.ProductID == productId && x.Count != 0);
+            paymentInfo.Count -= 1;
+            rppaymentinfo.SaveChanges();
+            list.Add(paymentInfo.ID);
+            return list;
+        }
+
+        private void SetPaymentInfoforAdding(List<SaleDetails> details)
+        {
+            foreach (var detail in details)
+            {
+                List<PaymentInfoDto> list = new List<PaymentInfoDto>();
+                int infoCount = 0;
+                int fark = 0;
+                int quantity = detail.Quantity;
+                while (fark >= infoCount)
+                {
+                    PaymentInfoDto dto = new PaymentInfoDto();
+                    var paymentInfo = rppaymentinfo
+                    .FirstOrDefault(x => x.ProductID == detail.ProductID && x.Count != 0);
+                    //if (selectedItem.PaymentInfoIDs.Contains(paymentInfo.ID))
+                    //{
+                    //    paymentInfo.Count = paymentInfo.Count + selectedItem.SaleCount;
+                    //}
+                    infoCount = paymentInfo.Count;
+                    if (infoCount >= quantity)
+                    {
+                        paymentInfo.Count -= quantity;
+                        rppaymentinfo.SaveChanges();
+                        dto.PaymentInfoID = paymentInfo.ID;
+                        dto.Quantity = quantity;
+                        list = GetPaymentInfoIdList(list, dto);
+                    }
+                    else
+                    {
+                        fark = quantity - infoCount;
+                        int islemSayisi = quantity - fark;
+                        quantity -= islemSayisi;
+                        paymentInfo.Count -= islemSayisi;
+                        infoCount = paymentInfo.Count;
+                        rppaymentinfo.SaveChanges();
+                        dto.PaymentInfoID = paymentInfo.ID;
+                        dto.Quantity = islemSayisi;
+                        list = GetPaymentInfoIdList(list, dto);
+                    }
+                }
+                AddSaleDetailInfo(detail, list);
+            }
+        }
+
+        private void AddSaleDetailInfo(SaleDetails detail, List<PaymentInfoDto> list)
+        {
+            List<SaleDetailInfo> infoList = new List<SaleDetailInfo>();
+            foreach (var item in list)
+            {
+                var entity = new SaleDetailInfo
+                {
+                    PaymentInfoID = item.PaymentInfoID,
+                    SaleDetailID = detail.ID,
+                    AddDate = DateTime.Now,
+                    Quantity = item.Quantity
+                };
+                infoList.Add(entity);
+            }
+            rpsaledetailinfo.AddRange(infoList);
+        }
+
+        private List<PaymentInfoDto> GetPaymentInfoIdList(List<PaymentInfoDto> list, PaymentInfoDto dto)
+        {
+            bool varMi = list.Count == 0 ? true : false;
+            foreach (var item in list)
+            {
+                if (item.PaymentInfoID != dto.PaymentInfoID)
+                {
+                    varMi = true;
+                }
+            }
+            if (varMi)
+            {
+                list.Add(dto);
+            }
+            return list;
         }
     }
 }

@@ -24,7 +24,5 @@ namespace HanTeknoloji.Data.Models.Orm.Entity
         public decimal UnitBuyPrice { get; set; }
 
         public decimal UnitSalePrice { get; set; }
-
-        public int PaymentInfoID { get; set; }
     }
 }

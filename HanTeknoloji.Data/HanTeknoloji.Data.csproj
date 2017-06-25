@@ -61,6 +61,7 @@
     <Compile Include="Models\Orm\Entity\Category.cs" />
     <Compile Include="Models\Orm\Entity\AdminUser.cs" />
     <Compile Include="Models\Orm\Entity\City.cs" />
+    <Compile Include="Models\Orm\Entity\SaleDetailInfo.cs" />
     <Compile Include="Models\Orm\Entity\Color.cs" />
     <Compile Include="Models\Orm\Entity\Customer.cs" />
     <Compile Include="Models\Orm\Entity\CustomerExpiry.cs" />

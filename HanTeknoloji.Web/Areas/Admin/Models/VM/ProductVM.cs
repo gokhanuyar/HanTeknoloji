@@ -60,7 +60,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         public int SaleCount { get; set; }
         public decimal UnitBuyPrice { get; set; }
 
-        public int PaymentInfoID { get; set; }
+        public List<int> PaymentInfoIDs { get; set; }
         public string BankName { get; set; }
         public string BankCartName { get; set; }
         public string CartNumber { get; set; }

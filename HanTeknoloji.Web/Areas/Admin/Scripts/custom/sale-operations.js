@@ -84,7 +84,7 @@ $("#sale-button").click(function () {
     var datetimeNow = $.format.date(new Date($.now()), "yyyy-MM-dd");
     var expiryValue = $("input[name='PaidExpiryValue']").val();
     var price = $("#price-control").text().replace(",", ".");
-    console.log(expiryValue)
+    
     if (customer == "" && invoice == 1) {
         sweetAlert("Uyarı", "Faturalı satışlar için müşteri seçmek zorundasınız !", "warning");
     }
@@ -154,4 +154,9 @@ $("select[name='PaymentType']").change(function () {
             $(".display-input-customer").fadeOut();
         }
     }
-})
+});
+
+function SuccessFunction(result) {
+    $("#response").html(result.Message);
+    $("#response").attr("class", result.CssClass);
+}
