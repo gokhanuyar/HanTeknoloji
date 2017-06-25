@@ -20,7 +20,7 @@
             <form method="post" id="form_date">
                 <input name="date" id="date" type="date" class="form-control" />
             </form>
-            
+
         </div>
     </div>
     <div class="col-lg-3">
@@ -39,14 +39,14 @@
         <h5>Alış Birim Fiyat Toplamı</h5>
         <h5>Toplam KDV</h5>
         <h5>Satış Fiyat Toplamı</h5>
-        <h5>Brüt Kar</h5>        
+        <h5>Brüt Kar</h5>
     </div>
     <div class="col-lg-6">
         <h5>: @ViewBag.quantity</h5>
-        <h5>: @ViewBag.unitprice TL</h5>
+        <h5>: @Math.Round(ViewBag.unitprice, 2) TL</h5>
         <h5>: @ViewBag.kdv TL</h5>
         <h5>: @ViewBag.saleprice TL</h5>
-        <h5>: @ViewBag.brut TL</h5>
+        <h5>: @Math.Round(ViewBag.brut, 2) TL</h5>
     </div>
 </div>
 
@@ -84,7 +84,7 @@
                                     <td>@sayi</td>
                                     <td>@item.Product.TradeMark</td>
                                     <td>@item.Product.ProductModel</td>
-                                    <td>@item.UnitBuyPrice</td>
+                                    <td>@Math.Round(item.UnitBuyPrice, 2)</td>
                                     <td>@item.UnitSalePrice</td>
                                     <td>@item.Quantity</td>
                                     <td>@item.KdvPrice</td>

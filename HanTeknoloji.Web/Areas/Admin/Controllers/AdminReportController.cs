@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using PagedList;
 using HanTeknoloji.Data.Models.Orm.Entity;
 using HanTeknoloji.Web.Areas.Admin.Models.Attributes;
+using HanTeknoloji.Web.Areas.Admin.Models.Dto;
 
 namespace HanTeknoloji.Web.Areas.Admin.Controllers
 {
@@ -70,12 +71,13 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             .GetListWithQuery(d => d.SaleID == l.ID)
             .Select(d => new SaleDetailsVM
             {
+                ID = d.ID,
                 AddDate = d.AddDate,
                 KdvPrice = d.KdvPrice,
                 Price = d.Price,
                 ProductID = d.ProductID,
                 Quantity = d.Quantity,
-                UnitBuyPrice = d.UnitBuyPrice,
+                //UnitBuyPrice = d.UnitBuyPrice,
                 UnitSalePrice = d.UnitSalePrice
             }).ToList());
 
@@ -84,6 +86,12 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 TradeMark = rptrademark.Find(p.TradeMarkID).Name,
                 ProductModel = rpproductmodel.Find(p.ProductModelID).Name
             }).FirstOrDefault()));
+
+            list.ForEach(l => l.Details.ForEach(d => d.InfoList = rpsaledetailinfo.GetListWithQuery(i => i.SaleDetailID == d.ID).Select(i => new SaleDetailsInfoDto
+            {
+                Quantity = i.Quantity,
+                UnitBuyPrice = rppaymentinfo.Find(i.PaymentInfoID).UnitPrice
+            }).ToList()));
 
             list.ForEach(l => l.AdminUserName = rpadminuser.Find(l.UserID).FullName);
             List<ReportVM> model = new List<ReportVM>();
@@ -101,7 +109,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                         SaleDate = sale.SaleDate,
                         SaleTime = sale.SaleTime,
                         PaymentType = sale.PaymentType,
-                        UnitBuyPrice = detail.UnitBuyPrice,
+                        UnitBuyPrice = detail.InfoList.Sum(x => x.UnitBuyPrice * x.Quantity) / detail.InfoList.Sum(x => x.Quantity),
                         UnitSalePrice = detail.UnitSalePrice
                     };
                     model.Add(vm);
@@ -179,7 +187,6 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 Price = d.Price,
                 ProductID = d.ProductID,
                 Quantity = d.Quantity,
-                UnitBuyPrice = d.UnitBuyPrice,
                 UnitSalePrice = d.UnitSalePrice
             }).ToList());
 
@@ -188,6 +195,12 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 TradeMark = rptrademark.Find(p.TradeMarkID).Name,
                 ProductModel = rpproductmodel.Find(p.ProductModelID).Name
             }).FirstOrDefault()));
+
+            list.ForEach(l => l.Details.ForEach(d => d.InfoList = rpsaledetailinfo.GetListWithQuery(i => i.SaleDetailID == d.ID).Select(i => new SaleDetailsInfoDto
+            {
+                Quantity = i.Quantity,
+                UnitBuyPrice = rppaymentinfo.Find(i.PaymentInfoID).UnitPrice
+            }).ToList()));
 
             list.ForEach(l => l.AdminUserName = rpadminuser.Find(l.UserID).FullName);
             List<ReportVM> model = new List<ReportVM>();
@@ -206,7 +219,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                         InvoiceDate = sale.InvoiceDate,
                         CustomerID = sale.CustomerID,
                         PaymentType = sale.PaymentType,
-                        UnitBuyPrice = detail.UnitBuyPrice,
+                        UnitBuyPrice = detail.InfoList.Sum(x => x.UnitBuyPrice * x.Quantity) / detail.InfoList.Sum(x => x.Quantity),
                         UnitSalePrice = detail.UnitSalePrice
                     };
                     model.Add(vm);
@@ -392,8 +405,23 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             }).ToList();
         }
 
-        public ActionResult SupplierReport(int? page)
+        public ActionResult SupplierReport(int? id, int? page)
         {
+            ViewBag.Statuid = id;
+            int _page = page ?? 1;
+
+            if (id != null)
+            {
+                int supplierId = (int)id;
+                var paymentInfoList = rppaymentinfo
+                    .GetListWithQuery(x => x.SupplierID == supplierId)
+                    .Select(x => new ReportVM
+                    {
+                        ProductID = x.ProductID,
+                        PaymentType = x.Payment,
+                        Quantity = x.BuyingCount
+                    });
+            }
             return View();
         }
     }

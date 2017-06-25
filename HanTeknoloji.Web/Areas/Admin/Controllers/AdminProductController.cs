@@ -148,17 +148,20 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             if (!string.IsNullOrEmpty(id))
             {
                 var entity = rpproduct.FirstOrDefault(x => x.SerialNumber == id);
-                model.ID = entity.ID;
-                model.SerialNumber = entity.SerialNumber;
-                model.TradeMarkID = entity.TradeMarkID;
-                model.ProductModelID = entity.ProductModelID;
-                model.SupplierID = entity.SupplierID;
-                model.ColorID = entity.ColorID;
-                model.UnitPrice = entity.UnitPrice;
-                model.CategoryID = entity.CategoryID;
-                model.KDV = entity.KDV;
-                model.UnitSalePrice = entity.UnitSalePrice;
-                GetDropdownItems(entity.TradeMarkID);
+                if (entity != null)
+                {
+                    model.ID = entity.ID;
+                    model.SerialNumber = entity.SerialNumber;
+                    model.TradeMarkID = entity.TradeMarkID;
+                    model.ProductModelID = entity.ProductModelID;
+                    model.SupplierID = entity.SupplierID;
+                    model.ColorID = entity.ColorID;
+                    model.UnitPrice = entity.UnitPrice;
+                    model.CategoryID = entity.CategoryID;
+                    model.KDV = entity.KDV;
+                    model.UnitSalePrice = entity.UnitSalePrice;
+                    GetDropdownItems(entity.TradeMarkID);
+                }
             }
             return View(model);
         }
@@ -175,8 +178,9 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 ExpiryDate = model.ExpiryDate == null ? DateTime.Now : Convert.ToDateTime(model.ExpiryDate),
                 ProductID = id,
                 UnitPrice = model.UnitPrice,
-                UnitSalePrice = model.UnitSalePrice,
-                Count = model.Count
+                Count = model.Count,
+                BuyingCount = model.Count,
+                SupplierID = model.SupplierID
             };
             rppaymentinfo.Add(paymentInfo);
             if (model.Payment == "Vadeli")
@@ -255,8 +259,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 paymentInfo.CheckNumber = model.CheckNumber;
                 paymentInfo.ExpiryDate = Convert.ToDateTime(model.ExpiryDate);
                 paymentInfo.UnitPrice = model.UnitPrice;
-                paymentInfo.UnitSalePrice = model.UnitSalePrice;
                 paymentInfo.Count = model.Count;
+                paymentInfo.BuyingCount = model.Count;
                 paymentInfo.UpdateDate = DateTime.Now;
                 rppaymentinfo.SaveChanges();
                 ViewBag.IslemDurum = EnumIslemDurum.Basarili;

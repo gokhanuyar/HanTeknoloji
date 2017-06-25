@@ -34,7 +34,7 @@
 
     <div class="form-group">
         @Html.LabelFor(x => x.ColorID)<span style="color:red"> *</span>
-        @Html.DropDownListFor(x => x.ColorID, (IList<SelectListItem>)ViewData["color"],"Renk Seçiniz", new { @class = "form-control", @readonly = true })
+        @Html.DropDownListFor(x => x.ColorID, (IList<SelectListItem>)ViewData["color"], "Renk Seçiniz", new { @class = "form-control", @readonly = true })
         @Html.ValidationMessageFor(x => x.ColorID)
     </div>
 

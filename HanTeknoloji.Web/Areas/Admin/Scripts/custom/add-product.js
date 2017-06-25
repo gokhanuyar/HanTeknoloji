@@ -86,3 +86,7 @@ $(".btn-primary").click(function () {
         $("#form").submit();
     }
 })
+
+$("#barcode-read-input").change(function () {
+    $("#barcode-form").submit();
+})

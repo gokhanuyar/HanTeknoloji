@@ -8,7 +8,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
 {
     public class ProductVM : BaseVM
     {
-        [Display(Name = "Seri Numarası")]
+        [Display(Name = "Barkod Numarası")]
         public string SerialNumber { get; set; }
 
         [Display(Name = "Kategori"), Required(ErrorMessage = "Lütfen kategori seçiniz.")]

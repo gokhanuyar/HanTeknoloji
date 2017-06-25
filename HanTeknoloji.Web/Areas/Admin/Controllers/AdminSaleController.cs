@@ -80,7 +80,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                 Color = rpcolor.Find(product.ColorID).Name,
                                 UnitSalePrice = product.UnitSalePrice,//satış fiyatı değişken
                                 UnitPrice = product.UnitSalePrice,//satış fiyatı
-                                UnitBuyPrice = product.UnitPrice,//alış fiyatı
+                                //UnitBuyPrice = product.UnitPrice,//alış fiyatı
                                 Count = product.Count,
                                 SaleCount = 1,
                                 KDV = product.KDV,
@@ -204,7 +204,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                         Quantity = item.SaleCount,
                         Price = Math.Round(item.UnitSalePrice, 2),
                         AddDate = DateTime.Now,
-                        UnitBuyPrice = item.UnitBuyPrice,
+                        //UnitBuyPrice = item.UnitBuyPrice,
                         UnitSalePrice = item.UnitPrice,
                     };
                     list.Add(detail);

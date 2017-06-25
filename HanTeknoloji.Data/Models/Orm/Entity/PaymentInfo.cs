@@ -19,7 +19,7 @@ namespace HanTeknoloji.Data.Models.Orm.Entity
         public string CheckNumber { get; set; }
         public int SupplierID { get; set; }
         public decimal UnitPrice { get; set; }
-        public decimal UnitSalePrice { get; set; }
+        public int BuyingCount { get; set; }
         public int Count { get; set; }
     }
 }
