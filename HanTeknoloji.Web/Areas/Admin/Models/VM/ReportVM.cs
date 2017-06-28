@@ -10,6 +10,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
     {
         public int CustomerID { get; set; }
 
+        public int SupplierID { get; set; }
+
         public int ProductID { get; set; }
 
         public int UserID { get; set; }
