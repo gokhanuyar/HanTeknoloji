@@ -425,6 +425,7 @@
     <Compile Include="Areas\Admin\Models\Barcode\BarCode39.cs" />
     <Compile Include="Areas\Admin\Models\Barcode\barcodecs.cs" />
     <Compile Include="Areas\Admin\Models\Barcode\BarCodeModel.cs" />
+    <Compile Include="Areas\Admin\Models\Dto\PaymentDetailDto.cs" />
     <Compile Include="Areas\Admin\Models\Dto\PaymentInfoDto.cs" />
     <Compile Include="Areas\Admin\Models\Dto\SaleDetailsInfoDto.cs" />
     <Compile Include="Areas\Admin\Models\Services\ExpiryService.cs" />

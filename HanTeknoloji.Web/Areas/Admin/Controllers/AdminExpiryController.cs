@@ -106,11 +106,6 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             }).ToList();
         }
 
-        private decimal Calculate(Product pro, int count)
-        {
-            return pro.UnitPrice * count;
-        }
-
         public JsonResult GetSaleDetails(int id)
         {
             var expiry = rpcustomerexpiry.Find(id);
@@ -195,6 +190,11 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     Hour = String.Format("{0:HH:mm}", x.AddDate)
                 }).ToList();
             return Json(list, JsonRequestBehavior.AllowGet);
+        }
+
+        private decimal Calculate(Product pro, int count)
+        {
+            return pro.UnitPrice * count;
         }
     }
 }

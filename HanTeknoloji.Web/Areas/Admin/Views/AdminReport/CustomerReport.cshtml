@@ -19,7 +19,7 @@
         <div class="form-group">
             <h5>Müşteri Seçimi</h5>
             <form method="post" id="form">
-                @Html.DropDownList("id", (IList<SelectListItem>)ViewData["customer"], "Müşteri Seçiniz", new { @class = "form-control" })
+                @Html.DropDownList("id", (IList<SelectListItem>)ViewData["customer"], "Müşteri Seçiniz", new { @class = "form-control select2" })
             </form>
         </div>
     </div>

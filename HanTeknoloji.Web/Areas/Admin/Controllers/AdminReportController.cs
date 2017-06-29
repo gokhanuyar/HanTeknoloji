@@ -396,6 +396,74 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             return View(pagedModel);
         }
 
+        public ActionResult SupplierReport(int? id, int? page)
+        {
+            ViewBag.Statuid = id;
+            int _page = page ?? 1;
+            List<ReportVM> list = new List<ReportVM>();
+            if (id != null)
+            {
+                int supplierId = (int)id;
+                list = rppaymentinfo
+                    .GetListWithQuery(x => x.SupplierID == supplierId)
+                    .Select(x => new ReportVM
+                    {
+                        ID = x.ID,
+                        ProductID = x.ProductID,
+                        PaymentType = x.Payment,
+                        Quantity = x.BuyingCount,
+                        UnitBuyPrice = x.UnitPrice,
+                        SaleDate = String.Format("{0:d/M/yyyy}", x.AddDate),
+                        SaleTime = String.Format("{0:HH:mm}", x.AddDate),
+                        Price = x.UnitPrice * x.BuyingCount
+                    }).ToList();
+
+                list.ForEach(l => l.Product = rpproduct.GetListWithQuery(p => p.ID == l.ProductID).Select(p => new ProductVM
+                {
+                    TradeMark = rptrademark.Find(p.TradeMarkID).Name,
+                    ProductModel = rpproductmodel.Find(p.ProductModelID).Name
+                }).FirstOrDefault());
+
+                ViewBag.quantity = list.Sum(x => x.Quantity);
+                ViewBag.saleprice = list.Sum(x => x.Price);
+                string name = rpsupplier.Find((int)id).CompanyName;
+                ViewBag.supplierName = name;
+            }
+            IPagedList<ReportVM> pagedModel = list.ToPagedList(_page, 20);
+            GetSuppliers();
+            return View(pagedModel);
+        }
+
+        public JsonResult GetPaymentDetails(int id)
+        {
+            var payment = rppaymentinfo.Find(id);
+            PaymentDetailDto dto = new PaymentDetailDto();
+            switch (payment.Payment)
+            {
+                case "Kredi Kartı":
+                    dto.Payment = payment.Payment;
+                    dto.BankName = payment.BankName;
+                    dto.BankCardName = payment.BankCartName;
+                    dto.CardNumber = payment.CartNumber;
+                    break;
+                case "Havale":
+                    dto.Payment = payment.Payment;
+                    dto.BankName = payment.BankName;
+                    break;
+                case "Vadeli":
+                    dto.Payment = payment.Payment;
+                    dto.ExpiryDate = payment.ExpiryDate.Value.ToLongDateString();
+                    break;
+                case "Çek":
+                    dto.Payment = payment.Payment;
+                    dto.BankName = payment.BankName;
+                    dto.ExpiryDate = payment.ExpiryDate.Value.ToLongDateString();
+                    dto.CheckNumber = payment.CheckNumber;
+                    break;
+            }
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+
         private void GetCustomers()
         {
             ViewData["customer"] = rpcustomer.GetAll().Select(x => new SelectListItem
@@ -405,24 +473,13 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             }).ToList();
         }
 
-        public ActionResult SupplierReport(int? id, int? page)
+        private void GetSuppliers()
         {
-            ViewBag.Statuid = id;
-            int _page = page ?? 1;
-
-            if (id != null)
+            ViewData["supplier"] = rpsupplier.GetAll().Select(x => new SelectListItem
             {
-                int supplierId = (int)id;
-                var paymentInfoList = rppaymentinfo
-                    .GetListWithQuery(x => x.SupplierID == supplierId)
-                    .Select(x => new ReportVM
-                    {
-                        ProductID = x.ProductID,
-                        PaymentType = x.Payment,
-                        Quantity = x.BuyingCount
-                    });
-            }
-            return View();
+                Text = x.CompanyName + " Tel:" + x.Phone,
+                Value = x.ID.ToString()
+            }).ToList();
         }
     }
 }
