@@ -446,6 +446,7 @@
     <Compile Include="Areas\Admin\Models\VM\CustomerExpiryVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\ExpiryPaymentVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\ExpiryResultVM.cs" />
+    <Compile Include="Areas\Admin\Models\VM\HomeVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\ImeiVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\InvoiceVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\LoginVM.cs" />

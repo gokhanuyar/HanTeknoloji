@@ -149,6 +149,35 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             customer.ExpiryValue -= model.Price;
             customer.PaidExpiryValue += model.Price;
             rpcustomer.SaveChanges();
+
+            var expiryList = rpcustomerexpiry
+                .GetListWithQuery(x => x.CustomerID == model.ID)
+                .OrderBy(x => x.ExpiryDate);
+
+            decimal gelen = model.Price;
+            foreach (var item in expiryList)
+            {
+                decimal expiry = item.ExpiryValue;
+                if (expiry < gelen)
+                {
+                    decimal fark = model.Price - expiry;
+                    item.ExpiryValue -= (model.Price - fark);
+                    item.IsDeleted = true;
+                    gelen = model.Price - (model.Price - fark);
+                    rpcustomerexpiry.SaveChanges();
+                }
+                else
+                {
+                    item.ExpiryValue -= gelen;
+                    rpcustomerexpiry.SaveChanges();
+                    gelen = 0;
+                }
+                if (gelen == 0)
+                {
+                    break;
+                }
+            }
+
             var expiryPayment = new ExpiryPayment
             {
                 Price = model.Price,
@@ -166,6 +195,35 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             supplier.TotalExpiryValue -= model.Price;
             supplier.PaidExpiryValue += model.Price;
             rpsupplier.SaveChanges();
+
+            var expiryList = rpsupplierexpiry
+                .GetListWithQuery(x => x.SupplierID == model.ID)
+                .OrderBy(x => x.ExpiryDate);
+
+            decimal gelen = model.Price;
+            foreach (var item in expiryList)
+            {
+                decimal expiry = item.TotalBuyingPrice - item.PaidPrice;
+                if (expiry < gelen)
+                {
+                    decimal fark = model.Price - expiry;
+                    item.PaidPrice = model.Price - fark;
+                    item.IsDeleted = true;
+                    gelen = model.Price - item.PaidPrice;
+                    rpsupplierexpiry.SaveChanges();
+                }
+                else
+                {
+                    item.PaidPrice += gelen;
+                    rpsupplierexpiry.SaveChanges();
+                    gelen = 0;
+                }
+                if (gelen == 0)
+                {
+                    break;
+                }
+            }
+
             var expiryPayment = new ExpiryPayment
             {
                 Price = model.Price,

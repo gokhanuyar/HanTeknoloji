@@ -11,7 +11,6 @@ using System.Web.Mvc;
 
 namespace HanTeknoloji.Web.Areas.Admin.Controllers
 {
-    [RolControl(EnumRoles.Manager)]
     public class AdminCustomerController : AdminBaseController
     {
         public ActionResult Index(int? page, string searchString)

@@ -82,6 +82,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                 UnitPrice = product.UnitSalePrice,//satış fiyatı
                                 //UnitBuyPrice = product.UnitPrice,//alış fiyatı
                                 Count = product.Count,
+                                CategoryID = product.CategoryID,
                                 SaleCount = 1,
                                 KDV = product.KDV,
                                 KdvPrice = Math.Round((product.UnitSalePrice * product.KDV), 4)
@@ -207,6 +208,16 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                         //UnitBuyPrice = item.UnitBuyPrice,
                         UnitSalePrice = item.UnitPrice,
                     };
+                    if (item.CategoryID == 6 || item.CategoryID == 7)
+                    {
+                        var imei = rpimei.FirstOrDefault(x => x.IsSold == false);
+                        if (imei != null)
+                        {
+                            detail.IMEI = imei.IMEINumber;
+                            imei.IsSold = true;
+                            rpimei.SaveChanges();
+                        }
+                    }
                     list.Add(detail);
                 }
                 sale.SaleDetails = list;
