@@ -461,7 +461,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     dto.CheckNumber = payment.CheckNumber;
                     break;
             }
-            return Json("", JsonRequestBehavior.AllowGet);
+            return Json(dto, JsonRequestBehavior.AllowGet);
         }
 
         private void GetCustomers()

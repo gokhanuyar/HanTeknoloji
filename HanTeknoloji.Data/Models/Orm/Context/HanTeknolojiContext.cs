@@ -41,5 +41,6 @@ namespace HanTeknoloji.Data.Models.Orm.Context
         public DbSet<ExpiryPayment> ExpiryPayment { get; set; }
         public DbSet<PaymentInfo> PaymentInfo { get; set; }
         public DbSet<SaleDetailInfo> SaleDetailInfo { get; set; }
+        public DbSet<IMEI> IMEI { get; set; }
     }
 }

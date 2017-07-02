@@ -71,22 +71,25 @@ $(function () {
     }
 });
 
-$(".btn-primary").click(function () {    
+$(".btn-primary").click(function () {
     var payment = $("#Payment").val();
     var date = $("#ExpiryDate").val();
+    var categoryId = $("#CategoryID").val();
     var datetimeNow = $.format.date(new Date($.now()), "yyyy-MM-dd");
     if (payment == "Vadeli" && date == "" || payment == "Çek" && date == "") {
         swal("Uyarı", "Vadeli alımlarda vade tarihini girmelisiniz.", "warning");
     }
     else if ((payment == "Vadeli" || payment == "Çek") && new Date(datetimeNow) > new Date(date)) {
-        alert("2")
         sweetAlert("Uyarı", "Vade tarihi için bugünden sonraki bir tarih seçiniz !", "warning");
+    }
+    else if (categoryId == 6 || categoryId == 8) {
+        swal("Uyarı", "Yeni telefon veya bilgisayar ürünlerinde barkod numarası girmelisiniz.", "warning");
     }
     else {
         $("#form").submit();
     }
-})
+});
 
 $("#barcode-read-input").change(function () {
     $("#barcode-form").submit();
-})
+});

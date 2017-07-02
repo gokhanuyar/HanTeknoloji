@@ -162,6 +162,10 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     model.UnitSalePrice = entity.UnitSalePrice;
                     GetDropdownItems(entity.TradeMarkID);
                 }
+                else
+                {
+
+                }
             }
             return View(model);
         }
@@ -263,6 +267,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 paymentInfo.BuyingCount = model.Count;
                 paymentInfo.UpdateDate = DateTime.Now;
                 rppaymentinfo.SaveChanges();
+
                 ViewBag.IslemDurum = EnumIslemDurum.Basarili;
             }
             else
@@ -371,6 +376,46 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 KDV = product.KDV * 100,
                 supplier = supplier.CompanyName
             }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult IMEI(int? CategoryID)
+        {
+            int count = rpproduct
+                .GetListWithQuery(x => x.CategoryID == 6 || x.CategoryID == 7).Sum(x => x.Count);
+            int imeiCount = rpimei.GetListWithQuery(x => x.IsSold == false).Count;
+            ViewBag.count = count - imeiCount;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult IMEI(ImeiVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (rpimei.Any(x => x.IMEINumber == model.IMEINumber))
+                {
+                    ViewBag.IslemDurum = EnumIslemDurum.IsimMevcut;
+                }
+                else
+                {
+                    var imei = new IMEI
+                    {
+                        IMEINumber = model.IMEINumber
+                    };
+                    rpimei.Add(imei);
+
+                    ViewBag.IslemDurum = EnumIslemDurum.Basarili;
+                }
+            }
+            else
+            {
+                ViewBag.IslemDurum = EnumIslemDurum.ValidationHata;
+            }
+            int count = rpproduct
+                .GetListWithQuery(x => x.CategoryID == 6 || x.CategoryID == 7).Sum(x => x.Count);
+            int imeiCount = rpimei.GetListWithQuery(x => x.IsSold == false).Count;
+            ViewBag.count = count - imeiCount;
+            return View(model);
         }
     }
 }

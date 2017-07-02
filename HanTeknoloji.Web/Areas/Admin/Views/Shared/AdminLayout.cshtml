@@ -83,6 +83,9 @@
                                 <li>
                                     <a href="/Admin/AdminProduct/AddWithBarcode"><i class="fa fa-plus-circle fa-fw"></i> Barkod ile Ürün Ekleme</a>
                                 </li>
+                                <li>
+                                    <a href="/Admin/AdminProduct/IMEI"><i class="fa fa-plus-circle fa-fw"></i> IMEI No Ekleme</a>
+                                </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
@@ -226,11 +229,7 @@
     <script src="/Areas/Admin/Content/dist/js/sb-admin-2.js"></script>
     <script src="~/Areas/Admin/Scripts/select2.full.min.js"></script>
     <script src="~/Areas/Admin/Scripts/sweetalert.min.js"></script>
+    <script src="~/Areas/Admin/Scripts/custom/layout.js"></script>
     @RenderSection("scripts", false)
-    <script>
-        $(document).ready(function () {
-            $(".select2").select2();
-        });
-    </script>
 </body>
 </html>

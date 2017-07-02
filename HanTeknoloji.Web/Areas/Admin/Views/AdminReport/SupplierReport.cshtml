@@ -72,7 +72,14 @@
                                     <td>@item.Price</td>
                                     <td>@item.SaleDate</td>
                                     <td>@item.SaleTime</td>
-                                    <td><button onclick="GetDetails(@item.ID)" class="btn btn-info btn-sm">Detay</button></td>
+                                    @if (item.PaymentType == "Nakit")
+                                    {
+                                        <td>@item.PaymentType</td>
+                                    }
+                                    else
+                                    {
+                                        <td><button onclick="GetDetails(@item.ID)" class="btn btn-info btn-sm">Detay</button></td>
+                                    }
                                 </tr>
                                 sayi++;
                             }
@@ -84,26 +91,58 @@
     </div>
 </div>
 @Html.PagedListPager(Model, page => Url.Action("SupplierReport", "AdminReport", new { page = page, id = ViewBag.Statuid }))
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
 
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Ödeme Şekli Detay</h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+
+    </div>
+</div>
 @section scripts{
     <script>
         $("#id").change(function () {
             $("#form").submit();
-        })
+        });
 
         function GetDetails(id) {
             $.ajax({
                 type: "get",
-                url: "/Admin/AdminExpiry/GetPaymentDetails/" + id,
+                url: "/Admin/AdminReport/GetPaymentDetails/" + id,
                 success: function (result) {
+                    $(".modal-body").empty();
                     switch (result.Payment) {
                         case "Kredi Kartı":
+                            $(".modal-body").append("<h4>Ödeme Tipi :</h4><p>Kredi Kartı</p><hr/>" +
+                                "<h4>Banka :</h4><p>" + result.BankName + "</p><hr/>" +
+                                "<h4>Kart Üzerindeki İsim :</h4><p>" + result.BankCardName + "</p><hr/>" +
+                                "<h4>Son 6 Hane :</h4><p>" + result.CardNumber + "</p>");
                             break;
                         case "Havale":
+                            $(".modal-body").append("<h4>Ödeme Tipi :</h4><p>Havale</p><hr/>" +
+                                "<h4>Banka :</h4><p>" + result.BankName + "</p>");
                             break;
                         case "Vadeli":
+                            $(".modal-body").append("<h4>Ödeme Tipi :</h4><p>Vadeli</p><hr/>" +
+                                "<h4>Vade Tarihi :</h4><p>" + result.ExpiryDate + "</p>");
                             break;
                         case "Çek":
+                            $(".modal-body").append("<h4>Ödeme Tipi :</h4><p>Çek</p><hr/>" +
+                                "<h4>Banka :</h4><p>" + result.BankName + "</p><hr/>" +
+                                "<h4>Vade Tarihi :</h4><p>" + result.ExpiryDate + "</p><hr/>" +
+                                "<h4>Çek Numarası :</h4><p>" + result.CheckNumber + "</p>");
+                            break;
                     }
                     $("#myModal").modal("show");
                 }

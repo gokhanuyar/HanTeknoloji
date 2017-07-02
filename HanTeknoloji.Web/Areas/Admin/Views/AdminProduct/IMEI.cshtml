@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewBag.Title = "IMEI";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
+@model ImeiVM
+
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header">IMEI Ekleme</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        @Html.Partial("/Areas/Admin/Views/Shared/Partial/MessagesPart.cshtml")
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                @if (ViewBag.count < 1)
+                {
+                    <h4>Stoktaki IMEI adedi tamdır.</h4>
+                }
+                else
+                {
+                    <h4>@ViewBag.count adet IMEI numarası girmelisiniz.</h4>
+                }                
+            </div>
+            <div class="panel-body">
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form-imei" }))
+                {
+                    <div class="form-group">
+                        <label>IMEI :</label>
+                        @Html.TextBoxFor(x => x.IMEINumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.IMEINumber)
+                    </div>
+                    if (ViewBag.count < 1)
+                    {
+                        <button class="btn btn-success" type="button">Kaydet</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-success" type="submit">Kaydet</button>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -264,6 +264,7 @@
     <Content Include="Areas\Admin\Scripts\custom\delete-scripts\supplier.js" />
     <Content Include="Areas\Admin\Scripts\custom\delete-scripts\trademark.js" />
     <Content Include="Areas\Admin\Scripts\custom\invoice-sale-report.js" />
+    <Content Include="Areas\Admin\Scripts\custom\layout.js" />
     <Content Include="Areas\Admin\Scripts\custom\region.js" />
     <Content Include="Areas\Admin\Scripts\custom\sale-operations.js" />
     <Content Include="Areas\Admin\Scripts\custom\product-list.js" />
@@ -381,6 +382,7 @@
     <Content Include="Areas\Admin\Views\AdminProduct\AddWithBarcode.cshtml" />
     <Content Include="Areas\Admin\Views\AdminProduct\Partial\BarcodeForm.cshtml" />
     <Content Include="Areas\Admin\Views\AdminReport\SupplierReport.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminProduct\IMEI.cshtml" />
     <None Include="Properties\PublishProfiles\gokhan.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\dateFormat.min.js" />
@@ -444,6 +446,7 @@
     <Compile Include="Areas\Admin\Models\VM\CustomerExpiryVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\ExpiryPaymentVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\ExpiryResultVM.cs" />
+    <Compile Include="Areas\Admin\Models\VM\ImeiVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\InvoiceVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\LoginVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\PaymentType.cs" />
