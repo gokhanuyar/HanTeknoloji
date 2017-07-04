@@ -14,7 +14,7 @@ namespace HanTeknoloji.Data.Models.Orm.Entity
 
         public DateTime ExpiryDate { get; set; }
 
-        public decimal ExpiryValue { get; set; }
+        public decimal PaidPrice { get; set; }
 
         public decimal SaleTotalPrice { get; set; }
     }

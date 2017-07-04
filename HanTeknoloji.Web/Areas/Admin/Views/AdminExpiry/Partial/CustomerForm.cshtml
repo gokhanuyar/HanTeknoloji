@@ -12,6 +12,7 @@
 <div class="form-group">
     <label>Müşteri :</label>
     <select id="single" class="form-control select2" name="id">
+        <option>Müşteri Seçiniz</option>
         @foreach (var item in Model)
             {
             <option value="@item.CustomerID">@item.Name @item.Phone</option>

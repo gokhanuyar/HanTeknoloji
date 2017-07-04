@@ -16,5 +16,17 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         public decimal ServiceSaleTotal { get; set; }
 
         public int FewProductCount { get; set; }
+
+        public int SupplierExpiryCount { get; set; }
+        public decimal SupplierExpiryValue { get; set; }
+
+        public int CustomerExpiryCount { get; set; }
+        public decimal CustomerExpiryValue { get; set; }
+
+        public int SupplierExpiryPastedCount { get; set; }
+        public decimal SupplierExpiryPastedValue { get; set; }
+
+        public int CustomerExpiryPastedCount { get; set; }
+        public decimal CustomerExpiryPastedValue { get; set; }
     }
 }

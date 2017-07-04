@@ -36,8 +36,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                     ExpiryDate = x.ExpiryDate.ToLongDateString(),
                                     SaleDate = x.AddDate.ToLongDateString(),
                                     SalePrice = x.SaleTotalPrice,
-                                    PaidPrice = x.SaleTotalPrice - x.ExpiryValue,
-                                    ExpiryValue = x.ExpiryValue
+                                    PaidPrice = x.PaidPrice,
+                                    ExpiryValue = x.SaleTotalPrice - x.PaidPrice
                                 }).ToList();
                 model.TotalExpiryValue = customer.ExpiryValue;
                 model.CustomerName = customer.Name + "  İçin Vadeli Satış Tablosu";
@@ -157,18 +157,18 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             decimal gelen = model.Price;
             foreach (var item in expiryList)
             {
-                decimal expiry = item.ExpiryValue;
+                decimal expiry = item.SaleTotalPrice - item.PaidPrice;
                 if (expiry < gelen)
                 {
                     decimal fark = model.Price - expiry;
-                    item.ExpiryValue -= (model.Price - fark);
+                    item.PaidPrice = model.Price - fark;
                     item.IsDeleted = true;
-                    gelen = model.Price - (model.Price - fark);
+                    gelen = model.Price - item.PaidPrice;
                     rpcustomerexpiry.SaveChanges();
                 }
                 else
                 {
-                    item.ExpiryValue -= gelen;
+                    item.PaidPrice += gelen;
                     rpcustomerexpiry.SaveChanges();
                     gelen = 0;
                 }

@@ -154,6 +154,8 @@
     <Content Include="Areas\Admin\Content\custom\invoice-page.css" />
     <Content Include="Areas\Admin\Content\custom\sale-page.css" />
     <Content Include="Areas\Admin\Content\custom\validation.css" />
+    <Content Include="Areas\Admin\Content\data\flot-data.js" />
+    <Content Include="Areas\Admin\Content\data\morris-data.js" />
     <Content Include="Areas\Admin\Content\dist\css\sb-admin-2.css" />
     <Content Include="Areas\Admin\Content\dist\css\sb-admin-2.min.css" />
     <Content Include="Areas\Admin\Content\dist\js\sb-admin-2.js" />

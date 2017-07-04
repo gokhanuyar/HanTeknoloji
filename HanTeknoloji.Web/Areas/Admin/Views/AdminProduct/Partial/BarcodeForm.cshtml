@@ -4,43 +4,37 @@
 <div class="col-lg-12">
     <div class="form-group">
         @Html.LabelFor(x => x.SerialNumber)
-        @Html.TextBoxFor(x => x.SerialNumber, new { @class = "form-control", @readonly = true, disabled = "true" })
+        @Html.TextBoxFor(x => x.SerialNumber, new { @class = "form-control", @readonly = true })
         @Html.ValidationMessageFor(x => x.SerialNumber)
     </div>
 
-    @*<div class="form-group imei-box">
-            @Html.LabelFor(x => x.IMEI)
-            @Html.TextBoxFor(x => x.IMEI, new { @class = "form-control" })
-            @Html.ValidationMessageFor(x => x.IMEI)
-        </div>*@
-
     <div class="form-group">
         @Html.LabelFor(x => x.CategoryID)<span style="color:red"> *</span>
-        @Html.DropDownListFor(x => x.CategoryID, (IList<SelectListItem>)ViewData["category"], "Kategori Seçiniz", new { @class = "form-control", @readonly = true, disabled = "true" })
+        @Html.DropDownListFor(x => x.CategoryID, (IList<SelectListItem>)ViewData["category"], "Kategori Seçiniz", new { @class = "form-control", @readonly = true })
         @Html.ValidationMessageFor(x => x.CategoryID)
     </div>
 
     <div class="form-group">
         @Html.LabelFor(x => x.TradeMarkID)<span style="color:red"> *</span>
-        @Html.DropDownListFor(x => x.TradeMarkID, (IList<SelectListItem>)ViewData["trademark"], new { @class = "form-control", @readonly = true, disabled = "true" })
+        @Html.DropDownListFor(x => x.TradeMarkID, (IList<SelectListItem>)ViewData["trademark"], new { @class = "form-control", @readonly = true })
         @Html.ValidationMessageFor(x => x.TradeMarkID)
     </div>
 
     <div class="form-group">
         @Html.LabelFor(x => x.ProductModelID)<span style="color:red"> *</span>
-        @Html.DropDownListFor(x => x.ProductModelID, (IList<SelectListItem>)ViewData["productmodel"], new { @class = "form-control", @readonly = true, disabled = "true" })
+        @Html.DropDownListFor(x => x.ProductModelID, (IList<SelectListItem>)ViewData["productmodel"], new { @class = "form-control", @readonly = true})
         @Html.ValidationMessageFor(x => x.ProductModelID)
     </div>
 
     <div class="form-group">
         @Html.LabelFor(x => x.ColorID)<span style="color:red"> *</span>
-        @Html.DropDownListFor(x => x.ColorID, (IList<SelectListItem>)ViewData["color"], "Renk Seçiniz", new { @class = "form-control", @readonly = true, disabled = "true" })
+        @Html.DropDownListFor(x => x.ColorID, (IList<SelectListItem>)ViewData["color"], "Renk Seçiniz", new { @class = "form-control", @readonly = true})
         @Html.ValidationMessageFor(x => x.ColorID)
     </div>
 
     <div class="form-group">
         @Html.LabelFor(x => x.SupplierID)<span style="color:red"> *</span>
-        @Html.DropDownListFor(x => x.SupplierID, (IList<SelectListItem>)ViewData["supplier"], new { @class = "form-control", @readonly = true, disabled = "true" })
+        @Html.DropDownListFor(x => x.SupplierID, (IList<SelectListItem>)ViewData["supplier"], new { @class = "form-control", @readonly = true })
         @Html.ValidationMessageFor(x => x.SupplierID)
     </div>
 

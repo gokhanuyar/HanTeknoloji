@@ -22,8 +22,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.Services
         {
             GenericRepository<Customer> rpcustomer = new GenericRepository<Customer>();
             var customer = rpcustomer.Find(entity.CustomerID);
-            customer.ExpiryValue += entity.ExpiryValue;
-            customer.PaidExpiryValue += (entity.SaleTotalPrice - entity.ExpiryValue);
+            customer.ExpiryValue += (entity.SaleTotalPrice - entity.PaidPrice);
+            customer.PaidExpiryValue += entity.PaidPrice;
             rpcustomer.SaveChanges();
         }
     }

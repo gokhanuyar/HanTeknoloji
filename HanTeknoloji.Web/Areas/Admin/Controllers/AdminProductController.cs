@@ -199,6 +199,16 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     TotalBuyingPrice = Calculate(model)
                 };
                 rpsupplierexpiry.Add(supplierExpiry);
+                if (model.PaidPrice != 0)
+                {
+                    var expiryPayment = new ExpiryPayment
+                    {
+                        AdminUserID = UserID(),
+                        PersonID = model.SupplierID,
+                        Price = model.PaidPrice
+                    };
+                    rpexpirypayment.Add(expiryPayment);
+                }
                 ExpiryService.SetSupplierExpiry(supplierExpiry);
             }
         }

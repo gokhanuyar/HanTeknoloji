@@ -230,12 +230,22 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     {
                         ExpiryDate = model.ExpiryDate,
                         CustomerID = model.CustomerID,
-                        ExpiryValue = sepet.TotalSalePrice - model.PaidExpiryValue,
+                        PaidPrice = model.PaidExpiryValue,
                         SaleID = sale.ID,
                         SaleTotalPrice = sepet.TotalSalePrice
                     };
                     ExpiryService.SetCustomerExpiry(expiry);
                     rpcustomerexpiry.Add(expiry);
+                    if (model.PaidExpiryValue != 0)
+                    {
+                        var expiryPayment = new ExpiryPayment
+                        {
+                            AdminUserID = UserID(),
+                            PersonID = model.CustomerID,
+                            Price = model.PaidExpiryValue
+                        };
+                        rpexpirypayment.Add(expiryPayment);
+                    }
                 }
                 if (model.Invoice == 1)
                 {
