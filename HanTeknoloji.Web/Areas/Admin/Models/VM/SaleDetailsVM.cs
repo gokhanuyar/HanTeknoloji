@@ -20,7 +20,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
 
         public ProductVM Product { get; set; }
 
-        public List<SaleDetailsInfoDto> InfoList { get; set; }
+        public List<SaleDetailsInfoDto> InfoList { get; set; }       
 
         public decimal UnitBuyPrice { get; set; }
         public decimal UnitSalePrice { get; set; }

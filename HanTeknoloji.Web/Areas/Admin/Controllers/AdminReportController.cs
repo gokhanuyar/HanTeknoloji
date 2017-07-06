@@ -182,6 +182,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             .GetListWithQuery(d => d.SaleID == l.ID)
             .Select(d => new SaleDetailsVM
             {
+                ID = d.ID,
                 AddDate = d.AddDate,
                 KdvPrice = d.KdvPrice,
                 Price = d.Price,
