@@ -135,15 +135,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             }
         }
 
-        public ActionResult AddWithBarcode()
-        {
-            GetDropdownItems(FirstTrademarkID());
-            return View(new ProductVM());
-        }
-
-        [HttpPost]
         public ActionResult AddWithBarcode(string id)
-        {
+        {           
             ProductVM model = new ProductVM();
             if (!string.IsNullOrEmpty(id))
             {
@@ -161,13 +154,74 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     model.KDV = entity.KDV;
                     model.UnitSalePrice = entity.UnitSalePrice;
                     GetDropdownItems(entity.TradeMarkID);
+                    return View(model);
                 }
                 else
                 {
-
+                    GetDropdownItems(FirstTrademarkID());
+                    return View(new ProductVM());
                 }
             }
-            return View(model);
+            else
+            {
+                GetDropdownItems(FirstTrademarkID());
+                return View(new ProductVM());
+            }            
+        }
+
+        [HttpPost]
+        public ActionResult AddWithBarcode(ProductVM model)
+        {
+            DateTime date = Convert.ToDateTime(model.ExpiryDate);
+            if (ModelState.IsValid)
+            {
+                if (model.SerialNumber == null)
+                {
+                    //string category = rpcategory.Find(model.CategoryID).BarcodeValue;
+                    string trademark = rptrademark.Find(model.TradeMarkID).BarcodeValue;
+                    string proModel = model.ProductModelID == 0 ? "000" : rpproductmodel.Find(model.ProductModelID).BarcodeValue;
+                    string color = model.ColorID != 0 ? rpcolor.Find(model.ColorID).BarcodeValue : "0";
+                    model.SerialNumber = trademark + proModel + color;
+                }
+                var product = rpproduct.FirstOrDefault(x => x.SerialNumber == model.SerialNumber);
+                if (product != null)
+                {
+                    product.Count += model.Count;
+                    product.UnitPrice = model.UnitPrice;
+                    product.UnitSalePrice = model.UnitSalePrice;
+                    rpproduct.SaveChanges();
+                    SaveOthers(product.ID, model);
+                }
+                else
+                {
+                    Product entity = new Product()
+                    {
+                        SerialNumber = model.SerialNumber,
+                        TradeMarkID = model.TradeMarkID,
+                        ProductModelID = model.ProductModelID,
+                        SupplierID = model.SupplierID,
+                        ColorID = model.ColorID,
+                        UnitPrice = model.UnitPrice,
+                        UnitSalePrice = model.UnitSalePrice,
+                        Count = model.Count,
+                        CategoryID = model.CategoryID,
+                        KDV = model.KDV
+                    };
+                    rpproduct.Add(entity);
+                    SaveOthers(entity.ID, model);
+                }
+
+                ViewBag.IslemDurum = EnumIslemDurum.Basarili;
+                ModelState.Clear();
+                GetDropdownItems(FirstTrademarkID());
+                return View(new ProductVM());
+            }
+            else
+            {
+                ViewBag.IslemDurum = EnumIslemDurum.ValidationHata;
+                GetDropdownItems(FirstTrademarkID());
+                return View(model);
+            }
         }
 
         private void SaveOthers(int id, ProductVM model)
