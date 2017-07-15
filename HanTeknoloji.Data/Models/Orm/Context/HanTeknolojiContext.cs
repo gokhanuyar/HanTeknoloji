@@ -42,5 +42,6 @@ namespace HanTeknoloji.Data.Models.Orm.Context
         public DbSet<PaymentInfo> PaymentInfo { get; set; }
         public DbSet<SaleDetailInfo> SaleDetailInfo { get; set; }
         public DbSet<IMEI> IMEI { get; set; }
+        public DbSet<TechnicalServiceCost> TechnicalServiceCost { get; set; }
     }
 }

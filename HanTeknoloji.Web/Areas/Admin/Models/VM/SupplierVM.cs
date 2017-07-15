@@ -8,7 +8,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
 {
     public class SupplierVM : BaseVM
     {
-        [Display(Name = "Şirket Adı"),Required(ErrorMessage ="Bu alan boş geçilemez.")]
+        [Display(Name = "Tedarikçi Adı/Ünvanı"),Required(ErrorMessage ="Bu alan boş geçilemez.")]
         public string CompanyName { get; set; }
 
         [Display(Name = "Adres"), Required(ErrorMessage = "Bu alan boş geçilemez.")]

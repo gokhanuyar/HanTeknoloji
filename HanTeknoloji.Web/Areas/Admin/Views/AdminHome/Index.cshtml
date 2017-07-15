@@ -8,7 +8,7 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Dashboard</h1>
+        <h1 class="page-header">Han Teknoloji Yönetim Paneli</h1>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </div>
-            <a href="#">
+            <a href="javascript:;" id="product-sale">
                 <div class="panel-footer">
                     <span class="pull-left">Ürün Satış</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -50,9 +50,9 @@
                     </div>
                 </div>
             </div>
-            <a href="#">
+            <a href="javascript:;" id="service-sale">
                 <div class="panel-footer">
-                    <span class="pull-left">Servis/Yardım İşlemleri</span>
+                    <span class="pull-left">Teknik Servis İşlemleri</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                     <div class="clearfix"></div>
                 </div>
@@ -73,7 +73,7 @@
                     </div>
                 </div>
             </div>
-            <a href="#">
+            <a href="javascript:;" id="few-counted-products">
                 <div class="panel-footer">
                     <span class="pull-left">Ürünleri Göster</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -82,6 +82,7 @@
             </a>
         </div>
     </div>
+
     <div class="col-lg-3 col-md-6">
         <div class="panel panel-red">
             <div class="panel-heading">
@@ -95,7 +96,7 @@
                     </div>
                 </div>
             </div>
-            <a href="#">
+            <a href="javascript:;" id="payments">
                 <div class="panel-footer">
                     <span class="pull-left">1 Hafta İçinde Yapılacak Ödemeler</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -120,7 +121,7 @@
                     </div>
                 </div>
             </div>
-            <a href="#">
+            <a href="javascript:;" id="collects">
                 <div class="panel-footer">
                     <span class="pull-left">1 Hafta İçinde Beklenen Tahsilat</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -143,7 +144,7 @@
                     </div>
                 </div>
             </div>
-            <a href="#">
+            <a href="javascript:;" id="pasted-collects">
                 <div class="panel-footer">
                     <span class="pull-left">Zamanı Geçen Tahsilatlar</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -152,6 +153,7 @@
             </a>
         </div>
     </div>
+
     <div class="col-lg-4 col-md-6">
         <div class="panel panel-red">
             <div class="panel-heading">
@@ -165,7 +167,7 @@
                     </div>
                 </div>
             </div>
-            <a href="#">
+            <a href="javascript:;" id="pasted-payments">
                 <div class="panel-footer">
                     <span class="pull-left">Zamanı Geçen Ödemeler</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -180,7 +182,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Bar Chart Example
+                Aylık Kar/Ciro Grafiği
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -192,33 +194,21 @@
     </div>
 </div>
 
+@Html.Partial("Partial/_saleModal")
+@Html.Partial("Partial/_serviceSaleModal")
+@Html.Partial("Partial/_fewCountedProducts")
+@Html.Partial("Partial/_paymentModal")
+@Html.Partial("Partial/_collectModal")
+@Html.Partial("Partial/_pastedPaymentModal")
+@Html.Partial("Partial/_pastedCollectModal")
+
 @section css{
     <link href="~/Areas/Admin/Content/vendor/morrisjs/morris.css" rel="stylesheet" />
 }
 
 @section scripts{
     <script src="~/Areas/Admin/Content/vendor/raphael/raphael.min.js"></script>
-    @*<script src="~/Areas/Admin/Content/vendor/morrisjs/morris.min.js"></script>*@
     <script src="~/Areas/Admin/Content/vendor/morrisjs/morris.js"></script>
-    <script>
-        $(function () {
-            $.ajax({
-                type: "get",
-                url: "/Admin/AdminHome/BarChart",
-                success: function (result) {
-                    Morris.Bar({
-                        element: 'morris-bar-chart',
-                        data: result,
-                        xkey: 'month',
-                        ykeys: ['kar', 'ciro'],
-                        labels: ['Kar', 'Ciro'],
-                        hideHover: 'auto',
-                        resize: true
-                    });
-                }
-            })
-
-        })
-    </script>
+    <script src="~/Areas/Admin/Scripts/custom/home.js"></script>
 }
 

@@ -21,5 +21,6 @@ namespace HanTeknoloji.Data.Models.Orm.Entity
         public decimal UnitPrice { get; set; }
         public int BuyingCount { get; set; }
         public int Count { get; set; }
+        public int IMEICount { get; set; }
     }
 }

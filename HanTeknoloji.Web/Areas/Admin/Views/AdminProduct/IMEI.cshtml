@@ -14,7 +14,26 @@
 
 <div class="row">
     <div class="col-lg-6">
-        @Html.Partial("/Areas/Admin/Views/Shared/Partial/MessagesPart.cshtml")
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                Tedarikçi Formu
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label>IMEI :</label>
+                    @using (Html.BeginForm(null, null, FormMethod.Get, new { id = "supplier-form" }))
+                    {
+                        @Html.DropDownList("SupplierID", (IEnumerable<SelectListItem>)ViewData["supplier"], "Tedarikçi Seçiniz", new { @class = "form-control" })
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-6">
         <div class="panel panel-info">
             <div class="panel-heading">
                 @if (ViewBag.count < 1)
@@ -23,24 +42,40 @@
                 }
                 else
                 {
-                    <h4>@ViewBag.count adet IMEI numarası girmelisiniz.</h4>
-                }                
+                    <h4><span id="imei-count">@ViewBag.count</span> adet IMEI numarası girmelisiniz.</h4>
+                }
             </div>
             <div class="panel-body">
+                @Html.Partial("/Areas/Admin/Views/Shared/Partial/MessagesPart.cshtml")
                 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form-imei" }))
                 {
+                    <div class="form-group">
+                        <label>Ürün :</label>
+                        @Html.DropDownListFor(x => x.ProductID, (IEnumerable<SelectListItem>)ViewData["product"], "Ürün Seçiniz", new { @class = "form-control", id = "product-select" })
+                        @Html.ValidationMessageFor(x => x.ProductID)
+                    </div>
+
                     <div class="form-group">
                         <label>IMEI :</label>
                         @Html.TextBoxFor(x => x.IMEINumber, new { @class = "form-control" })
                         @Html.ValidationMessageFor(x => x.IMEINumber)
                     </div>
+
+                    <input type="hidden" value="@ViewBag.supplierId" name="SupplierID" id="supplierId" />
                     if (ViewBag.count < 1)
                     {
                         <button class="btn btn-success" type="button">Kaydet</button>
                     }
                     else
                     {
-                        <button class="btn btn-success" type="submit">Kaydet</button>
+                        if (ViewBag.supplierId != 0)
+                        {
+                            <button class="btn btn-success" type="submit">Kaydet</button>
+                        }
+                        else
+                        {
+                            <button onclick="SupplierAlert()" class="btn btn-success" type="button">Kaydet</button>
+                        }
                     }
                 }
             </div>
@@ -48,4 +83,32 @@
     </div>
 </div>
 
+@section scripts{
+    <script>
+        $("#SupplierID").change(function () {
+            $("#supplier-form").submit();
+        })
+
+        $("#product-select").change(function () {
+            var id = this.value;
+            var suppId = supplierId;
+            $.ajax({
+                type: "get",
+                url: "/Admin/AdminProduct/GetImeiCount/" + id + "/" + suppId,
+                success: function (result) {
+                    $("#imei-count").text(result);
+                }
+            })
+        })
+
+        function SupplierAlert() {
+            swal("Uyarı", "Lütfen tedarikçi seçiniz", "warning")
+        }
+
+        var supplierId = $("#supplierId").val();
+        if (supplierId != 0) {
+            $("#SupplierID").val(supplierId);
+        }
+    </script>
+}
 

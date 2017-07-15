@@ -19,6 +19,7 @@
     <link href="~/Areas/Admin/Content/select2.min.css" rel="stylesheet" />
     <link href="~/Areas/Admin/Content/sweetalert.css" rel="stylesheet" />
     <link href="~/Areas/Admin/Content/custom/validation.css" rel="stylesheet" />
+    <link href="~/Areas/Admin/Content/custom/home.css" rel="stylesheet" />
     @RenderSection("css", false)
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -193,6 +194,17 @@
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-shopping-cart fa-fw"></i> Maliyet İşlemleri<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="/Admin/AdminCost/TechnicalServiceList"><i class="fa fa-list fa-fw"></i>Teknik Servis Maliyet Liste</a>
+                                </li>
+                                <li>
+                                    <a href="/Admin/AdminCost/TechnicalService"><i class="fa fa-plus-circle fa-fw"></i>Teknik Servis Maliyet Ekle</a>
+                                </li>
+                            </ul>
                         </li>
                         <li>
                             <a href="/Admin/AdminSale/Index"><i class="fa fa-turkish-lira fa-fw"></i> Satış İşlemleri</a>

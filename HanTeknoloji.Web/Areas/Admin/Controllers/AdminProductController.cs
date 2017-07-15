@@ -136,7 +136,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         }
 
         public ActionResult AddWithBarcode(string id)
-        {           
+        {
             ProductVM model = new ProductVM();
             if (!string.IsNullOrEmpty(id))
             {
@@ -166,7 +166,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             {
                 GetDropdownItems(FirstTrademarkID());
                 return View(new ProductVM());
-            }            
+            }
         }
 
         [HttpPost]
@@ -240,6 +240,10 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 BuyingCount = model.Count,
                 SupplierID = model.SupplierID
             };
+            if (model.CategoryID == 6 || model.CategoryID == 7)
+            {
+                paymentInfo.IMEICount = model.Count;
+            }
             rppaymentinfo.Add(paymentInfo);
             if (model.Payment == "Vadeli")
             {
@@ -442,44 +446,111 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult IMEI(int? CategoryID)
+        public ActionResult IMEI(int? SupplierID)
         {
-            int count = rpproduct
-                .GetListWithQuery(x => x.CategoryID == 6 || x.CategoryID == 7).Sum(x => x.Count);
-            int imeiCount = rpimei.GetListWithQuery(x => x.IsSold == false).Count;
-            ViewBag.count = count - imeiCount;
+            int count = 0;
+            ViewBag.supplierId = 0;
+            ViewData["product"] = new List<SelectListItem>();
+            if (SupplierID == null)
+            {
+                var paymentInfoList = rppaymentinfo.GetListWithQuery(x => x.IMEICount > 0);
+                count = paymentInfoList.Sum(x => x.IMEICount);
+            }
+            else
+            {
+                var paymentInfoList = rppaymentinfo.GetListWithQuery(x => x.IMEICount > 0 && x.SupplierID == SupplierID);
+                count = paymentInfoList.Sum(x => x.IMEICount);
+                ViewBag.supplierId = SupplierID;
+                GetProducts(SupplierID, paymentInfoList);
+            }
+
+            ViewBag.count = count;
+            GetAllSuppliers();
             return View();
         }
 
         [HttpPost]
         public ActionResult IMEI(ImeiVM model)
         {
+            ViewData["product"] = new List<SelectListItem>();
             if (ModelState.IsValid)
             {
                 if (rpimei.Any(x => x.IMEINumber == model.IMEINumber))
                 {
                     ViewBag.IslemDurum = EnumIslemDurum.IsimMevcut;
+                    var paymentInfoList = rppaymentinfo.GetListWithQuery(x => x.IMEICount > 0 && x.SupplierID == model.SupplierID);
+                    ViewBag.count = model.ProductID != 0 ? paymentInfoList.Where(x => x.ProductID == model.ProductID).Sum(x => x.IMEICount) : paymentInfoList.Sum(x => x.IMEICount);
+                    ViewBag.supplierId = model.SupplierID;
+                    GetProducts(model.SupplierID, paymentInfoList);
+                    GetAllSuppliers();
+                    return View(model);
                 }
                 else
                 {
+                    var paymentInfo = rppaymentinfo.FirstOrDefault(x => x.IMEICount > 0 && x.SupplierID == model.SupplierID && x.ProductID == model.ProductID);
+                    paymentInfo.IMEICount--;
+
                     var imei = new IMEI
                     {
-                        IMEINumber = model.IMEINumber
+                        IMEINumber = model.IMEINumber,
+                        SupplierID = model.SupplierID,
+                        PaymentInfoID = paymentInfo.ID
                     };
                     rpimei.Add(imei);
+                    rppaymentinfo.SaveChanges();
 
+                    var paymentInfoList = rppaymentinfo.GetListWithQuery(x => x.IMEICount > 0 && x.SupplierID == model.SupplierID && x.ProductID == model.ProductID);
+                    ViewBag.count = paymentInfoList.Sum(x => x.IMEICount);
+                    ViewBag.supplierId = model.SupplierID;
                     ViewBag.IslemDurum = EnumIslemDurum.Basarili;
+
+                    var paymentInfoListforProducts = rppaymentinfo.GetListWithQuery(x => x.IMEICount > 0 && x.SupplierID == model.SupplierID);
+                    GetProducts(model.SupplierID, paymentInfoListforProducts);
+
+                    GetAllSuppliers();
+                    return View(model);
                 }
             }
             else
             {
+                var paymentInfoList = rppaymentinfo.GetListWithQuery(x => x.IMEICount > 0 && x.SupplierID == model.SupplierID);
+                ViewBag.count = model.ProductID != 0 ? paymentInfoList.Where(x => x.ProductID == model.ProductID).Sum(x => x.IMEICount) : paymentInfoList.Sum(x => x.IMEICount);
+                ViewBag.supplierId = model.SupplierID;
                 ViewBag.IslemDurum = EnumIslemDurum.ValidationHata;
+                GetProducts(model.SupplierID, paymentInfoList);
+                GetAllSuppliers();
+                return View(model);
             }
-            int count = rpproduct
-                .GetListWithQuery(x => x.CategoryID == 6 || x.CategoryID == 7).Sum(x => x.Count);
-            int imeiCount = rpimei.GetListWithQuery(x => x.IsSold == false).Count;
-            ViewBag.count = count - imeiCount;
-            return View(model);
+        }
+
+        private void GetAllSuppliers()
+        {
+            ViewData["supplier"] = rpsupplier.GetAll().Select(x => new SelectListItem
+            {
+                Text = x.CompanyName,
+                Value = x.ID.ToString()
+            });
+        }
+
+        private void GetProducts(int? supplierID, List<PaymentInfo> list)
+        {
+            var productList = new List<Product>();
+            foreach (var info in list)
+            {
+                var product = rpproduct.Find(info.ProductID);
+                productList.Add(product);
+            }
+            ViewData["product"] = productList.Select(x => new SelectListItem
+            {
+                Text = rptrademark.Find(x.TradeMarkID).Name + " " + rpproductmodel.Find(x.ProductModelID).Name,
+                Value = x.ID.ToString()
+            });
+        }
+
+        public JsonResult GetImeiCount(int productId, int supplierId)
+        {
+            var count = rppaymentinfo.GetListWithQuery(x => x.IMEICount > 0 && x.SupplierID == supplierId && x.ProductID == productId).Sum(x => x.IMEICount);
+            return Json(count, JsonRequestBehavior.AllowGet);
         }
     }
 }

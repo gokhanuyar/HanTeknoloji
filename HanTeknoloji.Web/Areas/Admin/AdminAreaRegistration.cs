@@ -15,6 +15,12 @@ namespace HanTeknoloji.Web.Areas.Admin
         public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
+                name: "imei-count",
+                url: "Admin/{controller}/{action}/{productId}/{supplierId}",
+                defaults: new { controller = "AdminProduct", action = "GetImeiCount" }
+            );
+
+            context.MapRoute(
                 name: "quantity",
                 url: "Admin/{controller}/{action}/{id}/{quantity}",
                 defaults: new { controller = "AdminSale", action = "ChangeQuantity", id = UrlParameter.Optional }

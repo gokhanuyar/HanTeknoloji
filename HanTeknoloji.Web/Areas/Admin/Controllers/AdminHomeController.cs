@@ -91,17 +91,156 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     Price = s.Price
                 });
 
+                var technicalCosts = rptechservicecost.GetListWithQuery(s => s.AddDate.Month == startDate.Month && s.AddDate.Year == startDate.Year);
+
                 decimal serviceSalePrice = serviceSales.Sum(x => x.Price);
+                decimal technicalCost = technicalCosts.Sum(x => x.Cost);
 
                 dto.month = month;
                 dto.ciro = saleDetails.Sum(x => x.UnitSalePrice + x.KdvPrice);
                 decimal detailPrice = saleDetails.Sum(x => x.UnitSalePrice - x.UnitBuyPrice);
-                dto.kar = detailPrice + serviceSalePrice;
+
+                dto.kar = (detailPrice + serviceSalePrice) - technicalCost;
+                dto.ciro += serviceSalePrice;
                 list.Add(dto);
                 startDate = startDate.AddMonths(1);
             }
 
             return Json(list, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetSales()
+        {
+            var date = DateTime.Now;
+            var sales = rpsale.GetListWithQuery(x => x.AddDate.Day == date.Day && x.AddDate.Month == date.Month && x.AddDate.Year == date.Year).OrderByDescending(x => x.AddDate).Select(x => new ReportVM()
+            {
+                ID = x.ID,
+                PaymentType = x.PaymentType,
+                SaleTime = String.Format("{0:HH:mm}", x.AddDate),
+            }).ToList();
+
+            sales.ForEach(l => l.Details = rpsaledetails
+            .GetListWithQuery(d => d.SaleID == l.ID)
+            .Select(d => new SaleDetailsVM
+            {
+                ID = d.ID,
+                AddDate = d.AddDate,
+                KdvPrice = d.KdvPrice,
+                Price = d.Price,
+                ProductID = d.ProductID,
+                Quantity = d.Quantity
+            }).ToList());
+
+            sales.ForEach(l => l.Details.ForEach(d => d.Product = rpproduct.GetListWithQuery(p => p.ID == d.ProductID).Select(p => new ProductVM
+            {
+                TradeMark = rptrademark.Find(p.TradeMarkID).Name,
+                ProductModel = rpproductmodel.Find(p.ProductModelID).Name
+            }).FirstOrDefault()));
+
+            List<ReportVM> model = new List<ReportVM>();
+            foreach (var sale in sales)
+            {
+                foreach (var detail in sale.Details)
+                {
+                    ReportVM vm = new ReportVM()
+                    {
+                        Product = detail.Product,
+                        Quantity = detail.Quantity,
+                        KdvPrice = detail.KdvPrice,
+                        Price = detail.Price + detail.KdvPrice,
+                        SaleTime = sale.SaleTime,
+                        PaymentType = sale.PaymentType
+                    };
+                    model.Add(vm);
+                }
+            }
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetServiceSales()
+        {
+            var date = DateTime.Now;
+            var serviceSales = rpservicesale.GetListWithQuery(x => x.AddDate.Day == date.Day && x.AddDate.Month == date.Month && x.AddDate.Year == date.Year).OrderByDescending(x => x.AddDate).Select(x => new ReportVM()
+            {
+                PaymentType = x.PaymentType,
+                SaleTime = String.Format("{0:HH:mm}", x.AddDate),
+                Price = x.Price,
+                Note = x.Note ?? "Belirtilmemiş"
+            }).ToList(); ;
+
+            return Json(serviceSales, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult FewCountedProducts()
+        {
+            var fewProducts = rpproduct.GetListWithQuery(x => x.Count < 5).Select(x => new ProductVM
+            {
+                SerialNumber = x.SerialNumber,
+                TradeMark = rptrademark.Find(x.TradeMarkID).Name,
+                ProductModel = rpproductmodel.Find(x.ProductModelID).Name,
+                Count = x.Count
+            });
+            return Json(fewProducts, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult WeeklyPayments()
+        {
+            var date = DateTime.Now;
+            var weekDate = DateTime.Now.AddDays(7);
+
+            var supplierExpiryWeekly = rpsupplierexpiry.GetListWithQuery(x => x.ExpiryDate.Day >= date.Day && x.ExpiryDate.Month >= date.Month && x.ExpiryDate.Year >= date.Year && x.ExpiryDate.Day <= weekDate.Day && x.ExpiryDate.Month <= weekDate.Month && x.ExpiryDate.Year <= weekDate.Year).Select(x => new ExpiryResultVM
+            {
+                Name = rpsupplier.Find(x.SupplierID).CompanyName,
+                SalePrice = x.TotalBuyingPrice,
+                PaidPrice = x.PaidPrice,
+                ExpiryValue = x.TotalBuyingPrice - x.PaidPrice
+            }).ToList();
+            return Json(supplierExpiryWeekly, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult WeeklyCollects()
+        {
+            var date = DateTime.Now;
+            var weekDate = DateTime.Now.AddDays(7);
+
+            var customerExpiryWeekly = rpcustomerexpiry.GetListWithQuery(x => x.ExpiryDate.Day >= date.Day && x.ExpiryDate.Month >= date.Month && x.ExpiryDate.Year >= date.Year && x.ExpiryDate.Day <= weekDate.Day && x.ExpiryDate.Month <= weekDate.Month && x.ExpiryDate.Year <= weekDate.Year).Select(x => new ExpiryResultVM
+            {
+                Name = rpcustomer.Find(x.CustomerID).Name,
+                SalePrice = x.SaleTotalPrice,
+                PaidPrice = x.PaidPrice,
+                ExpiryValue = x.SaleTotalPrice - x.PaidPrice
+            }).ToList();
+            return Json(customerExpiryWeekly, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult PastedPayments()
+        {
+            var date = DateTime.Now;
+            var weekDate = DateTime.Now.AddDays(7);
+
+            var supplierExpiryWeekly = rpsupplierexpiry.GetListWithQuery(x => x.ExpiryDate.Day < date.Day && x.ExpiryDate.Month <= date.Month && x.ExpiryDate.Year <= date.Year).Select(x => new ExpiryResultVM
+            {
+                Name = rpsupplier.Find(x.SupplierID).CompanyName,
+                SalePrice = x.TotalBuyingPrice,
+                PaidPrice = x.PaidPrice,
+                ExpiryValue = x.TotalBuyingPrice - x.PaidPrice
+            }).ToList();
+            return Json(supplierExpiryWeekly, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult PastedCollects()
+        {
+            var date = DateTime.Now;
+            var weekDate = DateTime.Now.AddDays(7);
+
+            var customerExpiryWeekly = rpcustomerexpiry.GetListWithQuery(x => x.ExpiryDate.Day < date.Day && x.ExpiryDate.Month <= date.Month && x.ExpiryDate.Year <= date.Year).Select(x => new ExpiryResultVM
+            {
+                Name = rpcustomer.Find(x.CustomerID).Name,
+                SalePrice = x.SaleTotalPrice,
+                PaidPrice = x.PaidPrice,
+                ExpiryValue = x.SaleTotalPrice - x.PaidPrice
+            }).ToList();
+            return Json(customerExpiryWeekly, JsonRequestBehavior.AllowGet);
         }
     }
 }

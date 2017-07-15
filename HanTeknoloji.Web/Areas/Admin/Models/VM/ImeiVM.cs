@@ -10,5 +10,10 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
     {
         [Required(ErrorMessage = "Bu alan boş geçilemez.")]
         public string IMEINumber { get; set; }
+
+        public int SupplierID { get; set; }
+
+        [Required(ErrorMessage = "Bu alan boş geçilemez.")]
+        public int ProductID { get; set; }
     }
 }

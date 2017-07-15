@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewBag.Title = "TechnicalServiceList";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
+@using PagedList;
+@using PagedList.Mvc;
+@using GridMvc.Html;
+
+@model IPagedList<TechnicalServiceCostVM>
+@section css{
+    <link href="~/Content/Gridmvc.css" rel="stylesheet" />
+}
+
+@section scripts{
+    <script src="~/Scripts/gridmvc.js"></script>
+    <script src="~/Areas/Admin/Scripts/custom/delete-scripts/technical-service.js"></script>
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header">Maliyet Listesi</h3>
+    </div>
+</div>
+
+<div class="col-lg-12">
+    <form method="post" style="float:right;margin-bottom:15px;">
+        <label>Arama :</label>
+        <input name="searchString" type="text" style="border-radius:4px;" />
+        <button class="btn btn-success" type="submit">Ara</button>
+    </form>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        @Html.Partial("/Areas/Admin/Views/Shared/Partial/MessagesPart.cshtml")
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+                    @Html.Grid(Model).Named("Cost").Columns(col =>
+               {
+                   col.Add(x => x.CostDateString).Titled("Tarih");
+                   col.Add(x => x.Cost).Titled("Maliyet");
+                   col.Add().Encoded(false).Sanitized(false).RenderValueAs(html =>
+                   {
+                       string htmlelement = "<a href='/Admin/AdminCost/EditTechnical/" + html.ID.ToString() + "' class='fa fa-pencil'></a>";
+                       return MvcHtmlString.Create(htmlelement);
+
+                   }).Titled("Düzelt");
+                   col.Add().Encoded(false).Sanitized(false).RenderValueAs(html =>
+                   {
+                       string htmlelement = "<a class='btn btn-danger btn-circle' onclick='Delete(" + html.ID.ToString() + ")'><i class='fa fa-remove'></i></a>";
+                       return MvcHtmlString.Create(htmlelement);
+
+                   }).Titled("Sil");
+               }).Filterable(true).Sortable(true)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.PagedListPager(Model, page => Url.Action("TechnicalServiceList", "AdminCost", new { page = page, id = ViewBag.Statuid }))
+

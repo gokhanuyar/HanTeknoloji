@@ -150,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Admin\Content\custom\add-product.css" />
+    <Content Include="Areas\Admin\Content\custom\home.css" />
     <Content Include="Areas\Admin\Content\custom\invoice-page-A4.css" />
     <Content Include="Areas\Admin\Content\custom\invoice-page.css" />
     <Content Include="Areas\Admin\Content\custom\sale-page.css" />
@@ -264,7 +265,9 @@
     <Content Include="Areas\Admin\Scripts\custom\delete-scripts\product-model.js" />
     <Content Include="Areas\Admin\Scripts\custom\delete-scripts\product.js" />
     <Content Include="Areas\Admin\Scripts\custom\delete-scripts\supplier.js" />
+    <Content Include="Areas\Admin\Scripts\custom\delete-scripts\technical-service.js" />
     <Content Include="Areas\Admin\Scripts\custom\delete-scripts\trademark.js" />
+    <Content Include="Areas\Admin\Scripts\custom\home.js" />
     <Content Include="Areas\Admin\Scripts\custom\invoice-sale-report.js" />
     <Content Include="Areas\Admin\Scripts\custom\layout.js" />
     <Content Include="Areas\Admin\Scripts\custom\region.js" />
@@ -385,6 +388,18 @@
     <Content Include="Areas\Admin\Views\AdminProduct\Partial\BarcodeForm.cshtml" />
     <Content Include="Areas\Admin\Views\AdminReport\SupplierReport.cshtml" />
     <Content Include="Areas\Admin\Views\AdminProduct\IMEI.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminHome\Partial\_saleModal.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminHome\Partial\_serviceSaleModal.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminCost\TechnicalService.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminCost\Partial\addTechnicalServiceCost.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminCost\TechnicalServiceList.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminCost\EditTechnical.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminCost\Partial\editTechnicalServiceCost.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminHome\Partial\_fewCountedProducts.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminHome\Partial\_paymentModal.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminHome\Partial\_collectModal.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminHome\Partial\_pastedPaymentModal.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminHome\Partial\_pastedCollectModal.cshtml" />
     <None Include="Properties\PublishProfiles\gokhan.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\dateFormat.min.js" />
@@ -411,6 +426,7 @@
     <Compile Include="Areas\Admin\Controllers\AdminAuthorityController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminBaseController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminCategoryController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminCostController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminCustomerController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminExpiryController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminHomeController.cs" />
@@ -466,6 +482,7 @@
     <Compile Include="Areas\Admin\Models\VM\SupplierExpiryVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\SupplierExpiryWrapVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\SupplierVM.cs" />
+    <Compile Include="Areas\Admin\Models\VM\TechnicalServiceCostVM.cs" />
     <Compile Include="Areas\Admin\Models\VM\TradeMarkVM.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

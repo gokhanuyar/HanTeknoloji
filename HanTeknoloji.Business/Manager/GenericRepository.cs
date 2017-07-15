@@ -57,7 +57,7 @@ namespace HanTeknoloji.Business.Manager
 
             if (entity != null)
             {
-                //entity.DeleteDate = DateTime.Now;
+                entity.DeleteDate = DateTime.Now;
                 entity.IsDeleted = true;
                 db.SaveChanges();
             }

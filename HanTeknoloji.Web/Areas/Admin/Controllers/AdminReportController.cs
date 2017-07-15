@@ -77,7 +77,6 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 Price = d.Price,
                 ProductID = d.ProductID,
                 Quantity = d.Quantity,
-                //UnitBuyPrice = d.UnitBuyPrice,
                 UnitSalePrice = d.UnitSalePrice
             }).ToList());
 
@@ -266,10 +265,16 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                     UserID = x.UserID,
                                     Note = x.Note
                                 }).ToList();
+                var costs = rptechservicecost.GetListWithQuery(x => x
+                                  .AddDate.Month == _date.Month && x
+                                  .AddDate.Year == _date.Year);
+
                 list.ForEach(l => l.AdminUserName = rpadminuser.Find(l.UserID).FullName);
                 ViewBag.saleprice = list.Sum(x => x.Price);
                 ViewBag.quantity = list.Count;
                 ViewBag.date = String.Format("{0:y}", _date);
+                ViewBag.cost = costs.Sum(x => x.Cost);
+                ViewBag.kar = ViewBag.saleprice - ViewBag.cost;
                 IPagedList<ReportVM> model = list.ToPagedList(_page, 20);
                 return View(model);
             }
@@ -290,9 +295,17 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                     Note = x.Note
                                 }).ToList();
                 list.ForEach(l => l.AdminUserName = rpadminuser.Find(l.UserID).FullName);
+
+                var cost = rptechservicecost.FirstOrDefault(x => x
+                                    .AddDate.Day == _date.Day && x
+                                    .AddDate.Month == _date.Month && x
+                                    .AddDate.Year == _date.Year);
+
                 ViewBag.saleprice = list.Sum(x => x.Price);
                 ViewBag.quantity = list.Count;
                 ViewBag.date = _date.ToLongDateString();
+                ViewBag.cost = cost.Cost;
+                ViewBag.kar = ViewBag.saleprice - cost.Cost;
                 IPagedList<ReportVM> model = list.ToPagedList(_page, 20);
                 return View(model);
             }

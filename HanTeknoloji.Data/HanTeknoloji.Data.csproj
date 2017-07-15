@@ -76,6 +76,7 @@
     <Compile Include="Models\Orm\Entity\ServiceSale.cs" />
     <Compile Include="Models\Orm\Entity\Supplier.cs" />
     <Compile Include="Models\Orm\Entity\SupplierExpiry.cs" />
+    <Compile Include="Models\Orm\Entity\TechnicalServiceCost.cs" />
     <Compile Include="Models\Orm\Entity\TradeMark.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

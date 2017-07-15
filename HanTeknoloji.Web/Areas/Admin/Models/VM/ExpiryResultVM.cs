@@ -16,5 +16,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         public decimal PaidPrice { get; set; }
 
         public decimal ExpiryValue { get; set; }
+
+        public string Name { get; set; }
     }
 }
