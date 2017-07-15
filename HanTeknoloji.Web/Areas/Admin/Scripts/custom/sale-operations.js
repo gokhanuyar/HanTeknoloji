@@ -57,23 +57,23 @@ $(".total-input").change(function () {
     });
 });
 
-function QuantityPlus(id) {
-    var firstQuantity = $("#quantity_" + id).val();
-    var firstPrice = $("#hidden_" + id).val().replace(",", ".");
-    var totalPrice = $(".total-price").text().replace(",", ".");
+//function QuantityPlus(id) {
+//    var firstQuantity = $("#quantity_" + id).val();
+//    var firstPrice = $("#hidden_" + id).val().replace(",", ".");
+//    var totalPrice = $(".total-price").text().replace(",", ".");
 
-    var lastQuantity = parseFloat(firstQuantity) + 1;
-    var lastPrice = (parseFloat(firstPrice) * lastQuantity).toFixed(1);
-    totalPrice = (parseFloat(totalPrice) + parseFloat(firstPrice)).toFixed(1);
+//    var lastQuantity = parseFloat(firstQuantity) + 1;
+//    var lastPrice = (parseFloat(firstPrice) * lastQuantity).toFixed(1);
+//    totalPrice = (parseFloat(totalPrice) + parseFloat(firstPrice)).toFixed(1);
 
-    $(".total-price").text(totalPrice);
-    $("#quantity_" + id).val(lastQuantity);
-    $("#total_" + id).text(lastPrice);
-    $.ajax({
-        type: "get",
-        url: "/AlphaCart/ChangeQuantity/" + id + "/" + lastQuantity,
-    });
-}
+//    $(".total-price").text(totalPrice);
+//    $("#quantity_" + id).val(lastQuantity);
+//    $("#total_" + id).text(lastPrice);
+//    $.ajax({
+//        type: "get",
+//        url: "/AlphaCart/ChangeQuantity/" + id + "/" + lastQuantity,
+//    });
+//}
 
 $("#sale-button").click(function () {
     var payment = $("#payment-type").find(":selected").text();

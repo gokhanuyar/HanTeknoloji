@@ -16,14 +16,14 @@ namespace HanTeknoloji.Web.Areas.Admin
         {
             context.MapRoute(
                 name: "imei-count",
-                url: "Admin/{controller}/{action}/{productId}/{supplierId}",
+                url: "Admin/AdminProduct/GetImeiCount/{productId}/{supplierId}",
                 defaults: new { controller = "AdminProduct", action = "GetImeiCount" }
             );
 
             context.MapRoute(
                 name: "quantity",
-                url: "Admin/{controller}/{action}/{id}/{quantity}",
-                defaults: new { controller = "AdminSale", action = "ChangeQuantity", id = UrlParameter.Optional }
+                url: "Admin/AdminSale/ChangeQuantity/{id}/{quantity}",
+                defaults: new { controller = "AdminSale", action = "ChangeQuantity", id = UrlParameter.Optional, quantity = UrlParameter.Optional }
             );
 
             context.MapRoute(

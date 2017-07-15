@@ -12,5 +12,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         public decimal TotalSalePriceKdv { get; set; }
 
         public List<ProductVM> ProductList { get; set; }
+
+        public int PhoneSaleCount { get; set; }
     }
 }

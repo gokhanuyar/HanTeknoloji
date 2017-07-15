@@ -23,7 +23,7 @@
                     <label>IMEI :</label>
                     @using (Html.BeginForm(null, null, FormMethod.Get, new { id = "supplier-form" }))
                     {
-                        @Html.DropDownList("SupplierID", (IEnumerable<SelectListItem>)ViewData["supplier"], "Tedarikçi Seçiniz", new { @class = "form-control" })
+                        @Html.DropDownList("SupplierID", (IEnumerable<SelectListItem>)ViewData["supplier"], "Tedarikçi Seçiniz", new { @class = "form-control select2" })
                     }
                 </div>
             </div>

@@ -64,6 +64,10 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                     item.KdvPrice = Math.Round(item.UnitSalePrice * item.KDV, 4);
                                     item.TotalPrice = 0;
                                     model.Cart.TotalSalePrice += item.TotalPrice / item.SaleCount;
+                                    if (item.CategoryID == 6 || item.CategoryID == 7)
+                                    {
+                                        model.Cart.PhoneSaleCount++;
+                                    }
                                     break;
                                 }
                             }
@@ -90,6 +94,10 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
 
                             model.Cart.ProductList.Add(pro);
                             model.Cart.TotalSalePrice += pro.TotalPrice;
+                            if (pro.CategoryID == 6 || pro.CategoryID == 7)
+                            {
+                                model.Cart.PhoneSaleCount++;
+                            }
                         }
                         Session["Sepet"] = model.Cart;
                     }
@@ -126,6 +134,11 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             product.Count += selectedItem.SaleCount;
             rpproduct.SaveChanges();
 
+            if (selectedItem.CategoryID == 6 || selectedItem.CategoryID == 7)
+            {
+                sepet.PhoneSaleCount--;
+            }
+
             sepet.ProductList.Remove(selectedItem);
             Session["Sepet"] = sepet;
             return RedirectToAction("Index");
@@ -140,6 +153,11 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             int oldCount = product.Count + selectedItem.SaleCount;
             product.Count = oldCount - quantity;
             rpproduct.SaveChanges();
+
+            if (selectedItem.CategoryID == 6 || selectedItem.CategoryID == 7)
+            {
+                sepet.PhoneSaleCount = product.Count;
+            }
 
             selectedItem.Count = product.Count;
             selectedItem.SaleCount = quantity;
@@ -176,6 +194,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 return Json("fail");
             }
         }
+
 
         [HttpPost]
         public ActionResult AddSale(SaleVM model)
