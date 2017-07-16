@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HanTeknoloji.Web.Areas.Admin.Models.Dto;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -68,6 +69,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         public string ExpiryDate { get; set; }
         public decimal PaidPrice { get; set; }
         public string CheckNumber { get; set; }
+        public List<int> ImeiList { get; set; }
 
         private decimal totalPrice;
         public decimal TotalPrice

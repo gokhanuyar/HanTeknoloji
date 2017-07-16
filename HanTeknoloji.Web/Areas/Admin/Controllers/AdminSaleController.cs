@@ -89,7 +89,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                 CategoryID = product.CategoryID,
                                 SaleCount = 1,
                                 KDV = product.KDV,
-                                KdvPrice = Math.Round((product.UnitSalePrice * product.KDV), 4)
+                                KdvPrice = Math.Round((product.UnitSalePrice * product.KDV), 4),
+                                ImeiList = new List<int>()
                             };
 
                             model.Cart.ProductList.Add(pro);
@@ -519,6 +520,73 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 list.Add(dto);
             }
             return list;
+        }
+
+        public JsonResult GetPhoneProducts()
+        {
+            var sepet = (CartVM)Session["Sepet"];
+            List<ProductVM> list = new List<ProductVM>();
+            if (sepet != null)
+            {
+                foreach (var item in sepet.ProductList)
+                {
+                    if ((item.CategoryID == 6 || item.CategoryID == 7) && item.SaleCount > item.ImeiList.Count)
+                    {
+                        list.Add(item);
+                    }
+                }
+            }
+
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetPhoneProductCount(int id)
+        {
+            var sepet = (CartVM)Session["Sepet"];
+            var selectedItem = sepet.ProductList.FirstOrDefault(x => x.ID == id);
+
+            ImeiOprDto dto = new ImeiOprDto();
+            dto.ImeiList = rpimei.GetListWithQuery(x => x.ProductID == selectedItem.ID && x.IsSold == false).Select(x => new ImeiDto
+            {
+                ID = x.ID,
+                IMEI = x.IMEINumber
+            }).ToList();
+
+            dto.Count = selectedItem.SaleCount - selectedItem.ImeiList.Count;
+            return Json(dto, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult AddImei(FormCollection collection)
+        {
+            int count = Convert.ToInt32(collection["count"]);
+            List<int> imeiFormList = new List<int>();
+            List<int> imeiIdList = new List<int>();
+            for (int i = 0; i < count; i++)
+            {
+                int id = Convert.ToInt32(collection["imei-number-select_" + i]);
+                imeiFormList.Add(id);
+            }
+
+            int imeiId = 0;
+            foreach (var item in imeiFormList)
+            {
+                if (!imeiIdList.Any(x => x == imeiId))
+                {
+                    imeiIdList.Add(item);
+                }
+                else
+                {
+                    return Fail("Lütfen farklı IMEI numalaraları seçin.");
+                }
+                imeiId = item;
+            }
+
+            int productId = Convert.ToInt32(collection["product"]);
+            var sepet = (CartVM)Session["Sepet"];
+            var selectedItem = sepet.ProductList.FirstOrDefault(x => x.ID == productId);
+            selectedItem.ImeiList = imeiIdList;
+            Session["Sepet"] = sepet;
+            return Success(FormMessages.Success);
         }
     }
 }

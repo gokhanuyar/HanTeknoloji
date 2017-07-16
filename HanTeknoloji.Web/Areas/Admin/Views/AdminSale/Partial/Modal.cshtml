@@ -29,7 +29,7 @@
 
                             <div class="form-group expiry-date" style="display:grid;display:none">
                                 <h4 id="payment-title">Teslim Alınan Bakiye :</h4>
-                                <input type="text" name="PaidExpiryValue" class="form-control" value="0"/>
+                                <input type="text" name="PaidExpiryValue" class="form-control" value="0" />
                             </div>
 
                             <div class="form-group" style="display:grid;">
@@ -87,6 +87,46 @@
                                     }))
                                     {
                                         @Html.Partial("../AdminCustomer/Partial/CustomerForm")
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="imeiModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">IMEI Ekleme Formu</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div id="imei-response"></div>
+                                    @using (Ajax.BeginForm("AddImei", "AdminSale", new AjaxOptions()
+                                    {
+                                        HttpMethod = "post",
+                                        OnSuccess = "ImeiFunction"
+                                    }, new { id = "imei-form" }))
+                                    {
+                                        <div class="form-group">
+                                            <label>Ürün</label>
+                                            <select class="form-control" id="imei-pro-select" name="product"></select>
+                                        </div>  
+                                        <input type="hidden" name="count" id="imei-count-hidden"/>
                                     }
                                 </div>
                             </div>

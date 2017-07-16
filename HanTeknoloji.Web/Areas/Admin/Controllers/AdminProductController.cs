@@ -494,7 +494,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     {
                         IMEINumber = model.IMEINumber,
                         SupplierID = model.SupplierID,
-                        PaymentInfoID = paymentInfo.ID
+                        PaymentInfoID = paymentInfo.ID,
+                        ProductID = model.ProductID
                     };
                     rpimei.Add(imei);
                     rppaymentinfo.SaveChanges();

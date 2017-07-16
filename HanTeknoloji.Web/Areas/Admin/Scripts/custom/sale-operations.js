@@ -84,7 +84,7 @@ $("#sale-button").click(function () {
     var datetimeNow = $.format.date(new Date($.now()), "yyyy-MM-dd");
     var expiryValue = $("input[name='PaidExpiryValue']").val();
     var price = $("#price-control").text().replace(",", ".");
-    
+
     if (customer == "" && invoice == 1) {
         sweetAlert("Uyarı", "Faturalı satışlar için müşteri seçmek zorundasınız !", "warning");
     }
@@ -160,3 +160,49 @@ function SuccessFunction(result) {
     $("#response").html(result.Message);
     $("#response").attr("class", result.CssClass);
 }
+
+function ImeiFunction(result) {
+    $("#imei-response").html(result.Message);
+    $("#imei-response").attr("class", result.CssClass);
+}
+
+
+$(function () {
+    $.ajax({
+        type: "get",
+        datatype: "json",
+        url: "/Admin/AdminSale/GetPhoneProducts",
+        success: function (result) {
+            $("#imei-pro-select").append("<option value='0'>Ürün Seçiniz</option>");
+            $.each(result, function (i, item) {
+                $("#imei-pro-select").append("<option value='" + item.ID + "'>" + item.TradeMark + " " + item.ProductModel + "</option>")
+            })
+        }
+    })
+})
+
+$("#imei-pro-select").change(function () {
+    var id = this.value;
+    if (id != 0) {
+        $.ajax({
+            type: "get",
+            url: "/Admin/AdminSale/GetPhoneProductCount/" + id,
+            success: function (result) {
+                $("#imei-count-hidden").val(result.Count);
+                for (var i = 0; i < result.Count; i++) {
+                    $("#imei-form").append("<div class='imei-wrap'><div class='form-group' style='display:grid;'>" +
+                        "<label>IMEI</label>" +
+                        "<select class='form-control' id='imei-number-select_" + i + "' name='imei-number-select_" + i + "'></select></div></div>");
+
+                    $.each(result.ImeiList, function (key, item) {
+                        $("#imei-number-select_" + i).append("<option value='" + item.ID + "'>" + item.IMEI + "</option>");
+                    });
+                }
+                $("#imei-form").append("<button class='btn btn-success' type='submit'>Gönder</button>");
+            }
+        })
+    }
+    else {
+        $(".imei-wrap").remove();
+    }
+})

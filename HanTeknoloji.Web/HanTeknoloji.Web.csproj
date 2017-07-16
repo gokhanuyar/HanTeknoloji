@@ -446,6 +446,8 @@
     <Compile Include="Areas\Admin\Models\Barcode\barcodecs.cs" />
     <Compile Include="Areas\Admin\Models\Barcode\BarCodeModel.cs" />
     <Compile Include="Areas\Admin\Models\Dto\BarChartDto.cs" />
+    <Compile Include="Areas\Admin\Models\Dto\ImeiDto.cs" />
+    <Compile Include="Areas\Admin\Models\Dto\ImeiOprDto.cs" />
     <Compile Include="Areas\Admin\Models\Dto\PaymentDetailDto.cs" />
     <Compile Include="Areas\Admin\Models\Dto\PaymentInfoDto.cs" />
     <Compile Include="Areas\Admin\Models\Dto\SaleDetailsInfoDto.cs" />

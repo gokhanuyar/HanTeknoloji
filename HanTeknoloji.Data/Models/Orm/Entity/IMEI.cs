@@ -15,5 +15,7 @@ namespace HanTeknoloji.Data.Models.Orm.Entity
         public int SupplierID { get; set; }
 
         public int PaymentInfoID { get; set; }
+
+        public int ProductID { get; set; }
     }
 }
