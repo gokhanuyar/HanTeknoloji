@@ -1,24 +1,5 @@
 ﻿/// <reference path="../../Content/vendor/jquery/jquery.min.js" />
 
-//$("#bardoce-btn").click(function () {
-//    var barcode = $("#BarcodeNumber").val().trim();
-//    if (barcode != "") {
-//        $.ajax({
-//            type: "get",
-//            url: "/Admin/AdminSale/GetProductBySerialNumber/" + barcode,
-//            success: function (result) {
-//                if (result != null) {
-//                    $(".table-body").append("<tr id='tr_" + result.ID + "'></tr>");
-//                    $("#tr_" + result.ID).append("<td>" + result.SerialNumber + "</td>");
-//                    $("#tr_" + result.ID).append("<td>" + result.TradeMark + result.ProductModel + "</td>");
-//                    $("#tr_" + result.ID).append("<td>" + result.Color + "</td>");
-//                    $("#tr_" + result.ID).append("<td>" + result.Count + "</td>");
-//                    $("#tr_" + result.ID).append("<td>" + result.UnitPrice + "</td>");
-//                }
-//            }
-//        })
-//    }
-//});
 
 $("#BarcodeNumber").focus();
 $("#BarcodeNumber").change(function () {
@@ -56,24 +37,6 @@ $(".total-input").change(function () {
         }
     });
 });
-
-//function QuantityPlus(id) {
-//    var firstQuantity = $("#quantity_" + id).val();
-//    var firstPrice = $("#hidden_" + id).val().replace(",", ".");
-//    var totalPrice = $(".total-price").text().replace(",", ".");
-
-//    var lastQuantity = parseFloat(firstQuantity) + 1;
-//    var lastPrice = (parseFloat(firstPrice) * lastQuantity).toFixed(1);
-//    totalPrice = (parseFloat(totalPrice) + parseFloat(firstPrice)).toFixed(1);
-
-//    $(".total-price").text(totalPrice);
-//    $("#quantity_" + id).val(lastQuantity);
-//    $("#total_" + id).text(lastPrice);
-//    $.ajax({
-//        type: "get",
-//        url: "/AlphaCart/ChangeQuantity/" + id + "/" + lastQuantity,
-//    });
-//}
 
 $("#sale-button").click(function () {
     var payment = $("#payment-type").find(":selected").text();
@@ -164,8 +127,14 @@ function SuccessFunction(result) {
 function ImeiFunction(result) {
     $("#imei-response").html(result.Message);
     $("#imei-response").attr("class", result.CssClass);
+    if (result.IsSuccess) {
+        setTimeout(redirect, 2000);
+    }    
 }
 
+var redirect = function Redirect() {
+    window.location.href = "/Admin/AdminSale/Index";
+}
 
 $(function () {
     $.ajax({
@@ -186,7 +155,7 @@ $("#imei-pro-select").change(function () {
     if (id != 0) {
         $.ajax({
             type: "get",
-            url: "/Admin/AdminSale/GetPhoneProductCount/" + id,
+            url: "/Admin/AdminSale/GetIMEIbyProductID/" + id,
             success: function (result) {
                 $("#imei-count-hidden").val(result.Count);
                 for (var i = 0; i < result.Count; i++) {

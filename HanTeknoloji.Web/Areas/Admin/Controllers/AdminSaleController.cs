@@ -66,7 +66,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                     model.Cart.TotalSalePrice += item.TotalPrice / item.SaleCount;
                                     if (item.CategoryID == 6 || item.CategoryID == 7)
                                     {
-                                        model.Cart.PhoneSaleCount++;
+                                        model.Cart.PhoneCount++;
+                                        model.Cart.ImeiCount = AddedImeiCount(model.Cart.ProductList);
                                     }
                                     break;
                                 }
@@ -97,8 +98,10 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                             model.Cart.TotalSalePrice += pro.TotalPrice;
                             if (pro.CategoryID == 6 || pro.CategoryID == 7)
                             {
-                                model.Cart.PhoneSaleCount++;
+                                model.Cart.PhoneCount++;
+                                model.Cart.ImeiCount = AddedImeiCount(model.Cart.ProductList);
                             }
+
                         }
                         Session["Sepet"] = model.Cart;
                     }
@@ -137,10 +140,11 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
 
             if (selectedItem.CategoryID == 6 || selectedItem.CategoryID == 7)
             {
-                sepet.PhoneSaleCount--;
+                sepet.PhoneCount -= selectedItem.SaleCount;
             }
 
             sepet.ProductList.Remove(selectedItem);
+            sepet.ImeiCount = AddedImeiCount(sepet.ProductList);
             Session["Sepet"] = sepet;
             return RedirectToAction("Index");
         }
@@ -157,7 +161,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
 
             if (selectedItem.CategoryID == 6 || selectedItem.CategoryID == 7)
             {
-                sepet.PhoneSaleCount = product.Count;
+                sepet.PhoneCount -= selectedItem.SaleCount;
+                sepet.PhoneCount += quantity;
             }
 
             selectedItem.Count = product.Count;
@@ -195,7 +200,6 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 return Json("fail");
             }
         }
-
 
         [HttpPost]
         public ActionResult AddSale(SaleVM model)
@@ -540,7 +544,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             return Json(list, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult GetPhoneProductCount(int id)
+        public JsonResult GetIMEIbyProductID(int id)
         {
             var sepet = (CartVM)Session["Sepet"];
             var selectedItem = sepet.ProductList.FirstOrDefault(x => x.ID == id);
@@ -560,33 +564,41 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         {
             int count = Convert.ToInt32(collection["count"]);
             List<int> imeiFormList = new List<int>();
-            List<int> imeiIdList = new List<int>();
+
             for (int i = 0; i < count; i++)
             {
                 int id = Convert.ToInt32(collection["imei-number-select_" + i]);
                 imeiFormList.Add(id);
             }
 
-            int imeiId = 0;
+            int productId = Convert.ToInt32(collection["product"]);
+            var sepet = (CartVM)Session["Sepet"];
+            var selectedItem = sepet.ProductList.FirstOrDefault(x => x.ID == productId);
+
             foreach (var item in imeiFormList)
             {
-                if (!imeiIdList.Any(x => x == imeiId))
+                if (!selectedItem.ImeiList.Any(x => x == item))
                 {
-                    imeiIdList.Add(item);
+                    selectedItem.ImeiList.Add(item);
                 }
                 else
                 {
                     return Fail("Lütfen farklı IMEI numalaraları seçin.");
                 }
-                imeiId = item;
             }
-
-            int productId = Convert.ToInt32(collection["product"]);
-            var sepet = (CartVM)Session["Sepet"];
-            var selectedItem = sepet.ProductList.FirstOrDefault(x => x.ID == productId);
-            selectedItem.ImeiList = imeiIdList;
+            sepet.ImeiCount = AddedImeiCount(sepet.ProductList);
             Session["Sepet"] = sepet;
-            return Success(FormMessages.Success);
+            return Success(FormMessages.Success + " Lütfen Bekleyin...");
         }
+
+        private int AddedImeiCount(List<ProductVM> productList)
+        {
+            int count = 0;
+            foreach (var item in productList)
+            {
+                count += item.ImeiList.Count;
+            }
+            return count;
+        }//
     }
 }

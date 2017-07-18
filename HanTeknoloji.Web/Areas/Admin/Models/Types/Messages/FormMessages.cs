@@ -7,7 +7,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.Types.Messages
 {
     public class FormMessages
     {
-        public static string Success = "İşlem başarıyla gerçekleşti";
+        public static string Success = "İşlem başarıyla gerçekleşti.";
         public static string ValidationError = "Lütfen gerekli alanları doldurunuz";
         public static string UserLoginError = "Kullanıcı adı veya şifre yanlış";
         public static string AddAdminError = "Bu emaille bir admin mevcut. Lütfen başka bir email adresi giriniz";
