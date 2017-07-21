@@ -229,24 +229,14 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                         Quantity = item.SaleCount,
                         Price = Math.Round(item.UnitSalePrice, 2),
                         AddDate = DateTime.Now,
-                        //UnitBuyPrice = item.UnitBuyPrice,
+                        IsPhone = item.CategoryID == 6 || item.CategoryID == 7 ? true : false,
                         UnitSalePrice = item.UnitPrice,
                     };
-                    if (item.CategoryID == 6 || item.CategoryID == 7)
-                    {
-                        var imei = rpimei.FirstOrDefault(x => x.IsSold == false);
-                        if (imei != null)
-                        {
-                            detail.IMEI = imei.IMEINumber;
-                            imei.IsSold = true;
-                            rpimei.SaveChanges();
-                        }
-                    }
                     list.Add(detail);
                 }
                 sale.SaleDetails = list;
                 rpsale.Add(sale);
-                SetPaymentInfoforAdding(sale.SaleDetails);
+                SetPaymentInfoforAdding(sale.SaleDetails, sepet.ProductList);
 
                 if (model.PaymentType == "Vadeli")
                 {
@@ -449,46 +439,67 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             return list;
         }
 
-        private void SetPaymentInfoforAdding(List<SaleDetails> details)
+        private void SetPaymentInfoforAdding(List<SaleDetails> details, List<ProductVM> products)
         {
-            foreach (var detail in details)
+            for (int i = 0; i < details.Count; i++)
             {
-                List<PaymentInfoDto> list = new List<PaymentInfoDto>();
-                int infoCount = 0;
-                int fark = 0;
-                int quantity = detail.Quantity;
-                while (fark >= infoCount)
+                if (details[i].IsPhone)
                 {
-                    PaymentInfoDto dto = new PaymentInfoDto();
-                    var paymentInfo = rppaymentinfo
-                    .FirstOrDefault(x => x.ProductID == detail.ProductID && x.Count != 0);
-                    //if (selectedItem.PaymentInfoIDs.Contains(paymentInfo.ID))
-                    //{
-                    //    paymentInfo.Count = paymentInfo.Count + selectedItem.SaleCount;
-                    //}
-                    infoCount = paymentInfo.Count;
-                    if (infoCount >= quantity)
+                    var imeiList = products[i].ImeiList;
+                    foreach (var item in imeiList)
                     {
-                        paymentInfo.Count -= quantity;
-                        rppaymentinfo.SaveChanges();
-                        dto.PaymentInfoID = paymentInfo.ID;
-                        dto.Quantity = quantity;
-                        list = GetPaymentInfoIdList(list, dto);
-                    }
-                    else
-                    {
-                        fark = quantity - infoCount;
-                        int islemSayisi = quantity - fark;
-                        quantity -= islemSayisi;
-                        paymentInfo.Count -= islemSayisi;
-                        infoCount = paymentInfo.Count;
-                        rppaymentinfo.SaveChanges();
-                        dto.PaymentInfoID = paymentInfo.ID;
-                        dto.Quantity = islemSayisi;
-                        list = GetPaymentInfoIdList(list, dto);
+                        List<PaymentInfoDto> list = new List<PaymentInfoDto>();
+                        PaymentInfoDto dto = new PaymentInfoDto();
+                        var imei = rpimei.Find(item);
+                        imei.IsSold = true;
+                        var paymentInfo = rppaymentinfo.Find(imei.PaymentInfoID);
+                        paymentInfo.Count--;
+                        dto.PaymentInfoID = imei.PaymentInfoID;
+                        dto.Quantity = 1;
+                        dto.IMEI = imei.IMEINumber;
+                        list.Add(dto);
+                        AddSaleDetailInfo(details[i], list);
                     }
                 }
-                AddSaleDetailInfo(detail, list);
+                else
+                {
+                    List<PaymentInfoDto> list = new List<PaymentInfoDto>();
+                    int infoCount = 0;
+                    int fark = 0;
+                    int quantity = details[i].Quantity;
+                    while (fark >= infoCount)
+                    {
+                        PaymentInfoDto dto = new PaymentInfoDto();
+                        var paymentInfo = rppaymentinfo
+                        .FirstOrDefault(x => x.ProductID == details[i].ProductID && x.Count != 0);
+                        //if (selectedItem.PaymentInfoIDs.Contains(paymentInfo.ID))
+                        //{
+                        //    paymentInfo.Count = paymentInfo.Count + selectedItem.SaleCount;
+                        //}
+                        infoCount = paymentInfo.Count;
+                        if (infoCount >= quantity)
+                        {
+                            paymentInfo.Count -= quantity;
+                            rppaymentinfo.SaveChanges();
+                            dto.PaymentInfoID = paymentInfo.ID;
+                            dto.Quantity = quantity;
+                            list = GetPaymentInfoIdList(list, dto);
+                        }
+                        else
+                        {
+                            fark = quantity - infoCount;
+                            int islemSayisi = quantity - fark;
+                            quantity -= islemSayisi;
+                            paymentInfo.Count -= islemSayisi;
+                            infoCount = paymentInfo.Count;
+                            rppaymentinfo.SaveChanges();
+                            dto.PaymentInfoID = paymentInfo.ID;
+                            dto.Quantity = islemSayisi;
+                            list = GetPaymentInfoIdList(list, dto);
+                        }
+                    }
+                    AddSaleDetailInfo(details[i], list);
+                }
             }
         }
 
@@ -502,11 +513,14 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     PaymentInfoID = item.PaymentInfoID,
                     SaleDetailID = detail.ID,
                     AddDate = DateTime.Now,
-                    Quantity = item.Quantity
+                    Quantity = item.Quantity,
+                    IMEI = item.IMEI
                 };
                 infoList.Add(entity);
             }
             rpsaledetailinfo.AddRange(infoList);
+            rpimei.SaveChanges();
+            rppaymentinfo.SaveChanges();
         }
 
         private List<PaymentInfoDto> GetPaymentInfoIdList(List<PaymentInfoDto> list, PaymentInfoDto dto)
@@ -568,7 +582,14 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             for (int i = 0; i < count; i++)
             {
                 int id = Convert.ToInt32(collection["imei-number-select_" + i]);
-                imeiFormList.Add(id);
+                if (!imeiFormList.Any(x => x == id))
+                {
+                    imeiFormList.Add(id);
+                }
+                else
+                {
+                    return Fail("Lütfen farklı IMEI numalaraları seçin.");
+                }
             }
 
             int productId = Convert.ToInt32(collection["product"]);
@@ -599,6 +620,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 count += item.ImeiList.Count;
             }
             return count;
-        }//
+        }
+
     }
 }

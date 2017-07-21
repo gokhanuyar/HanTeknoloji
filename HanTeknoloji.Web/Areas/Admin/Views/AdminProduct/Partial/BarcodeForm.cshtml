@@ -34,7 +34,7 @@
 
     <div class="form-group">
         @Html.LabelFor(x => x.SupplierID)<span style="color:red"> *</span>
-        @Html.DropDownListFor(x => x.SupplierID, (IList<SelectListItem>)ViewData["supplier"], new { @class = "form-control", @readonly = true })
+        @Html.DropDownListFor(x => x.SupplierID, (IList<SelectListItem>)ViewData["supplier"], new { @class = "form-control" })
         @Html.ValidationMessageFor(x => x.SupplierID)
     </div>
 

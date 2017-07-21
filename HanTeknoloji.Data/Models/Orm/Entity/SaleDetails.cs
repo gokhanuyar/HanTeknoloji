@@ -23,6 +23,6 @@ namespace HanTeknoloji.Data.Models.Orm.Entity
 
         public decimal UnitSalePrice { get; set; }
 
-        public string IMEI { get; set; }
+        public bool IsPhone { get; set; }
     }
 }

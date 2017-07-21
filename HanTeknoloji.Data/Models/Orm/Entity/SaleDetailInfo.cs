@@ -13,5 +13,7 @@ namespace HanTeknoloji.Data.Models.Orm.Entity
         public int PaymentInfoID { get; set; }
 
         public int Quantity { get; set; }
+
+        public string IMEI { get; set; }
     }
 }

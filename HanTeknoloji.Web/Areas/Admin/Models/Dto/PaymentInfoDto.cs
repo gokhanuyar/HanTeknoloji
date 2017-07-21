@@ -10,5 +10,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.Dto
         public int PaymentInfoID { get; set; }
 
         public int Quantity { get; set; }
+
+        public string IMEI { get; set; }
     }
 }
