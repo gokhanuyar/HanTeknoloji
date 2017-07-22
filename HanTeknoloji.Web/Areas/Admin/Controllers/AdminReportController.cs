@@ -37,7 +37,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                 .AddDate.Year == _date.Year && x
                                 .IsInvoiced == false)
                                 .OrderByDescending(x => x.AddDate)
-                                .ToList();
+                                .ToPagedList(_page, 20);
                 ViewBag.date = String.Format("{0:y}", _date);
                 return View(GetProductSaleReport(sales, _page));
             }
@@ -50,20 +50,17 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                 .AddDate.Year == _date.Year && x
                                 .IsInvoiced == false)
                                 .OrderByDescending(x => x.AddDate)
-                                .ToList();
+                                .ToPagedList(_page, 20);
                 ViewBag.date = _date.ToLongDateString();
                 return View(GetProductSaleReport(sales, _page));
             }
         }
 
-        private IPagedList<ReportVM> GetProductSaleReport(List<Sale> sales, int _page)
+        private IPagedList<ReportVM> GetProductSaleReport(IPagedList<Sale> sales, int _page)
         {
             var list = sales.Select(x => new ReportVM()
             {
                 ID = x.ID,
-                PaymentType = x.PaymentType,
-                SaleDate = String.Format("{0:d/M/yyyy}", x.AddDate),
-                SaleTime = String.Format("{0:HH:mm}", x.AddDate),
                 UserID = x.UserID
             }).ToList();
 
@@ -92,7 +89,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 UnitBuyPrice = rppaymentinfo.Find(i.PaymentInfoID).UnitPrice
             }).ToList()));
 
-            list.ForEach(l => l.AdminUserName = rpadminuser.Find(l.UserID).FullName);
+            //list.ForEach(l => l.AdminUserName = rpadminuser.Find(l.UserID).FullName);
             List<ReportVM> model = new List<ReportVM>();
             foreach (var sale in list)
             {
@@ -100,6 +97,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 {
                     ReportVM vm = new ReportVM()
                     {
+                        ID = sale.ID,
                         AdminUserName = sale.AdminUserName,
                         Product = detail.Product,
                         Quantity = detail.Quantity,
@@ -146,7 +144,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                 .AddDate.Year == _date.Year && x
                                 .IsInvoiced)
                                 .OrderByDescending(x => x.AddDate)
-                                .ToList();
+                                .ToPagedList(_page, 20);
                 ViewBag.date = String.Format("{0:y}", _date);
                 return View(GetInvoiceProductSaleReport(sales, _page));
             }
@@ -159,13 +157,13 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                 .AddDate.Year == _date.Year && x
                                 .IsInvoiced)
                                 .OrderByDescending(x => x.AddDate)
-                                .ToList();
+                                .ToPagedList(_page, 20);
                 ViewBag.date = _date.ToLongDateString();
                 return View(GetInvoiceProductSaleReport(sales, _page));
             }
         }
 
-        private IPagedList<ReportVM> GetInvoiceProductSaleReport(List<Sale> sales, int _page)
+        private IPagedList<ReportVM> GetInvoiceProductSaleReport(IPagedList<Sale> sales, int _page)
         {
             var list = sales.Select(x => new ReportVM()
             {
@@ -494,6 +492,35 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 Text = x.CompanyName + " Tel:" + x.Phone,
                 Value = x.ID.ToString()
             }).ToList();
+        }
+
+        public JsonResult GetSaleDetail(int id)
+        {
+            var sale = rpsale.Find(id);
+            List<SaleDetailInfo> infoList = new List<SaleDetailInfo>();
+            var detailList = rpsaledetails.GetListWithQuery(x => x.SaleID == sale.ID);
+            foreach (var item in detailList)
+            {
+                var itemInfoList = rpsaledetailinfo.GetListWithQuery(x => x.SaleDetailID == item.ID);
+                infoList.AddRange(itemInfoList);
+            }
+
+            List<string> imeiList = new List<string>();
+
+            foreach (var item in infoList)
+            {
+                imeiList.Add(item.IMEI);
+            }
+
+            var vm = new ReportVM
+            {
+                PaymentType = sale.PaymentType,
+                SaleDate = String.Format("{0:d/M/yyyy}", sale.AddDate),
+                SaleTime = String.Format("{0:HH:mm}", sale.AddDate),
+                AdminUserName = rpadminuser.Find(sale.UserID).FullName,
+                ImeiList = imeiList
+            };
+            return Json(vm, JsonRequestBehavior.AllowGet);
         }
     }
 }

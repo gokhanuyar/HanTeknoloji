@@ -8,6 +8,10 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
 {
     public class ReportVM : BaseVM
     {
+        public ReportVM()
+        {
+            ImeiList = new List<string>();
+        }
         public int CustomerID { get; set; }
 
         public int SupplierID { get; set; }
@@ -39,6 +43,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         public string Note { get; set; }
 
         public List<SaleDetailsVM> Details { get; set; }
+
+        public List<string> ImeiList { get; set; }
 
         public decimal UnitBuyPrice { get; set; }
         public decimal UnitSalePrice { get; set; }

@@ -11,7 +11,6 @@ $("#TradeMarkID").change(function () {
                     $("#ProductModelID").append('<option value="' + item.ID + '">' + item.Name + '</option>');
                 });
             }
-            $("#ProductModelID").append('<option value="0">-</option>');
         }
     })
 });

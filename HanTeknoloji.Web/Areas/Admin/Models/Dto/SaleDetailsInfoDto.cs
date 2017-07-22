@@ -10,5 +10,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.Dto
         public int Quantity { get; set; }
 
         public decimal UnitBuyPrice { get; set; }
+
+        public string IMEI { get; set; }
     }
 }
