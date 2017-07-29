@@ -101,7 +101,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Müşteri Bilgileri</h4>
+                <h4 class="modal-title">Satış Detayı</h4>
             </div>
             <div class="modal-body">
 
@@ -110,44 +110,11 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
             </div>
         </div>
-
     </div>
 </div>
 
 @Html.PagedListPager(Model, page => Url.Action("ProductSale", "AdminReport", new { page = page, id = ViewBag.Statuid }))
-@section scripts{
-    <script>
-        $("#date").change(function () {
-            $("#form_date").submit();
-        });
-        $("#month").change(function () {
-            $("#form_month").submit();
-        });
 
-        function GetDetail(id) {
-            $(".modal-body").empty();
-            $.ajax({
-                type: "get",
-                url: "/admin/adminreport/GetSaleDetail/" + id,
-                success: function (result) {
-                    $(".modal-body").append("<h4>Ödeme Şekli :</h4>" +
-                        "<p>" + result.PaymentType + "</p><hr/>" +
-                        "<h4>Tarih :</h4>" +
-                        "<p>" + result.SaleDate + "</p><hr/>" +
-                        "<h4>Saat :</h4>" +
-                        "<p>" + result.SaleTime + "</p><hr/>" +
-                        "<h4>Personel :</h4>" +
-                        "<p>" + result.AdminUserName + "</p>");
-                    if (result.ImeiList.length > 0) {
-                        for (var i = 0; i < result.ImeiList.length; i++) {
-                            var index = i + 1;
-                            $(".modal-body").append("<hr/><h4>" + index + ".IMEI Numarası</h4>" +
-                                "<p>" + result.ImeiList[i] + "</p>");
-                        }
-                    }                    
-                    $("#myModal").modal("show");
-                }
-            })
-        }
-    </script>
+@section scripts{
+    <script src="~/Areas/Admin/Scripts/custom/product-sale-report.js"></script>
 }

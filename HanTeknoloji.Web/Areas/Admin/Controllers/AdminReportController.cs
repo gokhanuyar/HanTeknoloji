@@ -98,14 +98,10 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     ReportVM vm = new ReportVM()
                     {
                         ID = sale.ID,
-                        AdminUserName = sale.AdminUserName,
                         Product = detail.Product,
                         Quantity = detail.Quantity,
                         KdvPrice = detail.KdvPrice,
                         Price = detail.Price + detail.KdvPrice,
-                        SaleDate = sale.SaleDate,
-                        SaleTime = sale.SaleTime,
-                        PaymentType = sale.PaymentType,
                         UnitBuyPrice = detail.InfoList.Sum(x => x.UnitBuyPrice * x.Quantity) / detail.InfoList.Sum(x => x.Quantity),
                         UnitSalePrice = detail.UnitSalePrice
                     };
@@ -168,10 +164,6 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             var list = sales.Select(x => new ReportVM()
             {
                 ID = x.ID,
-                PaymentType = x.PaymentType,
-                SaleDate = String.Format("{0:d/M/yyyy HH:mm}", x.AddDate),
-                InvoiceDate = String.Format("{0:d/M/yyyy HH:mm}", x.InvoiceDate),
-                UserID = x.UserID,
                 CustomerID = x.CustomerID
             }).ToList();
 
@@ -200,7 +192,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 UnitBuyPrice = rppaymentinfo.Find(i.PaymentInfoID).UnitPrice
             }).ToList()));
 
-            list.ForEach(l => l.AdminUserName = rpadminuser.Find(l.UserID).FullName);
+            //list.ForEach(l => l.AdminUserName = rpadminuser.Find(l.UserID).FullName);
             List<ReportVM> model = new List<ReportVM>();
             foreach (var sale in list)
             {
@@ -208,15 +200,12 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 {
                     ReportVM vm = new ReportVM()
                     {
-                        AdminUserName = sale.AdminUserName,
+                        ID = sale.ID,
                         Product = detail.Product,
                         Quantity = detail.Quantity,
                         KdvPrice = detail.KdvPrice,
                         Price = detail.Price + detail.KdvPrice,
-                        SaleDate = sale.SaleDate,
-                        InvoiceDate = sale.InvoiceDate,
                         CustomerID = sale.CustomerID,
-                        PaymentType = sale.PaymentType,
                         UnitBuyPrice = detail.InfoList.Sum(x => x.UnitBuyPrice * x.Quantity) / detail.InfoList.Sum(x => x.Quantity),
                         UnitSalePrice = detail.UnitSalePrice
                     };
@@ -302,8 +291,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 ViewBag.saleprice = list.Sum(x => x.Price);
                 ViewBag.quantity = list.Count;
                 ViewBag.date = _date.ToLongDateString();
-                ViewBag.cost = cost.Cost;
-                ViewBag.kar = ViewBag.saleprice - cost.Cost;
+                ViewBag.cost = cost != null ? cost.Cost : 0;
+                ViewBag.kar = ViewBag.saleprice - ViewBag.cost;
                 IPagedList<ReportVM> model = list.ToPagedList(_page, 20);
                 return View(model);
             }
@@ -515,9 +504,10 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             var vm = new ReportVM
             {
                 PaymentType = sale.PaymentType,
-                SaleDate = String.Format("{0:d/M/yyyy}", sale.AddDate),
+                SaleDate = sale.AddDate.ToLongDateString(),
                 SaleTime = String.Format("{0:HH:mm}", sale.AddDate),
                 AdminUserName = rpadminuser.Find(sale.UserID).FullName,
+                InvoiceDate = sale.InvoiceDate.Value.ToLongDateString(),
                 ImeiList = imeiList
             };
             return Json(vm, JsonRequestBehavior.AllowGet);

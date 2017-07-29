@@ -153,6 +153,7 @@
     <Content Include="Areas\Admin\Content\custom\home.css" />
     <Content Include="Areas\Admin\Content\custom\invoice-page-A4.css" />
     <Content Include="Areas\Admin\Content\custom\invoice-page.css" />
+    <Content Include="Areas\Admin\Content\custom\layout.css" />
     <Content Include="Areas\Admin\Content\custom\sale-page.css" />
     <Content Include="Areas\Admin\Content\custom\validation.css" />
     <Content Include="Areas\Admin\Content\data\flot-data.js" />
@@ -270,6 +271,7 @@
     <Content Include="Areas\Admin\Scripts\custom\home.js" />
     <Content Include="Areas\Admin\Scripts\custom\invoice-sale-report.js" />
     <Content Include="Areas\Admin\Scripts\custom\layout.js" />
+    <Content Include="Areas\Admin\Scripts\custom\product-sale-report.js" />
     <Content Include="Areas\Admin\Scripts\custom\region.js" />
     <Content Include="Areas\Admin\Scripts\custom\sale-operations.js" />
     <Content Include="Areas\Admin\Scripts\custom\product-list.js" />
