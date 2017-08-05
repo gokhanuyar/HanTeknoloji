@@ -10,13 +10,13 @@ $("#month").change(function () {
 })
 
 function Customer(id) {
-    $(".modal-body").empty();
+    $("#modal-customer-content").empty();
     $.ajax({
         type: "get",
         url: "/Admin/AdminReport/GetCustomer/" + id,
         success: function (result) {
             if (result.IsPerson) {
-                $(".modal-body").append("<h4>Müşteri Adı/Ünvanı</h4>" +
+                $("#modal-customer-content").append("<h4>Müşteri Adı/Ünvanı</h4>" +
                     "<p>" + result.Name + "</p><hr />" +
                     "<h4>T.C. Numarası</h4>" +
                     "<p>" + result.TCNo + "</p><hr />" +
@@ -27,7 +27,7 @@ function Customer(id) {
                     "<p>" + result.City + " / " + result.Region + "</p>");
             }
             else {
-                $(".modal-body").append("<h4>Müşteri Adı/Ünvanı</h4>" +
+                $("#modal-customer-content").append("<h4>Müşteri Adı/Ünvanı</h4>" +
                     "<p>" + result.Name + "</p><hr />" +
                     "<h4>Telefon Numarası</h4>" +
                     "<p>" + result.Phone + "</p><hr />" +
@@ -45,12 +45,12 @@ function Customer(id) {
 }
 
 function GetDetail(id) {
-    $(".modal-body").empty();
+    $("#modal-detail-content").empty();
     $.ajax({
         type: "get",
         url: "/admin/adminreport/GetSaleDetail/" + id,
         success: function (result) {
-            $(".modal-body").append("<h4>Ödeme Şekli :</h4>" +
+            $("#modal-detail-content").append("<h4>Ödeme Şekli :</h4>" +
                 "<p>" + result.PaymentType + "</p><hr/>" +
                 "<h4>Satış Tarihi :</h4>" +
                 "<p>" + result.SaleDate + "</p><hr/>" +
@@ -63,7 +63,7 @@ function GetDetail(id) {
             if (result.ImeiList.length > 0) {
                 for (var i = 0; i < result.ImeiList.length; i++) {
                     var index = i + 1;
-                    $(".modal-body").append("<hr/><h4>" + index + ".IMEI Numarası</h4>" +
+                    $("#modal-detail-content").append("<hr/><h4>" + index + ".IMEI Numarası</h4>" +
                         "<p>" + result.ImeiList[i] + "</p>");
                 }
             }

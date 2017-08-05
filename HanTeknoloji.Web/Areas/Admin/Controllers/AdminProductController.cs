@@ -526,7 +526,14 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
 
         private void GetAllSuppliers()
         {
-            ViewData["supplier"] = rpsupplier.GetAll().Select(x => new SelectListItem
+            var paymentInfoList = rppaymentinfo.GetListWithQuery(x => x.IMEICount > 0);
+            var list = new List<Supplier>();
+            foreach (var item in paymentInfoList)
+            {
+                var supplier = rpsupplier.Find(item.SupplierID);
+                list.Add(supplier);
+            }
+            ViewData["supplier"] = list.Select(x => new SelectListItem
             {
                 Text = x.CompanyName,
                 Value = x.ID.ToString()

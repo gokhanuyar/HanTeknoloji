@@ -13,6 +13,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.Dto
         public string CategoryID { get; set; }
         public string ProductID { get; set; }
         public string Payment { get; set; }
+        public string SupplierID { get; set; }
         public bool IsInvoiced { get; set; }
     }
 }

@@ -27,6 +27,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Models.VM
         public string PaymentType { get; set; }
 
         public int Quantity { get; set; }
+        public int SaleQuantity { get; set; }
 
         public string SaleDate { get; set; }
 

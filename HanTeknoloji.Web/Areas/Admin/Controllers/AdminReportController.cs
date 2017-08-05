@@ -19,7 +19,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             int _page = page ?? 1;
             FilterDto dto = new FilterDto { IsInvoiced = false };
             FilterOperations(collection, ref dto);
-            var list = ReportOperations(dto);
+            var list = ReportOperations(dto, false);
 
             GetDropdownItems();
             return View(GetProductSaleReport(list, _page));
@@ -92,7 +92,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             int _page = page ?? 1;
             FilterDto dto = new FilterDto { IsInvoiced = true };
             FilterOperations(collection, ref dto);
-            var list = ReportOperations(dto);
+            var list = ReportOperations(dto, true);
 
             GetDropdownItems();
             return View(GetInvoiceProductSaleReport(list, _page));
@@ -157,7 +157,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             ViewBag.saleprice = model.Sum(x => x.Price);
             ViewBag.kdv = model.Sum(x => x.KdvPrice);
             ViewBag.brut = ViewBag.saleprice - (ViewBag.unitprice + ViewBag.kdv);
-            IPagedList<ReportVM> pagedModel = model.ToPagedList(_page, 2);
+            IPagedList<ReportVM> pagedModel = model.ToPagedList(_page, 20);
             return pagedModel;
         }
 
@@ -235,24 +235,6 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 IPagedList<ReportVM> model = list.ToPagedList(_page, 20);
                 return View(model);
             }
-        }
-
-        public JsonResult GetCustomer(int id)
-        {
-            var customer = rpcustomer.Find(id);
-            CustomerVM model = new CustomerVM()
-            {
-                Name = customer.Name,
-                TCNo = customer.TCNo,
-                Phone = customer.Phone,
-                TaxOffice = customer.TaxOffice,
-                TaxNumber = customer.TaxNumber,
-                City = rpcity.Find(customer.CityID).Name,
-                Region = rpregion.Find(customer.RegionID).Name,
-                Address = customer.Address,
-                IsPerson = customer.IsPerson
-            };
-            return Json(model, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult CustomerReport(int? id, int? page)
@@ -352,6 +334,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                         ProductID = x.ProductID,
                         PaymentType = x.Payment,
                         Quantity = x.BuyingCount,
+                        SaleQuantity = x.Count,
                         UnitBuyPrice = x.UnitPrice,
                         SaleDate = String.Format("{0:d/M/yyyy}", x.AddDate),
                         SaleTime = String.Format("{0:HH:mm}", x.AddDate),
@@ -366,6 +349,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
 
                 ViewBag.quantity = list.Sum(x => x.Quantity);
                 ViewBag.saleprice = list.Sum(x => x.Price);
+                ViewBag.saleQuantity = ViewBag.quantity - list.Sum(x => x.SaleQuantity);
                 string name = rpsupplier.Find((int)id).CompanyName;
                 ViewBag.supplierName = name;
             }
@@ -422,6 +406,24 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             }).ToList();
         }
 
+        public JsonResult GetCustomer(int id)
+        {
+            var customer = rpcustomer.Find(id);
+            CustomerVM model = new CustomerVM()
+            {
+                Name = customer.Name,
+                TCNo = customer.TCNo,
+                Phone = customer.Phone,
+                TaxOffice = customer.TaxOffice,
+                TaxNumber = customer.TaxNumber,
+                City = rpcity.Find(customer.CityID).Name,
+                Region = rpregion.Find(customer.RegionID).Name,
+                Address = customer.Address,
+                IsPerson = customer.IsPerson
+            };
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult GetSaleDetail(int id)
         {
             var sale = rpsale.Find(id);
@@ -470,6 +472,11 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 Text = x.TradeMark + " " + x.ProductModel,
                 Value = x.ID.ToString()
             });
+            ViewData["supplier"] = rpsupplier.GetAll().Select(x => new SelectListItem
+            {
+                Text = x.CompanyName,
+                Value = x.ID.ToString()
+            });
         }
 
         private FilterDto FilterOperations(FormCollection collection, ref FilterDto dto)
@@ -485,6 +492,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     dto.ProductID = _form["_product"];
                     dto.Payment = _form["_payment"];
                     dto.DateSelect = _form["_dateSelect"];
+                    //dto.SupplierID = _form["_supplier"];
                 }
             }
             else
@@ -495,6 +503,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 dto.ProductID = collection["_product"];
                 dto.Payment = collection["_payment"];
                 dto.DateSelect = collection["_dateSelect"];
+                //dto.SupplierID = collection["_supplier"];
                 //sayfalamada en son atılan sorguyu kaybetmemek için Session da tutuyoruz
                 if (dto.IsInvoiced)
                 {
@@ -508,9 +517,9 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             return dto;
         }
 
-        private List<Sale> ReportOperations(FilterDto dto)
+        private List<Sale> ReportOperations(FilterDto dto, bool isInvoiced)
         {
-            var list = rpsale.GetAll();
+            var list = rpsale.GetListWithQuery(x => x.IsInvoiced == isInvoiced).ToList();
             string selection = "";
             if (dto.DateSelect == "1")
             {
@@ -518,8 +527,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 list = list.Where(x => x
                                   .AddDate.Day == date.Day && x
                                   .AddDate.Month == date.Month && x
-                                  .AddDate.Year == date.Year && x
-                                  .IsInvoiced == false)
+                                  .AddDate.Year == date.Year)
                                 .OrderByDescending(x => x.AddDate)
                                 .ToList();
                 selection += date.ToLongDateString();
@@ -530,8 +538,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 var date = Convert.ToDateTime(dto.Date);
                 list = list.Where(x => x
                                   .AddDate.Month == date.Month && x
-                                  .AddDate.Year == date.Year && x
-                                  .IsInvoiced == false)
+                                  .AddDate.Year == date.Year)
                                 .OrderByDescending(x => x.AddDate)
                                 .ToList();
                 selection += selection != "" ? " /// " + String.Format("{0:y}", date) : String.Format("{0:y}", date);
@@ -582,6 +589,57 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 string name = rptrademark.Find(pro.TradeMarkID).Name + " " + rpproductmodel.Find(pro.ProductModelID).Name;
                 selection += selection != "" ? " /// " + name : name;
             }
+
+            //if (!string.IsNullOrEmpty(dto.SupplierID))
+            //{
+            //    int supplierId = Convert.ToInt32(dto.SupplierID);
+            //    var supplier = rpsupplier.Find(supplierId);
+            //    var dbPaymentInfoList = rppaymentinfo.GetListWithQuery(x => x.SupplierID == supplierId);
+
+            //    var detailInfoList = new List<SaleDetailInfo>();
+            //    foreach (var item in dbPaymentInfoList)
+            //    {
+            //        var infoList = rpsaledetailinfo.GetListWithQuery(x => x.PaymentInfoID == item.ID);
+            //        detailInfoList.AddRange(infoList);
+            //    }
+
+            //    var detailIdList = new List<int>();
+            //    foreach (var info in detailInfoList)
+            //    {
+            //        foreach (var sale in list)
+            //        {
+            //            var saleDetails = sale.SaleDetails.Where(x => x.ID == info.SaleDetailID).ToList();
+            //            foreach (var item in saleDetails)
+            //            {
+            //                if (!detailIdList.Contains(item.ID))
+            //                {
+            //                    detailIdList.Add(item.ID);
+            //                }
+            //            }
+            //        }
+            //    }
+
+            //    var saleList = new List<Sale>();
+                
+            //    foreach (var sale in list)
+            //    {
+            //        var detailList = new List<SaleDetails>();
+            //        foreach (var detail in sale.SaleDetails)
+            //        {                        
+            //            foreach (var id in detailIdList)
+            //            {
+            //                if (detail.ID == id)
+            //                {
+            //                    saleList.Add(sale);
+            //                }
+            //            }
+            //        }
+            //    }
+
+            //    list = saleList;
+            //    selection += selection != "" ? " /// " + supplier.CompanyName : supplier.CompanyName;
+            //}
+
             ViewBag.selection = selection == "" ? "Genel Liste" : selection;
             return list;
         }

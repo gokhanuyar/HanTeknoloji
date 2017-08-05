@@ -129,7 +129,7 @@ function ImeiFunction(result) {
     $("#imei-response").attr("class", result.CssClass);
     if (result.IsSuccess) {
         setTimeout(redirect, 2000);
-    }    
+    }
 }
 
 var redirect = function Redirect() {
@@ -146,6 +146,17 @@ $(function () {
             $.each(result, function (i, item) {
                 $("#imei-pro-select").append("<option value='" + item.ID + "'>" + item.TradeMark + " " + item.ProductModel + "</option>")
             })
+        }
+    })
+
+    $.ajax({
+        type: "get",
+        url: "/admin/adminsale/GetImeiCount",
+        success: function (result) {
+            if (result > 0) {
+                swal("Uyarı", "Satış yapabilmek için IMEI kayıtlarını tamamlamanız gerekir.", "warning");
+                $("#sale-modal-btn").remove();
+            }
         }
     })
 })
@@ -175,3 +186,4 @@ $("#imei-pro-select").change(function () {
         $(".imei-wrap").remove();
     }
 })
+

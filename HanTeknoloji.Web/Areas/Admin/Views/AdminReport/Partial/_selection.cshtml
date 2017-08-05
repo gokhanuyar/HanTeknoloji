@@ -6,8 +6,6 @@
     </div>
 </div>
 
-
-
 <!-- Modal -->
 <div id="selectionModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -43,6 +41,10 @@
                     <div class="form-group">
                         @Html.DropDownList("_product", (IEnumerable<SelectListItem>)ViewData["product"], "Seçiniz", new { @class = "form-control" })
                     </div>
+                    @*<h4>Tedarikçi Seçimi</h4>
+                    <div class="form-group">
+                        @Html.DropDownList("_supplier", (IEnumerable<SelectListItem>)ViewData["supplier"], "Seçiniz", new { @class = "form-control" })
+                    </div>*@
                     <h4>Ödeme Tipi Seçimi</h4>
                     <div class="form-group">
                         <select class="form-control" name="_payment" id="_payment">

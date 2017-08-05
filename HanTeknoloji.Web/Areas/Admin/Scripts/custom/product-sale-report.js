@@ -6,12 +6,12 @@
         });
 
         function GetDetail(id) {
-            $(".modal-body").empty();
+            $("#modal-detail-content").empty();
             $.ajax({
                 type: "get",
                 url: "/admin/adminreport/GetSaleDetail/" + id,
                 success: function (result) {
-                    $(".modal-body").append("<h4>Ödeme Şekli :</h4>" +
+                    $("#modal-detail-content").append("<h4>Ödeme Şekli :</h4>" +
                         "<p>" + result.PaymentType + "</p><hr/>" +
                         "<h4>Satış Tarihi :</h4>" +
                         "<p>" + result.SaleDate + "</p><hr/>" +
@@ -22,7 +22,7 @@
                     if (result.ImeiList.length > 0) {
                         for (var i = 0; i < result.ImeiList.length; i++) {
                             var index = i + 1;
-                            $(".modal-body").append("<hr/><h4>" + index + ".IMEI Numarası</h4>" +
+                            $("#modal-detail-content").append("<hr/><h4>" + index + ".IMEI Numarası</h4>" +
                                 "<p>" + result.ImeiList[i] + "</p>");
                         }
                     }                    

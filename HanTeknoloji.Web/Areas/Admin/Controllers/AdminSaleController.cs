@@ -231,6 +231,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                         AddDate = DateTime.Now,
                         IsPhone = item.CategoryID == 6 || item.CategoryID == 7 ? true : false,
                         UnitSalePrice = item.UnitPrice,
+                        CategoryID = item.CategoryID
                     };
                     list.Add(detail);
                 }
@@ -622,5 +623,11 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             return count;
         }
 
+        public ActionResult GetImeiCount()
+        {
+            var paymentInfoList = rppaymentinfo.GetListWithQuery(x => x.IMEICount > 0);
+            int count = paymentInfoList.Sum(x => x.IMEICount);
+            return Json(count, JsonRequestBehavior.AllowGet);
+        }
     }
 }
