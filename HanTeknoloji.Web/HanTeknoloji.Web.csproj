@@ -402,6 +402,7 @@
     <Content Include="Areas\Admin\Views\AdminHome\Partial\_collectModal.cshtml" />
     <Content Include="Areas\Admin\Views\AdminHome\Partial\_pastedPaymentModal.cshtml" />
     <Content Include="Areas\Admin\Views\AdminHome\Partial\_pastedCollectModal.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminReport\Partial\_selection.cshtml" />
     <None Include="Properties\PublishProfiles\gokhan.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\dateFormat.min.js" />
@@ -448,6 +449,7 @@
     <Compile Include="Areas\Admin\Models\Barcode\barcodecs.cs" />
     <Compile Include="Areas\Admin\Models\Barcode\BarCodeModel.cs" />
     <Compile Include="Areas\Admin\Models\Dto\BarChartDto.cs" />
+    <Compile Include="Areas\Admin\Models\Dto\FilterDto.cs" />
     <Compile Include="Areas\Admin\Models\Dto\ImeiDto.cs" />
     <Compile Include="Areas\Admin\Models\Dto\ImeiOprDto.cs" />
     <Compile Include="Areas\Admin\Models\Dto\PaymentDetailDto.cs" />

@@ -14,49 +14,19 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
     [RolControl(EnumRoles.Manager)]
     public class AdminReportController : AdminBaseController
     {
-        public ActionResult ProductSale(int? page, string date)
+        public ActionResult ProductSale(int? page, FormCollection collection)
         {
             int _page = page ?? 1;
-            DateTime _date;
-            if (!string.IsNullOrEmpty(date))
-            {
-                Session["date"] = date;
-                _date = Convert.ToDateTime(date);
-            }
-            else
-            {
-                _date = Session["date"] == null ? DateTime.Now : Convert.ToDateTime(Session["date"]);
-            }
-            //DateTime _date = string.IsNullOrEmpty(beforeDate) ? DateTime.Now : Convert.ToDateTime(beforeDate);
-            date = Session["date"] == null ? "" : Session["date"].ToString();
-            if (date.Length == 7)
-            {
-                var sales = rpsale
-                                .GetListWithQuery(x => x
-                                .AddDate.Month == _date.Month && x
-                                .AddDate.Year == _date.Year && x
-                                .IsInvoiced == false)
-                                .OrderByDescending(x => x.AddDate)
-                                .ToPagedList(_page, 20);
-                ViewBag.date = String.Format("{0:y}", _date);
-                return View(GetProductSaleReport(sales, _page));
-            }
-            else
-            {
-                var sales = rpsale
-                                .GetListWithQuery(x => x
-                                .AddDate.Day == _date.Day && x
-                                .AddDate.Month == _date.Month && x
-                                .AddDate.Year == _date.Year && x
-                                .IsInvoiced == false)
-                                .OrderByDescending(x => x.AddDate)
-                                .ToPagedList(_page, 20);
-                ViewBag.date = _date.ToLongDateString();
-                return View(GetProductSaleReport(sales, _page));
-            }
+
+            FilterDto dto = FilterOperations(collection);
+            var list = ReportOperations(dto);
+
+            GetDropdownItems();
+            return View(GetProductSaleReport(list, _page));
         }
 
-        private IPagedList<ReportVM> GetProductSaleReport(IPagedList<Sale> sales, int _page)
+
+        private IPagedList<ReportVM> GetProductSaleReport(List<Sale> sales, int _page)
         {
             var list = sales.Select(x => new ReportVM()
             {
@@ -511,6 +481,134 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 ImeiList = imeiList
             };
             return Json(vm, JsonRequestBehavior.AllowGet);
+        }
+
+        private void GetDropdownItems()
+        {
+            ViewData["category"] = rpcategory.GetAll().Select(x => new SelectListItem
+            {
+                Text = x.CategoryName,
+                Value = x.ID.ToString()
+            });
+            var proList = rpproduct.GetAll().Select(x => new ProductVM
+            {
+                ID = x.ID,
+                TradeMark = rptrademark.Find(x.TradeMarkID).Name,
+                ProductModel = rpproductmodel.Find(x.ProductModelID).Name
+            }).ToList();
+            ViewData["product"] = proList.Select(x => new SelectListItem
+            {
+                Text = x.TradeMark + " " + x.ProductModel,
+                Value = x.ID.ToString()
+            });
+        }
+
+        private FilterDto FilterOperations(FormCollection collection)
+        {
+            FilterDto dto = new FilterDto();
+            if (Convert.ToInt32(collection["_new"]) != 1)
+            {
+                var _form = (FormCollection)Session["proCollection"];
+                if (_form != null)
+                {
+                    dto.Date = _form["_date"];
+                    dto.Month = _form["_month"];
+                    dto.CategoryID = _form["_category"];
+                    dto.ProductID = _form["_product"];
+                    dto.Payment = _form["_payment"];
+                    dto.DateSelect = _form["_dateSelect"];
+                }
+            }
+            else
+            {
+                dto.Date = collection["_date"];
+                dto.Month = collection["_month"];
+                dto.CategoryID = collection["_category"];
+                dto.ProductID = collection["_product"];
+                dto.Payment = collection["_payment"];
+                dto.DateSelect = collection["_dateSelect"];
+                //sayfalamada en son atılan sorguyu kaybetmemek için Session da tutuyoruz
+                Session["proCollection"] = collection;
+            }
+            return dto;
+        }
+
+        private List<Sale> ReportOperations(FilterDto dto)
+        {
+            var list = rpsale.GetAll();
+            string selection = "";
+            if (dto.DateSelect == "1")
+            {
+                var date = Convert.ToDateTime(dto.Date);
+                list = list.Where(x => x
+                                  .AddDate.Day == date.Day && x
+                                  .AddDate.Month == date.Month && x
+                                  .AddDate.Year == date.Year && x
+                                  .IsInvoiced == false)
+                                .OrderByDescending(x => x.AddDate)
+                                .ToList();
+                selection += date.ToLongDateString();
+            }
+
+            if (dto.DateSelect == "2")
+            {
+                var date = Convert.ToDateTime(dto.Date);
+                list = list.Where(x => x
+                                  .AddDate.Month == date.Month && x
+                                  .AddDate.Year == date.Year && x
+                                  .IsInvoiced == false)
+                                .OrderByDescending(x => x.AddDate)
+                                .ToList();
+                selection += selection != "" ? " /// " + String.Format("{0:y}", date) : String.Format("{0:y}", date);
+            }
+
+            if (dto.Payment != "0" && dto.Payment != null)
+            {
+                list = list.Where(x => x.PaymentType == dto.Payment).ToList();
+                selection += selection != "" ? " /// " + dto.Payment : dto.Payment;
+            }
+
+            if (!string.IsNullOrEmpty(dto.CategoryID))
+            {
+                int catId = Convert.ToInt32(dto.CategoryID);
+                var addList = new List<Sale>();
+                foreach (var item in list)
+                {
+                    foreach (var detail in item.SaleDetails)
+                    {
+                        if (detail.CategoryID == catId)
+                        {
+                            addList.Add(detail.Sale);
+                            break;
+                        }
+                    }
+                }
+                list = addList;
+                selection += selection != "" ? " /// " + rpcategory.Find(catId).CategoryName : rpcategory.Find(catId).CategoryName;
+            }
+
+            if (!string.IsNullOrEmpty(dto.ProductID))
+            {
+                int proId = Convert.ToInt32(dto.ProductID);
+                var addList = new List<Sale>();
+                foreach (var item in list)
+                {
+                    foreach (var detail in item.SaleDetails)
+                    {
+                        if (detail.ProductID == proId)
+                        {
+                            addList.Add(detail.Sale);
+                            break;
+                        }
+                    }
+                }
+                list = addList;
+                var pro = rpproduct.Find(proId);
+                string name = rptrademark.Find(pro.TradeMarkID).Name + " " + rpproductmodel.Find(pro.ProductModelID).Name;
+                selection += selection != "" ? " /// " + name : name;
+            }
+            ViewBag.selection = selection == "" ? "Genel Liste" : selection;
+            return list;
         }
     }
 }

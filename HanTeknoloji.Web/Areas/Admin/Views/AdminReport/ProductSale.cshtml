@@ -13,25 +13,9 @@
         <h3 class="page-header">Ürün Satış Rapor Sayfası</h3>
     </div>
 </div>
-<div class="row">
-    <div class="col-lg-3">
-        <div class="form-group">
-            <h5>Günlük Satışlar İçin Tarih Seçimi</h5>
-            <form method="post" id="form_date">
-                <input name="date" id="date" type="date" class="form-control" />
-            </form>
 
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="form-group">
-            <h5>Aylık Satışlar İçin Tarih Seçimi</h5>
-            <form method="post" id="form_month">
-                <input name="date" id="month" type="month" class="form-control" />
-            </form>
-        </div>
-    </div>
-</div>
+@Html.Partial("Partial/_selection")
+
 
 <div class="row">
     <div class="col-lg-2">
@@ -54,7 +38,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <b>@ViewBag.date</b>
+                <b>@ViewBag.selection</b>
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -117,4 +101,41 @@
 
 @section scripts{
     <script src="~/Areas/Admin/Scripts/custom/product-sale-report.js"></script>
+    <script>
+        $("#_dateSelect").change(function () {
+            var value = this.value;
+            $(".date-input").hide();
+            if (value == "1") {
+                $("#_date").show();
+            }
+            else if (value == "2") {
+                $("#_month").show();
+            }
+        })
+
+        $("#selection-post-btn").click(function () {
+            var value = $("#_dateSelect").val();
+            if (value == 1) {
+                var date = $("#_date").val();
+                if (date == "" || date == "," || date == null) {
+                    swal("Uyarı","Gün seçimi için tarih girişi yapmalısınız","warning")
+                }
+                else {
+                    $("#selection-form").submit();
+                }
+            }
+            else if (value == 2){
+                var date = $("#_month").val();
+                if (date == "" || date == "," || date == null) {
+                    swal("Uyarı", "Ay seçimi için tarih girişi yapmalısınız", "warning")
+                }
+                else {
+                    $("#selection-form").submit();
+                }
+            }
+            else {
+                $("#selection-form").submit();
+            }
+        })
+    </script>
 }

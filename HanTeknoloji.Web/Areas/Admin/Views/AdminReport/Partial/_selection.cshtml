@@ -1,0 +1,65 @@
+﻿
+<div class="row">
+    <div class="col-lg-3">
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#selectionModal">Filtre Formu</button>
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+<div id="selectionModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modal Header</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="selection-form">
+                    <h4>Tarih Seçimi</h4>
+                    <div class="form-group">
+                        <select class="form-control" name="_dateSelect" id="_dateSelect">
+                            <option>Seçiniz</option>
+                            <option value="1">Günlük</option>
+                            <option value="2">Aylık</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input name="_date" id="_date" type="date" class="form-control date-input" style="display:none;" />
+                    </div>
+                    <div class="form-group">
+                        <input name="_date" id="_month" type="month" class="form-control date-input" style="display:none;" />
+                    </div>
+                    <h4>Kategori Seçimi</h4>
+                    <div class="form-group">
+                        @Html.DropDownList("_category", (IEnumerable<SelectListItem>)ViewData["category"], "Seçiniz", new { @class = "form-control" })
+                    </div>
+                    <h4>Ürün Seçimi</h4>
+                    <div class="form-group">
+                        @Html.DropDownList("_product", (IEnumerable<SelectListItem>)ViewData["product"], "Seçiniz", new { @class = "form-control" })
+                    </div>
+                    <h4>Ödeme Tipi Seçimi</h4>
+                    <div class="form-group">
+                        <select class="form-control" name="_payment" id="_payment">
+                            <option value="0">Seçiniz</option>
+                            <option value="Nakit">Nakit</option>
+                            <option value="Kredi Kartı">Kredi Kartı</option>
+                            <option value="Vadeli">Vadeli</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" value="1" name="_new"/>
+                        <button class="btn btn-success" type="button" id="selection-post-btn">Gönder</button>
+                    </div>
+                </form>                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+
+    </div>
+</div>

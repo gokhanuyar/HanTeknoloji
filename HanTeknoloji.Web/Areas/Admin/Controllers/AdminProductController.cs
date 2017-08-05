@@ -413,11 +413,11 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             return Json(list, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Delete(int id)
-        {
-            rpproduct.Delete(id);
-            return RedirectToAction("Index");
-        }
+        //public ActionResult Delete(int id)
+        //{
+        //    rpproduct.Delete(id);
+        //    return RedirectToAction("Index");
+        //}
 
         public ActionResult BarCode(int id)
         {
