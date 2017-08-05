@@ -13,25 +13,8 @@
         <h3 class="page-header">Faturalı Ürün Satış Rapor Sayfası</h3>
     </div>
 </div>
-<div class="row">
-    <div class="col-lg-3">
-        <div class="form-group">
-            <h5>Günlük Satışlar İçin Tarih Seçimi</h5>
-            <form method="post" id="form_date">
-                <input name="date" id="date" type="date" class="form-control" />
-            </form>
 
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="form-group">
-            <h5>Aylık Satışlar İçin Tarih Seçimi</h5>
-            <form method="post" id="form_month">
-                <input name="date" id="month" type="month" class="form-control" />
-            </form>
-        </div>
-    </div>
-</div>
+@Html.Partial("Partial/_selection")
 
 <div class="row">
     <div class="col-lg-2">
@@ -54,7 +37,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <b>@ViewBag.date</b>
+                <b>@ViewBag.selection</b>
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -120,5 +103,6 @@
 @Html.Partial("Partial/CustomerModal")
 @section scripts{
     <script src="~/Areas/Admin/Scripts/custom/invoice-sale-report.js"></script>
+    <script src="~/Areas/Admin/Scripts/custom/report-selection.js"></script>
 }
 

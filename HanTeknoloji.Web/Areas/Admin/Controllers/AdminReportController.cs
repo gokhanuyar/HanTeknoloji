@@ -17,14 +17,13 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         public ActionResult ProductSale(int? page, FormCollection collection)
         {
             int _page = page ?? 1;
-
-            FilterDto dto = FilterOperations(collection);
+            FilterDto dto = new FilterDto { IsInvoiced = false };
+            FilterOperations(collection, ref dto);
             var list = ReportOperations(dto);
 
             GetDropdownItems();
             return View(GetProductSaleReport(list, _page));
         }
-
 
         private IPagedList<ReportVM> GetProductSaleReport(List<Sale> sales, int _page)
         {
@@ -88,48 +87,18 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             return pagedModel;
         }
 
-        public ActionResult InvoiceProductSale(int? page, string date)
+        public ActionResult InvoiceProductSale(int? page, FormCollection collection)
         {
             int _page = page ?? 1;
-            DateTime _date;
-            if (!string.IsNullOrEmpty(date))
-            {
-                Session["invoicedDate"] = date;
-                _date = Convert.ToDateTime(date);
-            }
-            else
-            {
-                _date = Session["invoicedDate"] == null ? DateTime.Now : Convert.ToDateTime(Session["invoicedDate"]);
-            }
-            date = Session["invoicedDate"] == null ? "" : Session["invoicedDate"].ToString();
-            if (date.Length == 7)
-            {
-                var sales = rpsale
-                                .GetListWithQuery(x => x
-                                .AddDate.Month == _date.Month && x
-                                .AddDate.Year == _date.Year && x
-                                .IsInvoiced)
-                                .OrderByDescending(x => x.AddDate)
-                                .ToPagedList(_page, 20);
-                ViewBag.date = String.Format("{0:y}", _date);
-                return View(GetInvoiceProductSaleReport(sales, _page));
-            }
-            else
-            {
-                var sales = rpsale
-                                .GetListWithQuery(x => x
-                                .AddDate.Day == _date.Day && x
-                                .AddDate.Month == _date.Month && x
-                                .AddDate.Year == _date.Year && x
-                                .IsInvoiced)
-                                .OrderByDescending(x => x.AddDate)
-                                .ToPagedList(_page, 20);
-                ViewBag.date = _date.ToLongDateString();
-                return View(GetInvoiceProductSaleReport(sales, _page));
-            }
+            FilterDto dto = new FilterDto { IsInvoiced = true };
+            FilterOperations(collection, ref dto);
+            var list = ReportOperations(dto);
+
+            GetDropdownItems();
+            return View(GetInvoiceProductSaleReport(list, _page));
         }
 
-        private IPagedList<ReportVM> GetInvoiceProductSaleReport(IPagedList<Sale> sales, int _page)
+        private IPagedList<ReportVM> GetInvoiceProductSaleReport(List<Sale> sales, int _page)
         {
             var list = sales.Select(x => new ReportVM()
             {
@@ -188,7 +157,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             ViewBag.saleprice = model.Sum(x => x.Price);
             ViewBag.kdv = model.Sum(x => x.KdvPrice);
             ViewBag.brut = ViewBag.saleprice - (ViewBag.unitprice + ViewBag.kdv);
-            IPagedList<ReportVM> pagedModel = model.ToPagedList(_page, 20);
+            IPagedList<ReportVM> pagedModel = model.ToPagedList(_page, 2);
             return pagedModel;
         }
 
@@ -503,12 +472,11 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             });
         }
 
-        private FilterDto FilterOperations(FormCollection collection)
+        private FilterDto FilterOperations(FormCollection collection, ref FilterDto dto)
         {
-            FilterDto dto = new FilterDto();
             if (Convert.ToInt32(collection["_new"]) != 1)
             {
-                var _form = (FormCollection)Session["proCollection"];
+                var _form = dto.IsInvoiced ? (FormCollection)Session["invCollection"] : (FormCollection)Session["proCollection"];
                 if (_form != null)
                 {
                     dto.Date = _form["_date"];
@@ -528,7 +496,14 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 dto.Payment = collection["_payment"];
                 dto.DateSelect = collection["_dateSelect"];
                 //sayfalamada en son atılan sorguyu kaybetmemek için Session da tutuyoruz
-                Session["proCollection"] = collection;
+                if (dto.IsInvoiced)
+                {
+                    Session["invCollection"] = collection;
+                }
+                else
+                {
+                    Session["proCollection"] = collection;
+                }
             }
             return dto;
         }
@@ -609,6 +584,14 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             }
             ViewBag.selection = selection == "" ? "Genel Liste" : selection;
             return list;
+        }
+
+        public ActionResult RemoveFilter()
+        {
+            string path = HttpContext.Request.UrlReferrer.PathAndQuery;
+            Session.Remove("proCollection");
+            Session.Remove("invCollection");
+            return Redirect(path);
         }
     }
 }

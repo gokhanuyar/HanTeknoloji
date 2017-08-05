@@ -273,6 +273,7 @@
     <Content Include="Areas\Admin\Scripts\custom\layout.js" />
     <Content Include="Areas\Admin\Scripts\custom\product-sale-report.js" />
     <Content Include="Areas\Admin\Scripts\custom\region.js" />
+    <Content Include="Areas\Admin\Scripts\custom\report-selection.js" />
     <Content Include="Areas\Admin\Scripts\custom\sale-operations.js" />
     <Content Include="Areas\Admin\Scripts\custom\product-list.js" />
     <Content Include="Areas\Admin\Scripts\custom\supplier-expiry-opr.js" />
