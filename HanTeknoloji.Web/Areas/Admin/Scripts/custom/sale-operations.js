@@ -128,7 +128,7 @@ function ImeiFunction(result) {
     $("#imei-response").html(result.Message);
     $("#imei-response").attr("class", result.CssClass);
     if (result.IsSuccess) {
-        setTimeout(redirect, 2000);
+        setTimeout(redirect, 1500);
     }
 }
 

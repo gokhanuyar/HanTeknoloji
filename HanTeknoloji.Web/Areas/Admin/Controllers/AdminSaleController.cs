@@ -627,6 +627,13 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         {
             var paymentInfoList = rppaymentinfo.GetListWithQuery(x => x.IMEICount > 0);
             int count = paymentInfoList.Sum(x => x.IMEICount);
+            var sepet = (CartVM)Session["Sepet"];
+            if (sepet != null)
+            {
+                int expectedImeiCount = sepet.PhoneCount - sepet.ImeiCount;
+                count += expectedImeiCount;
+            }
+
             return Json(count, JsonRequestBehavior.AllowGet);
         }
     }
