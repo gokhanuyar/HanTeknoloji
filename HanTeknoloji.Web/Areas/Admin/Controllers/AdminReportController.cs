@@ -164,6 +164,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         public ActionResult Service(int? page, string date)
         {
             int _page = page ?? 1;
+            ViewBag.page = _page - 1;
             DateTime _date;
             if (!string.IsNullOrEmpty(date))
             {
@@ -172,7 +173,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             }
             else
             {
-                _date = Session["dateService"] == null ? DateTime.Now : Convert.ToDateTime(Session["date"]);
+                _date = Session["dateService"] == null ? DateTime.Now : Convert.ToDateTime(Session["dateService"]);
             }
             date = Session["dateService"] == null ? "" : Session["dateService"].ToString();
 
@@ -620,7 +621,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             //    }
 
             //    var saleList = new List<Sale>();
-                
+
             //    foreach (var sale in list)
             //    {
             //        var detailList = new List<SaleDetails>();

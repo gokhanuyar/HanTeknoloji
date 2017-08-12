@@ -69,7 +69,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @{ int sayi = 1;}
+                            @{
+                                int sayi = 1;
+                                int _page = ViewBag.page;
+                                sayi = sayi + (_page * 20);
+                            }
                             @foreach (var item in Model)
                             {
                                 <tr>
