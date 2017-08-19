@@ -24,7 +24,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             {
                 model.Cart = (CartVM)Session["Sepet"];
             }
-            GetCustomers();
+            GetCustomersAndUsers();
             GetAllCitiesforAdding();
             return View(model);
         }
@@ -32,7 +32,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Index(string BarcodeNumber)
         {
-            GetCustomers();
+            GetCustomersAndUsers();
             GetAllCitiesforAdding();
             SaleWrapVM model = new SaleWrapVM();
             model.Cart = new CartVM();
@@ -320,7 +320,11 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                     PaymentType = model.PaymentType,
                     Price = model.Price,
                     UserID = userId,
-                    Note = model.Note
+                    Note = model.Note,
+                    CustomerName = model.CustomerName,
+                    EmployeeID = model.EmployeeID,
+                    IMEINumber = model.IMEINumber,
+                    ProductModel = model.ProductModel
                 };
                 rpservicesale.Add(entity);
             }
@@ -376,11 +380,17 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             }
         }
 
-        private void GetCustomers()
+        private void GetCustomersAndUsers()
         {
             ViewData["customer"] = rpcustomer.GetAll().Select(x => new SelectListItem
             {
                 Text = x.Name + " Tel:" + x.Phone,
+                Value = x.ID.ToString()
+            }).ToList();
+
+            ViewData["employee"] = rpadminuser.GetAll().Select(x => new SelectListItem
+            {
+                Text = x.FullName,
                 Value = x.ID.ToString()
             }).ToList();
         }

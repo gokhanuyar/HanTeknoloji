@@ -4,6 +4,22 @@
 @using (Html.BeginForm("AddServiceSale", "AdminSale", FormMethod.Post, new { id = "service-sale-form" }))
 {
     <div class="form-group">
+        <label>Müşteri :</label>
+        <input type="text" name="CustomerName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Personel :</label>
+        @Html.DropDownList("EmployeeID", (IEnumerable<SelectListItem>)ViewData["employee"], new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label>Ürün Marka-Modeli :</label>
+        <input type="text" name="ProductModel" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>IMEI :</label>
+        <input type="text" name="IMEINumber" class="form-control" />
+    </div>
+    <div class="form-group">
         <label>Ödeme Şekli :</label>
         <select class="form-control" name="PaymentType">
             <option>Nakit</option>

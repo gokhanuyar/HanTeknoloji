@@ -13,9 +13,8 @@ namespace HanTeknoloji.Data.Models.Orm.Context
     {
         public HanTeknolojiContext()
         {
-            //Database.Connection.ConnectionString = "Server=DESKTOP-15VL0N4;Database=HanTeknolojiDB;Trusted_Connection=True";
-            Database.Connection.ConnectionString = @"Server = mssql13.trwww.com; database = hanteknolojiDB; uid = user_hanteknoloji; pwd = hanteknoloji_DB1";
-            //
+            Database.Connection.ConnectionString = @"Server=DESKTOP-2LVK4US\SQLEXPRESS; Database=HanTeknolojiDB;Trusted_Connection=True";
+            //Database.Connection.ConnectionString = @"Server = mssql13.trwww.com; database = hanteknolojiDB; uid = user_hanteknoloji; pwd = hanteknoloji_DB1";
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

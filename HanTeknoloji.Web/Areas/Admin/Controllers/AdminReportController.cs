@@ -185,8 +185,8 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                 .OrderByDescending(x => x.AddDate)
                                 .ToList().Select(x => new ReportVM()
                                 {
+                                    ID = x.ID,
                                     PaymentType = x.PaymentType,
-                                    SaleDate = String.Format("{0:d/M/yyyy}", x.AddDate),
                                     SaleTime = String.Format("{0:HH:mm}", x.AddDate),
                                     Price = x.Price,
                                     UserID = x.UserID,
@@ -196,7 +196,6 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                   .AddDate.Month == _date.Month && x
                                   .AddDate.Year == _date.Year);
 
-                list.ForEach(l => l.AdminUserName = rpadminuser.Find(l.UserID).FullName);
                 ViewBag.saleprice = list.Sum(x => x.Price);
                 ViewBag.quantity = list.Count;
                 ViewBag.date = String.Format("{0:y}", _date);
@@ -214,14 +213,13 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                                 .OrderByDescending(x => x.AddDate)
                                 .ToList().Select(x => new ReportVM()
                                 {
+                                    ID = x.ID,
                                     PaymentType = x.PaymentType,
-                                    SaleDate = String.Format("{0:d/M/yyyy}", x.AddDate),
                                     SaleTime = String.Format("{0:HH:mm}", x.AddDate),
                                     Price = x.Price,
                                     UserID = x.UserID,
                                     Note = x.Note
                                 }).ToList();
-                list.ForEach(l => l.AdminUserName = rpadminuser.Find(l.UserID).FullName);
 
                 var cost = rptechservicecost.FirstOrDefault(x => x
                                     .AddDate.Day == _date.Day && x
@@ -453,6 +451,22 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
                 ImeiList = imeiList
             };
             return Json(vm, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetServiceSaleDetail(int id)
+        {
+            var serviceSale = rpservicesale.Find(id);
+            int? employeeId = (int?)serviceSale.EmployeeID;
+            var employee = employeeId != 0 ? rpadminuser.Find(serviceSale.EmployeeID).FullName : "Belirtilmemiş";
+            return Json(new
+            {
+                CustomerName = string.IsNullOrEmpty(serviceSale.CustomerName) ? "Belirtilmemiş" : serviceSale.CustomerName,
+                ProductModel = string.IsNullOrEmpty(serviceSale.ProductModel) ? "Belirtilmemiş" : serviceSale.ProductModel,
+                Employee = employee,
+                IMEINumber = string.IsNullOrEmpty(serviceSale.IMEINumber) ? "Belirtilmemiş" : serviceSale.IMEINumber,
+                SaleDate = String.Format("{0:d/M/yyyy}", serviceSale.AddDate),
+                User = rpadminuser.Find(serviceSale.UserID).FullName
+            }, JsonRequestBehavior.AllowGet);
         }
 
         private void GetDropdownItems()

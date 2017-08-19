@@ -15,5 +15,13 @@ namespace HanTeknoloji.Data.Models.Orm.Entity
         public string Note { get; set; }
 
         public int UserID { get; set; }
+
+        public string CustomerName { get; set; }
+
+        public string ProductModel { get; set; }
+
+        public int EmployeeID { get; set; }
+
+        public string IMEINumber { get; set; }
     }
 }
