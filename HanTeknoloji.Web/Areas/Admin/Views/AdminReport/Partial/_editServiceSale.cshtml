@@ -1,0 +1,44 @@
+﻿
+
+@model ServiceSaleVM
+
+<div class="col-lg-12">
+    <div class="form-group">
+        <label>Müşteri :</label>
+        @Html.TextBoxFor(x => x.CustomerName, new { @class = "form-control", required = "required" })
+        @Html.ValidationMessageFor(x => x.CustomerName)
+    </div>
+    <div class="form-group">
+        <label>Personel :</label><span style="color:red"> *</span>
+        @Html.DropDownListFor(x => x.EmployeeID, (IEnumerable<SelectListItem>)ViewData["employee"], new { @class = "form-control", required = "required" })
+        @Html.ValidationMessageFor(x => x.EmployeeID)
+    </div>
+    <div class="form-group">
+        <label>Ürün Marka-Modeli :</label>
+        @Html.TextBoxFor(x => x.ProductModel, new { @class = "form-control", required = "required" })
+        @Html.ValidationMessageFor(x => x.ProductModel)
+    </div>
+    <div class="form-group">
+        <label>IMEI :</label>
+        @Html.TextBoxFor(x => x.IMEINumber, new { @class = "form-control", required = "required" })
+        @Html.ValidationMessageFor(x => x.IMEINumber)
+    </div>
+    <div class="form-group">
+        <label>Ödeme Şekli :</label><span style="color:red"> *</span>
+        @Html.DropDownListFor(x => x.PaymentType, (IEnumerable<SelectListItem>)ViewData["payment"], new { @class = "form-control", required = "required" })
+        @Html.ValidationMessageFor(x => x.PaymentType)
+    </div>
+    <div class="form-group">
+        <label>Tutar :</label><span style="color:red"> *</span>
+        @Html.TextBoxFor(x => x.Price, new { @class = "form-control", required = "required" })
+        @Html.ValidationMessageFor(x => x.Price)
+    </div>
+    <div class="form-group">
+        <label>Not :</label><span style="color:red"> *</span>
+        @Html.TextAreaFor(x => x.Note, new { @class = "form-control", required = "required" })
+        @Html.ValidationMessageFor(x => x.Note)
+    </div>
+    @Html.HiddenFor(x=>x.RedirectPath)
+    <input type="submit" class="btn btn-success" value="Kayıt" />
+    <a href="@Model.RedirectPath" class="btn btn-warning">Listeye Git</a>
+</div>

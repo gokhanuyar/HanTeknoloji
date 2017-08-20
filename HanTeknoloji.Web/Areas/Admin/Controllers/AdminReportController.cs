@@ -8,6 +8,7 @@ using PagedList;
 using HanTeknoloji.Data.Models.Orm.Entity;
 using HanTeknoloji.Web.Areas.Admin.Models.Attributes;
 using HanTeknoloji.Web.Areas.Admin.Models.Dto;
+using HanTeknoloji.Web.Areas.Admin.Models.Types.Enums;
 
 namespace HanTeknoloji.Web.Areas.Admin.Controllers
 {
@@ -665,6 +666,66 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
             Session.Remove("proCollection");
             Session.Remove("invCollection");
             return Redirect(path);
+        }
+
+        public ActionResult EditServiceSale(int id)
+        {
+            string path = HttpContext.Request.UrlReferrer.PathAndQuery;
+            var entity = rpservicesale.Find(id);
+            var model = new ServiceSaleVM
+            {
+                ID = entity.ID,
+                CustomerName = entity.CustomerName,
+                EmployeeID = entity.EmployeeID,
+                IMEINumber = entity.IMEINumber,
+                Note = entity.Note,
+                PaymentType = entity.PaymentType,
+                Price = entity.Price,
+                ProductModel = entity.ProductModel,
+                RedirectPath = path
+            };
+            GetAdminUsers();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult EditServiceSale(ServiceSaleVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                var entity = rpservicesale.Find(model.ID);
+                entity.CustomerName = model.CustomerName;
+                entity.EmployeeID = model.EmployeeID;
+                entity.IMEINumber = model.IMEINumber;
+                entity.Note = model.Note;
+                entity.PaymentType = model.PaymentType;
+                entity.Price = model.Price;
+                entity.ProductModel = model.ProductModel;
+                ViewBag.IslemDurum = EnumIslemDurum.Basarili;
+                rpservicesale.SaveChanges();
+            }
+            else
+            {
+                ViewBag.IslemDurum = EnumIslemDurum.ValidationHata;
+            }
+
+            GetAdminUsers();
+            return View(model);
+        }
+
+        private void GetAdminUsers()
+        {
+            ViewData["employee"] = rpadminuser.GetAll().Select(x => new SelectListItem
+            {
+                Text = x.FullName,
+                Value = x.ID.ToString()
+            }).ToList();
+
+            ViewData["payment"] = new List<SelectListItem>
+            {
+                new SelectListItem{Value="Nakit",Text="Nakit"},
+                new SelectListItem{Value="Kredi Kartı",Text="Kredi Kartı"},
+            };
         }
     }
 }
