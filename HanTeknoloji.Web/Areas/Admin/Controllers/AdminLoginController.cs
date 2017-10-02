@@ -23,7 +23,7 @@ namespace HanTeknoloji.Web.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Index(LoginVM model)
         {
-            AdminUser user = rpadminuser.FirstOrDefault(x => x.Email == model.Email && x.Password == model.Password);
+            AdminUser user = rpadminuser.FirstOrDefault(x => (x.Email == model.Email || x.UserName == model.Email) && x.Password == model.Password);
             if (user != null)
             {
                 user.LastLoginDate = DateTime.Now;
